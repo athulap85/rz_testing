@@ -1,0 +1,23 @@
+entity_key_filed_map = {
+    'Participants': 'Participant Id',
+    'Instruments': 'Symbol',
+    'Risk Portfolios': 'Risk Portfolio Id',
+    'Currencies': 'Currency Id',
+    'Accounts': 'Account Id',
+    'Countries': 'Country Id',
+    'Market Sectors': 'Market Sector Id',
+    'Risk Models': 'Risk Model Id',
+    'Im Methodologies': 'Im Methodology Id',
+    'Time Zones': 'Time Zone Id',
+    'Markets': 'Market Id',
+    'Position Keys': 'Position Key Id',
+    'Collateral Policies': 'Collateral Policy Id',
+    'Collateral Types': 'Collateral Type Id',
+    'Haircut Schemes': 'Haircut Scheme Id',
+    'Concentration Limits': "Concentration Limit Id",
+    'Allocation Rules': 'Allocation Rule Id',
+    'Allocation & Utilization Rules': 'Allocation & Utilization Rule Id',
+    'Utilization Limits': 'Utilization Limit Id',
+    'Stress Scenarios': 'Stress Scenario Id',
+    'Shifts': 'Id'
+}
