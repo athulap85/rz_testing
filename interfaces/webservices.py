@@ -1,13 +1,10 @@
 import requests
-from requests.exceptions import HTTPError
-from interfaces.interface import *
-from interfaces.mapping.inbound_mapping import *
 import logging
-ENDPOINT = "http://127.0.0.1:8081"
+import json
 from json.decoder import JSONDecodeError
 
 
-class HTTPClient(IInterface):
+class HTTPClient:
 
     def __init__(self, base_url):
         self.base_url = base_url
@@ -77,26 +74,3 @@ class HTTPClient(IInterface):
         logging.info(f"Status Code   : {status_code}")
         logging.info(f"Response Body : \n{response_json}\n")
         logging.info(f"============================================")
-
-    def request(self, message):
-        json_message = json.dumps(message.fieldValues, indent=4)
-        logging.debug(json_message)
-        try:
-            response = requests.post(ENDPOINT + "/trades/", json=json.loads(json_message))
-            logging.debug(response)
-            return True
-        except requests.exceptions.RequestException as e:
-            logging.error('%s', e)
-            return False
-
-    def query(self, message):
-        try:
-            response = requests.get(ENDPOINT + "/trades/" + message.get_field_value("Trade ID"))
-            logging.debug("response: " + response.text)
-            response_msg = InboundMapping.get_message(response)
-            return True, response_msg
-        except requests.exceptions.RequestException as e:
-            logging.error('%s', e)
-            return False, None
-
-

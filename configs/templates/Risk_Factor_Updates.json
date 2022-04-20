@@ -1,0 +1,14 @@
+{
+  "messageName": "RealtimeRiskFactorUpdate",
+  "fields" :
+  {
+    "symbol": "BCHEUR",
+    "currency": "EUR",
+    "dataClass": "PRICE",
+    "subClass": "ACTUAL",
+    "type": "BB",
+    "venue": "CCCAGG",
+    "value": 2.0,
+    "externalUpdateId": null
+  }
+}

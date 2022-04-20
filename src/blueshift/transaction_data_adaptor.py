@@ -23,6 +23,8 @@ class TransactionDataAdaptor(ITransactionDataInterface):
 
         status_code, response = self.http_client.post_request(endpoint, request)
         if status_code == 200:
+            if response == "":
+                response = "{}"
             response_json = json.loads(response)
             return self.create_response_msg(request_message.definition, response_json), None
         else:

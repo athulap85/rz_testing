@@ -1,4 +1,4 @@
-Feature: ref-data-add-edit-delete-entities-via-file-upload
+Feature: refdata add edit delete instances
 
   Scenario: TC_002 Copy & create an new currecny
     Given instance "USD" of entity "Currencies" is copied with following values
@@ -35,21 +35,12 @@ Feature: ref-data-add-edit-delete-entities-via-file-upload
       | Instance ID | Currency Id  | Description  | Currency Precision |
       | Cur01       | AED1         | Dirham1      | 0                  |
 
-  Scenario: Duplicate Currency
+  Scenario: TC_009 Duplicate Currency
     When instance of entity "Currencies" is created with following values
       | Instance ID | Currency Id  | Description  | Currency Precision |
       | Cur01       | AED1         | Dirham1      | 0                  |
 
     Then the request should be rejected with the error "Currency Id already exists."
-
-  Scenario: TC_009 Deleting instances
-    Given instance "ACC_001" of entity "Accounts" is deleted
-    Given instance "AED" of entity "Currencies" is deleted
-    Given instance "MEM_001" of entity "Participants" is deleted
-    Given instance "TZ_001" of entity "Time Zones" is deleted
-    Given instance "RM_001" of entity "Risk Models" is deleted
-    Given instance "AED1" of entity "Currencies" is deleted
-
 
   Scenario: TC_010 Copy & create an new Market
     Given instance "BINANCE" of entity "Markets" is copied with following values
@@ -60,6 +51,12 @@ Feature: ref-data-add-edit-delete-entities-via-file-upload
       | Instance ID | Market Id          | Description          |
       | Res01       | [Mark01.Market Id] | [Mark01.Description] |
 
-  @wip
-  Scenario: TC_010 Copy & create an new Market
+
+  Scenario: TC_011 Deleting instances
+    Given instance "ACC_001" of entity "Accounts" is deleted
+    Given instance "AED" of entity "Currencies" is deleted
+    Given instance "MEM_001" of entity "Participants" is deleted
+    Given instance "TZ_001" of entity "Time Zones" is deleted
+    Given instance "RM_001" of entity "Risk Models" is deleted
+    Given instance "AED1" of entity "Currencies" is deleted
     Given instance "BINANCE1" of entity "Markets" is deleted
