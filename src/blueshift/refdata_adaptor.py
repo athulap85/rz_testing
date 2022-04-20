@@ -69,7 +69,11 @@ class RefDataAdaptor(IRefDataInterface):
             response = json.loads(f.read())
             f.close()
         else:
-            response = self.http_client.get_request("/entities")
+            status_code, response_text = self.http_client.get_request("/entities")
+            if status_code == 200:
+                response = json.loads(response_text)
+            else:
+                assert False, "Unable to load entities"
             json_object = json.dumps(response, indent=4)
             f = open(entity_cache_file, "w")
             f.write(json_object)
