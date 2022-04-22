@@ -89,7 +89,7 @@ def extract_queries_and_expected_messages(message_name, table, filters):
 
 def compare_message_arrays(expected_array, response_array):
     assert len(expected_array) == len(response_array), f"Expected and received messages count mismatch." \
-        f" \nExpected : {print_msg_arrary(expected_array)} \nReceived : {print_msg_arrary(response_array)}\n"
+        f" \nExpected : {print_msg_array(expected_array)} \nReceived : {print_msg_array(response_array)}\n"
 
     for expecting_msg in expected_array:
         found = False
@@ -99,12 +99,12 @@ def compare_message_arrays(expected_array, response_array):
                 break
         if found is False:
             assert False, f"Expected message not received.\n" \
-                      f"Expected : {str(expecting_msg)} \nAvailable messages : {print_msg_arrary(response_array)}\n"
+                      f"Expected : {str(expecting_msg)} \nAvailable messages : {print_msg_array(response_array)}\n"
 
 
-def print_msg_arrary(array):
-    str1 = ""
+def print_msg_array(array):
+    str1 = "{\n"
     for item in array:
         str1 += str(item)
-
+    str1 += "}\n"
     return str1

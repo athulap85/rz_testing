@@ -65,4 +65,8 @@ class DataLoader:
         self.ref_data_instances[entity][key_field_value] = instance_id
 
     def get_acc_instance_id(self, participant, account):
-        return self.accounts_structure[participant][account]
+        assert self.accounts_structure.get(participant) is not None, f"Unable to find participant[{participant}] in" \
+                                                                 f" account structure"
+        instance_id = self.accounts_structure[participant].get(account)
+        assert instance_id is not None, f"Unable to find the account. Participant:[{participant}], Account:[{account}]"
+        return instance_id

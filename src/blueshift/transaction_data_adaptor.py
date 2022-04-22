@@ -75,9 +75,12 @@ class TransactionDataAdaptor(ITransactionDataInterface):
         status_code, response = self.http_client.get_request(url)
         if status_code == 200:
             response_json = json.loads(response)
-            msg_array = self.create_response_array(query.entity, response_json["content"])
-            for msg in msg_array:
-                msg.set_field_value("level", level)
+
+            for msg in response_json["content"]:
+                msg["level"] = level
+
+            msg_array = self.create_response_array(query, response_json["content"])
+
             return msg_array, None
         else:
             return None, response
@@ -90,9 +93,25 @@ class TransactionDataAdaptor(ITransactionDataInterface):
         msg.set_fields_values(response)
         return msg
 
-    def create_response_array(self, message_name, response_array):
+    def create_response_array(self, query, response_array):
+        message_name = query.entity
         output_array = []
         for item in response_array:
+
+            mismatch_found = False
+            filters = query.get_filters()
+            for filter_item in filters:
+                received_value = item.get(filter_item.field)
+                assert received_value is not None, f"Field [{filter_item.field}] is not available in the response message"
+                if str(received_value) != str(filter_item.value):
+                    mismatch_found = True
+                    logging.info(f"Ignoring the message. Mismatched field [{filter_item.field}] :"
+                                  f" Expected[{filter_item.value}] Received[{item[filter_item.field]}]")
+                    break
+
+            if mismatch_found:
+                continue
+
             msg = Message(message_name)
             msg.set_fields_values(item)
             output_array.append(msg)
