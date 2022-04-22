@@ -111,7 +111,13 @@ class RefDataAdaptor(IRefDataInterface):
         if status_code == 200:
             response_json = json.loads(response)
             assert len(response_json["content"]) > 0, f"Unable to find the instance [{instance_key}] of entity [{entity_name}]"
-            return self.create_response_msg(entity_def, response_json["content"][0]), None
+
+            response_msg = None
+            for instance in response_json["content"]:
+                if instance[field_def.name] == instance_key:
+                    response_msg = instance
+            logging.info(f"fetch_instance: selected instance: \n {response_msg}")
+            return self.create_response_msg(entity_def, response_msg), None
         else:
             return None, response
 
