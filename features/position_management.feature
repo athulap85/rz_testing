@@ -101,23 +101,118 @@ Feature: Position Management
 
 
 
-    @final
     Scenario: Validate All Values in Long position
 
-#        Given instance "HNKG-Long" of entity "Accounts" is deleted
+       Given instance "HNKG_3" of entity "Accounts" is deleted
 
         Given instance "Home" of entity "Accounts" is copied with following values
         | Instance ID | Account Id    | Name        | Participant    |
-        | Acc_01      | Home_NK       | Home_NK     | HSBC           |
+        | Acc_01      | HNKG_3       | HNKG_3     | HSBC           |
 
         When "Position_Updates" are submitted with following values
-        | Instance ID | account                 | quantity | price | value   | side | participant |
-        | PU_Long     | [Acc_01.Account Id]     | 6000     | 50.0  | 30000.0 | LONG |  HSBC       |
+        | Instance ID | account   | quantity | price | value   | side | participant |
+        | PU_Long     | HNKG_3    | 6000     | 50.0  | 30000.0 | LONG |  HSBC       |
 
         Then response of the request "PU_Long" should be
         | Instance ID  | status   | subStatus   |
         | PU_Long_Res1 | POSTED   | PROCESSING  |
 
         Then "Position" messages are filtered by "level,participant,account" should be
-        | Instance ID     | level   | participant   | longPosition   | longValue | netPosition  | netValue | account               |
-        | PU_Long_Res2    | ACCOUNT | HSBC          | 6000.0         | 30000.0   | 6000.0       | 30000.0  | [Acc_01.Account Id]   |
+        | Instance ID     | level   | participant   | longPosition   | longValue | netPosition  | netValue | account  |
+        | PU_Long_Res2    | ACCOUNT | HSBC          | 6000.0         | 30000.0   | 6000.0       | 30000.0  | HNKG_3   |
+
+    Scenario: TC_POBT_2.1. Validate Short Position Calculation, Average price calculation when multiple short positions exist
+
+       Given instance "HNKG_5" of entity "Accounts" is deleted
+
+        Given instance "Home" of entity "Accounts" is copied with following values
+        | Instance ID | Account Id  | Name       | Participant    |
+        | Acc_01      | HNKG_5      | HNKG_5     | HSBC           |
+
+        When "Position_Updates" are submitted with following values
+        | Instance ID   | account   | quantity | price | value   | side  | participant |
+        | PU_Short1     | HNKG_5    | 600      | 50.0  | 30000.0 | SHORT |  HSBC       |
+
+        And "Position_Updates" are submitted with following values
+        | Instance ID   | account   | quantity | price | value   | side  | participant |
+        | PU_Short2     | HNKG_5    | 1000     | 51.0  | 51000.0 | SHORT |  HSBC       |
+
+        Then response of the request "PU_Short1" should be
+        | Instance ID   | status   | subStatus   |
+        | PU_Short1_Res1 | POSTED   | PROCESSING  |
+
+        Then response of the request "PU_Short2" should be
+        | Instance ID   | status   | subStatus   |
+        | PU_Short2_Res2 | POSTED   | PROCESSING  |
+
+        Then "Position" messages are filtered by "level,participant,account" should be
+        | Instance ID     | level   | participant   | shortPosition   | shortValue | netPosition  | netValue | avgPrice | account  |
+        | PU_Short1_Res1   | ACCOUNT | HSBC         | 600.0           | 30000.0    | -600.0       | -30000.0 | 50.0     | HNKG_5   |
+
+         Then "Position" messages are filtered by "level,participant,account" should be
+        | Instance ID     | level   | participant   | shortPosition   | shortValue | netPosition  | netValue  | avgPrice    | account  |
+        | PU_Short2_Res2   | ACCOUNT | HSBC         | 1600.0          | 81000.0    | -1600.0      | -810000.0 | 50.625      | HNKG_5   |
+
+    Scenario: TC_POBT_1.1. Validate Long Position Calculation, Average price calculation when multiple long positions exist
+
+       Given instance "HNKG_6" of entity "Accounts" is deleted
+
+        Given instance "Home" of entity "Accounts" is copied with following values
+        | Instance ID | Account Id  | Name       | Participant    |
+        | Acc_01      | HNKG_6      | HNKG_6     | HSBC           |
+
+        When "Position_Updates" are submitted with following values
+        | Instance ID  | account   | quantity | price | value   | side  | participant |
+        | PU_Long1     | HNKG_6    | 600      | 50.0  | 30000.0 | LONG  |  HSBC       |
+
+        And "Position_Updates" are submitted with following values
+        | Instance ID  | account   | quantity | price | value   | side  | participant |
+        | PU_Long2     | HNKG_6    | 1000     | 51.0  | 51000.0 | LONG  |  HSBC       |
+
+        Then response of the request "PU_Long1" should be
+        | Instance ID   | status   | subStatus   |
+        | PU_Long_Res1  | POSTED   | PROCESSING  |
+
+        Then response of the request "PU_Long2" should be
+        | Instance ID   | status   | subStatus   |
+        | PU_Long_Res2  | POSTED   | PROCESSING  |
+
+        Then "Position" messages are filtered by "level,participant,account" should be
+        | Instance ID      | level   | participant   | shortPosition   | longValue  | netPosition  | netValue | avgPrice | account  |
+        | PU_Long1_Res1    | ACCOUNT | HSBC          | 600.0           | 30000.0    | 30000.0      | 30000.0  | 50.0     | HNKG_6   |
+
+         Then "Position" messages are filtered by "level,participant,account" should be
+        | Instance ID      | level   | participant   | longPosition    | longValue  | netPosition  | netValue  | avgPrice    | account  |
+        | PU_Long2_Res2    | ACCOUNT | HSBC          | 1600.0          | 81000.0    | 1600.0       | 810000.0  | 50.625      | HNKG_6   |
+
+    Scenario: TC_POBT_1.2. Validate Position Calculation, Average price calculation when both short and long positions exist for same Account
+
+       Given instance "HNKG_7" of entity "Accounts" is deleted
+
+        Given instance "Home" of entity "Accounts" is copied with following values
+        | Instance ID | Account Id  | Name       | Participant    |
+        | Acc_01      | HNKG_7      | HNKG_7     | HSBC           |
+
+        When "Position_Updates" are submitted with following values
+        | Instance ID   | account   | quantity | price | value   | side  | participant |
+        | PU_Short1     | HNKG_7    | 600      | 50.0  | 30000.0 | SHORT |  HSBC       |
+
+        And "Position_Updates" are submitted with following values
+        | Instance ID  | account   | quantity | price | value   | side  | participant |
+        | PU_Long1     | HNKG_7    | 1000     | 51.0  | 51000.0 | LONG  |  HSBC       |
+
+        Then response of the request "PU_Long1" should be
+        | Instance ID    | status   | subStatus   |
+        | PU_Long1_Res1  | POSTED   | PROCESSING  |
+
+        Then response of the request "PU_Short1" should be
+        | Instance ID     | status   | subStatus   |
+        | PU_Short1_Res1  | POSTED   | PROCESSING  |
+
+        Then "Position" messages are filtered by "level,participant,account" should be
+        | Instance ID       | level   | participant   | shortPosition   | shortValue | netPosition  | netValue | avgPrice | account  |
+        | PU_Short1_Res1    | ACCOUNT | HSBC          | 600             | 30000.0    | -600         | -30000.0 | 50.0     | HNKG_7   |
+
+         Then "Position" messages are filtered by "level,participant,account" should be
+        | Instance ID      | level   | participant   | shortPosition   | longPosition | shortValue | longValue  | netPosition  | netValue  | avgPrice    | account  |
+        | PU_Long1_Res1    | ACCOUNT | HSBC          | 600             | 1000		  | 30000.0    | 51000.0    | 400          | 210000.0  | 35.0        | HNKG_7   |
