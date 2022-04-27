@@ -1,0 +1,42 @@
+{
+    "content": [
+        {
+            "id": 1,
+            "allocationUtilizationRuleId": "VM Rule",
+            "utilizationSequence": 1,
+            "liabilityType": "VM",
+            "allocationRule": [
+                {
+                    "id": 1,
+                    "name": "USD for VM"
+                },
+                {
+                    "id": 2,
+                    "name": "CAD for VM"
+                }
+            ]
+        },
+        {
+            "id": 2,
+            "allocationUtilizationRuleId": "IM Rule",
+            "utilizationSequence": 1,
+            "liabilityType": "IM",
+            "allocationRule": [
+                {
+                    "id": 3,
+                    "name": "USD for IM"
+                },
+                {
+                    "id": 4,
+                    "name": "CAD for IM"
+                },
+                {
+                    "id": 5,
+                    "name": "Gov_Bond for IM"
+                }
+            ]
+        }
+    ],
+    "page": 0,
+    "totalNumberOfElements": 2
+}

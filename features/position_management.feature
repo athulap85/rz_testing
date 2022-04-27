@@ -76,7 +76,6 @@ Feature: Position Management
         | Instance ID      | symbol     | level    | account | participant   | shortPosition   | netPosition|
         | POU_PA_3_Res1    | ACH        | ACCOUNT  | Home    | HSBC          | 1000.0          | -1000.0    |
 
-
     Scenario: TC_PA_5.1 Validating Position Type - Margin
 
         When "Position_Updates" are submitted with following values
@@ -87,7 +86,6 @@ Feature: Position Management
         | Instance ID      | symbol     | level    | account | participant   | type   | shortPosition   | netPosition|
         | POU_PA_5.1_Res1  | ACIC       | ACCOUNT  | Home    | HSBC          | MARGIN | 1000.0          | -1000.0    |
 
-
     Scenario: TC_PA_5.2 Validating Position Type - Collateral ? Failed due to a business validation of collateral
 
         When "Position_Updates" are submitted with following values
@@ -97,9 +95,6 @@ Feature: Position Management
         Then "Position" messages are filtered by "symbol,level,account,participant,type,shortPosition,netPosition" should be
         | Instance ID      | symbol     | level    | account            | participant   | type       | shortPosition   | netPosition|
         | POU_PA_5.2_Res1  | ACIC       | ACCOUNT  | Home-Collateral    | HSBC          | COLLATERAL | 1000.0          | -1000.0    |
-
-
-
 
     Scenario: Validate All Values in Long position
 
@@ -215,4 +210,53 @@ Feature: Position Management
 
          Then "Position" messages are filtered by "level,participant,account" should be
         | Instance ID      | level   | participant   | shortPosition   | longPosition | shortValue | longValue  | netPosition  | netValue  | avgPrice    | account  |
-        | PU_Long1_Res1    | ACCOUNT | HSBC          | 600             | 1000		  | 30000.0    | 51000.0    | 400          | 210000.0  | 35.0        | HNKG_7   |
+        | PU_Long1_Res1    | ACCOUNT | HSBC          | 600             | 1000		  | 30000.0    | 51000.0    | 400          | 21000.0   | 35.0        | HNKG_7   |
+
+      @final
+       Scenario: TC_POBT_3.1. (+4.1) Validate  Average Price,MTM value and CVM value for positive net Positions
+
+#        Given instance "Home" of entity "Accounts" is copied with following values
+#        | Instance ID | Account Id   | Name       | Participant    |
+#        | HSBC-H1    | HSBC-H1       | HSBC-H1     | HSBC           |
+
+		 Given  "Risk_Factor_Updates" are submitted with following values
+        | Instance ID | symbol      | type   | value |
+        | MD_Req1     | SYM_002     | LTP    | 100.0 |
+		| MD_Req2     | SYM_002     | AI     | 2.0   |
+
+        When "Position_Updates" are submitted with following values
+        | Instance ID | account    | symbl   |  quantity  | price | value   | side | participant |
+        | PU_Long     | HSBC-H1    | SYM_002 | 600        | 50.0  | 30000.0 | LONG |  HSBC       |
+
+         Then response of the request "PU_Long" should be
+        | Instance ID  | status   | subStatus   |
+        | PU_Long_Res1 | POSTED   | PROCESSING  |
+
+        Then "Position" messages are filtered by "level,participant,account" should be
+        | Instance ID     | level   | participant   | longPosition   | longValue | netPosition  | netValue | avgPrice |  mtmValue  | cvm     | account   |
+        | PU_Long_Res2    | ACCOUNT | HSBC          | 600.0          | 30000.0   | 600.0        | 30000.0  | 50.0     |  61200.0   | 31200.0 | HSBC-H1   |
+
+
+         @final
+       Scenario: TC_POBT_3.2. (+4.2) Validate Average Price,MTM value and CVM value for negative net Positions
+
+#        Given instance "Home" of entity "Accounts" is copied with following values
+#        | Instance ID | Account Id   | Name       | Participant    |
+#        | HSBC-H1    | HSBC-H1       | HSBC-H1     | HSBC           |
+
+		 Given  "Risk_Factor_Updates" are submitted with following values
+        | Instance ID | symbol      | type   | value |
+        | MD_Req1     | SYM_002     | LTP    | 100.0 |
+		| MD_Req2     | SYM_002     | AI     | 2.0   |
+
+        When "Position_Updates" are submitted with following values
+        | Instance ID | account    | symbl   |  quantity  | price | value   | side  | participant |
+        | PU_Long     | HSBC-H1    | SYM_002 | 600        | 50.0  | 30000.0 | SHORT |  HSBC       |
+
+         Then response of the request "PU_Long" should be
+        | Instance ID  | status   | subStatus   |
+        | PU_Long_Res1 | POSTED   | PROCESSING  |
+
+        Then "Position" messages are filtered by "level,participant,account" should be
+        | Instance ID     | level   | participant   | shortPosition   | shortValue | netPosition  | netValue  | avgPrice  | mtmValue   | cvm      | account   |
+        | PU_Long_Res2    | ACCOUNT | HSBC          | 600.0           | 30000.0    | -600.0       | -30000.0  | 50.0      | -61200.0   | -31200.0 | HSBC-H1   |

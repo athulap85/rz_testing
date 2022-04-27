@@ -1,0 +1,3067 @@
+{
+    "entities": [
+        {
+            "endpoint": "participants",
+            "classname": "Participant",
+            "displayName": "Participants",
+            "count": 15,
+            "properties": [
+                {
+                    "name": "id",
+                    "displayName": "Id",
+                    "updatable": false,
+                    "required": true,
+                    "type": "Long",
+                    "constants": null,
+                    "dependencies": null,
+                    "dependencyCallback": null,
+                    "subType": null,
+                    "conditional": null,
+                    "multiple": false
+                },
+                {
+                    "name": "participantId",
+                    "displayName": "Participant Id",
+                    "updatable": false,
+                    "required": true,
+                    "type": "String",
+                    "constants": null,
+                    "dependencies": null,
+                    "dependencyCallback": null,
+                    "subType": null,
+                    "conditional": null,
+                    "multiple": false
+                },
+                {
+                    "name": "name",
+                    "displayName": "Name",
+                    "updatable": true,
+                    "required": true,
+                    "type": "String",
+                    "constants": null,
+                    "dependencies": null,
+                    "dependencyCallback": null,
+                    "subType": null,
+                    "conditional": null,
+                    "multiple": false
+                },
+                {
+                    "name": "leicode",
+                    "displayName": "LEI Code",
+                    "updatable": true,
+                    "required": false,
+                    "type": "String",
+                    "constants": null,
+                    "dependencies": null,
+                    "dependencyCallback": null,
+                    "subType": null,
+                    "conditional": null,
+                    "multiple": false
+                },
+                {
+                    "name": "type",
+                    "displayName": "Type",
+                    "updatable": false,
+                    "required": true,
+                    "type": "Enum",
+                    "constants": [
+                        "CLEARING_MEMBER",
+                        "TRADING_MEMBER",
+                        "CLIENT"
+                    ],
+                    "dependencies": null,
+                    "dependencyCallback": null,
+                    "subType": null,
+                    "conditional": null,
+                    "multiple": false
+                },
+                {
+                    "name": "status",
+                    "displayName": "Status",
+                    "updatable": true,
+                    "required": true,
+                    "type": "Enum",
+                    "constants": [
+                        "ACTIVE",
+                        "INACTIVE",
+                        "SUSPENDED"
+                    ],
+                    "dependencies": null,
+                    "dependencyCallback": null,
+                    "subType": null,
+                    "conditional": null,
+                    "multiple": false
+                },
+                {
+                    "name": "grossExposureLimit",
+                    "displayName": "Gross Exposure Limit",
+                    "updatable": true,
+                    "required": false,
+                    "type": "Double",
+                    "constants": null,
+                    "dependencies": null,
+                    "dependencyCallback": null,
+                    "subType": null,
+                    "conditional": null,
+                    "multiple": false
+                },
+                {
+                    "name": "netExposureLimit",
+                    "displayName": "Net Exposure Limit",
+                    "updatable": true,
+                    "required": false,
+                    "type": "Double",
+                    "constants": null,
+                    "dependencies": null,
+                    "dependencyCallback": null,
+                    "subType": null,
+                    "conditional": null,
+                    "multiple": false
+                },
+                {
+                    "name": "marginLimit",
+                    "displayName": "Margin Limit",
+                    "updatable": true,
+                    "required": false,
+                    "type": "Double",
+                    "constants": null,
+                    "dependencies": null,
+                    "dependencyCallback": null,
+                    "subType": null,
+                    "conditional": null,
+                    "multiple": false
+                }
+            ]
+        },
+        {
+            "endpoint": "accounts",
+            "classname": "Account",
+            "displayName": "Accounts",
+            "count": 80,
+            "properties": [
+                {
+                    "name": "id",
+                    "displayName": "Id",
+                    "updatable": false,
+                    "required": true,
+                    "type": "Long",
+                    "constants": null,
+                    "dependencies": null,
+                    "dependencyCallback": null,
+                    "subType": null,
+                    "conditional": null,
+                    "multiple": false
+                },
+                {
+                    "name": "accountId",
+                    "displayName": "Account Id",
+                    "updatable": false,
+                    "required": true,
+                    "type": "String",
+                    "constants": null,
+                    "dependencies": null,
+                    "dependencyCallback": null,
+                    "subType": null,
+                    "conditional": null,
+                    "multiple": false
+                },
+                {
+                    "name": "name",
+                    "displayName": "Name",
+                    "updatable": true,
+                    "required": true,
+                    "type": "String",
+                    "constants": null,
+                    "dependencies": null,
+                    "dependencyCallback": null,
+                    "subType": null,
+                    "conditional": null,
+                    "multiple": false
+                },
+                {
+                    "name": "participant",
+                    "displayName": "Participant",
+                    "updatable": false,
+                    "required": true,
+                    "type": "Participant",
+                    "constants": null,
+                    "dependencies": null,
+                    "dependencyCallback": null,
+                    "subType": null,
+                    "conditional": null,
+                    "multiple": false
+                },
+                {
+                    "name": "type",
+                    "displayName": "Type",
+                    "updatable": false,
+                    "required": true,
+                    "type": "Enum",
+                    "constants": [
+                        "MARGIN",
+                        "COLLATERAL",
+                        "CO_MINGLE"
+                    ],
+                    "dependencies": null,
+                    "dependencyCallback": null,
+                    "subType": null,
+                    "conditional": null,
+                    "multiple": false
+                },
+                {
+                    "name": "collateralAccount",
+                    "displayName": "Collateral Account",
+                    "updatable": true,
+                    "required": false,
+                    "type": "Account",
+                    "constants": null,
+                    "dependencies": [
+                        "participant",
+                        "type"
+                    ],
+                    "dependencyCallback": "/accounts/collateral",
+                    "subType": null,
+                    "conditional": null,
+                    "multiple": false
+                },
+                {
+                    "name": "accountCurrency",
+                    "displayName": "Account Currency",
+                    "updatable": false,
+                    "required": true,
+                    "type": "Currency",
+                    "constants": null,
+                    "dependencies": null,
+                    "dependencyCallback": null,
+                    "subType": null,
+                    "conditional": null,
+                    "multiple": false
+                },
+                {
+                    "name": "category",
+                    "displayName": "Category",
+                    "updatable": true,
+                    "required": true,
+                    "type": "Enum",
+                    "constants": [
+                        "HOUSE",
+                        "CLIENT"
+                    ],
+                    "dependencies": null,
+                    "dependencyCallback": null,
+                    "subType": null,
+                    "conditional": null,
+                    "multiple": false
+                },
+                {
+                    "name": "classification",
+                    "displayName": "Classification",
+                    "updatable": true,
+                    "required": false,
+                    "type": "Enum",
+                    "constants": [
+                        "HOUSE",
+                        "ISA",
+                        "GROSS_OSA",
+                        "NET_OSA"
+                    ],
+                    "dependencies": null,
+                    "dependencyCallback": null,
+                    "subType": null,
+                    "conditional": null,
+                    "multiple": false
+                },
+                {
+                    "name": "informational",
+                    "displayName": "Informational",
+                    "updatable": false,
+                    "required": true,
+                    "type": "Enum",
+                    "constants": [
+                        "YES",
+                        "NO"
+                    ],
+                    "dependencies": null,
+                    "dependencyCallback": null,
+                    "subType": null,
+                    "conditional": null,
+                    "multiple": false
+                },
+                {
+                    "name": "status",
+                    "displayName": "Status",
+                    "updatable": true,
+                    "required": true,
+                    "type": "Enum",
+                    "constants": [
+                        "ACTIVE",
+                        "SUSPENDED",
+                        "INACTIVE",
+                        "PENDING_ACTIVATION",
+                        "DELETED"
+                    ],
+                    "dependencies": null,
+                    "dependencyCallback": null,
+                    "subType": null,
+                    "conditional": null,
+                    "multiple": false
+                },
+                {
+                    "name": "positionMode",
+                    "displayName": "Position Mode",
+                    "updatable": true,
+                    "required": true,
+                    "type": "Enum",
+                    "constants": [
+                        "NET",
+                        "GROSS"
+                    ],
+                    "dependencies": null,
+                    "dependencyCallback": null,
+                    "subType": null,
+                    "conditional": null,
+                    "multiple": false
+                },
+                {
+                    "name": "riskModel",
+                    "displayName": "Risk Model",
+                    "updatable": true,
+                    "required": false,
+                    "type": "RiskModel",
+                    "constants": null,
+                    "dependencies": null,
+                    "dependencyCallback": null,
+                    "subType": null,
+                    "conditional": null,
+                    "multiple": false
+                },
+                {
+                    "name": "grossExposureLimit",
+                    "displayName": "Gross Exposure Limit",
+                    "updatable": true,
+                    "required": false,
+                    "type": "Double",
+                    "constants": null,
+                    "dependencies": null,
+                    "dependencyCallback": null,
+                    "subType": null,
+                    "conditional": null,
+                    "multiple": false
+                },
+                {
+                    "name": "netExposureLimit",
+                    "displayName": "Net Exposure Limit",
+                    "updatable": true,
+                    "required": false,
+                    "type": "Double",
+                    "constants": null,
+                    "dependencies": null,
+                    "dependencyCallback": null,
+                    "subType": null,
+                    "conditional": null,
+                    "multiple": false
+                },
+                {
+                    "name": "marginLimit",
+                    "displayName": "Margin Limit",
+                    "updatable": true,
+                    "required": false,
+                    "type": "Double",
+                    "constants": null,
+                    "dependencies": null,
+                    "dependencyCallback": null,
+                    "subType": null,
+                    "conditional": null,
+                    "multiple": false
+                },
+                {
+                    "name": "positionKey",
+                    "displayName": "Position Key Ids",
+                    "updatable": true,
+                    "required": true,
+                    "type": "PositionKey",
+                    "constants": null,
+                    "dependencies": null,
+                    "dependencyCallback": null,
+                    "subType": null,
+                    "conditional": null,
+                    "multiple": true
+                },
+                {
+                    "name": "collateralPolicy",
+                    "displayName": "Collateral Policy",
+                    "updatable": true,
+                    "required": false,
+                    "type": "CollateralPolicy",
+                    "constants": null,
+                    "dependencies": null,
+                    "dependencyCallback": null,
+                    "subType": null,
+                    "conditional": null,
+                    "multiple": false
+                }
+            ]
+        },
+        {
+            "endpoint": "instruments",
+            "classname": "Instrument",
+            "displayName": "Instruments",
+            "count": 22181,
+            "properties": [
+                {
+                    "name": "id",
+                    "displayName": "Id",
+                    "updatable": false,
+                    "required": true,
+                    "type": "Long",
+                    "constants": null,
+                    "dependencies": null,
+                    "dependencyCallback": null,
+                    "subType": null,
+                    "conditional": null,
+                    "multiple": false
+                },
+                {
+                    "name": "instrumentId",
+                    "displayName": "Instrument ID",
+                    "updatable": false,
+                    "required": true,
+                    "type": "String",
+                    "constants": null,
+                    "dependencies": null,
+                    "dependencyCallback": null,
+                    "subType": null,
+                    "conditional": null,
+                    "multiple": false
+                },
+                {
+                    "name": "symbol",
+                    "displayName": "Symbol",
+                    "updatable": false,
+                    "required": true,
+                    "type": "String",
+                    "constants": null,
+                    "dependencies": null,
+                    "dependencyCallback": null,
+                    "subType": null,
+                    "conditional": null,
+                    "multiple": false
+                },
+                {
+                    "name": "assetClass",
+                    "displayName": "Asset Class",
+                    "updatable": false,
+                    "required": true,
+                    "type": "Enum",
+                    "constants": [
+                        "EQUITY",
+                        "RATES",
+                        "CREDIT",
+                        "FX",
+                        "COMMODITY",
+                        "DIGITAL_ASSET"
+                    ],
+                    "dependencies": null,
+                    "dependencyCallback": null,
+                    "subType": null,
+                    "conditional": null,
+                    "multiple": false
+                },
+                {
+                    "name": "instrumentType",
+                    "displayName": "Instrument Type",
+                    "updatable": false,
+                    "required": true,
+                    "type": "Enum",
+                    "constants": [
+                        "SPOT",
+                        "FUTURE",
+                        "OPTION",
+                        "SWAP",
+                        "FORWARD",
+                        "CFD",
+                        "GC_REPO",
+                        "SPECIAL_REPO",
+                        "FIXED_RATE_BOND",
+                        "FLOATING_RATE_BOND",
+                        "SPOT_RATE",
+                        "FORWARD_RATE",
+                        "ABS",
+                        "CDS",
+                        "CURVES"
+                    ],
+                    "dependencies": null,
+                    "dependencyCallback": null,
+                    "subType": null,
+                    "conditional": [
+                        {
+                            "assetClass": "EQUITY",
+                            "instrumentType": null,
+                            "type": "ENUM",
+                            "constants": [
+                                "SPOT",
+                                "FUTURE",
+                                "FORWARD",
+                                "OPTION",
+                                "SWAP",
+                                "CFD"
+                            ]
+                        },
+                        {
+                            "assetClass": "RATES",
+                            "instrumentType": null,
+                            "type": "ENUM",
+                            "constants": [
+                                "FIXED_RATE_BOND",
+                                "FLOATING_RATE_BOND",
+                                "SPOT_RATE",
+                                "FORWARD_RATE",
+                                "FUTURE",
+                                "OPTION",
+                                "SWAP",
+                                "FORWARD",
+                                "GC_REPO",
+                                "SPECIAL_REPO",
+                                "ABS",
+                                "CURVES"
+                            ]
+                        },
+                        {
+                            "assetClass": "CREDIT",
+                            "instrumentType": null,
+                            "type": "ENUM",
+                            "constants": [
+                                "CDS"
+                            ]
+                        },
+                        {
+                            "assetClass": "FX",
+                            "instrumentType": null,
+                            "type": "ENUM",
+                            "constants": [
+                                "SPOT",
+                                "FUTURE",
+                                "OPTION",
+                                "SWAP",
+                                "FORWARD"
+                            ]
+                        },
+                        {
+                            "assetClass": "COMMODITY",
+                            "instrumentType": null,
+                            "type": "ENUM",
+                            "constants": [
+                                "SPOT",
+                                "FUTURE",
+                                "OPTION",
+                                "FORWARD"
+                            ]
+                        },
+                        {
+                            "assetClass": "DIGITAL_ASSET",
+                            "instrumentType": null,
+                            "type": "ENUM",
+                            "constants": [
+                                "SPOT",
+                                "FUTURE",
+                                "OPTION",
+                                "FORWARD"
+                            ]
+                        }
+                    ],
+                    "multiple": false
+                },
+                {
+                    "name": "instrumentSubType",
+                    "displayName": "Instrument Sub Type",
+                    "updatable": true,
+                    "required": false,
+                    "type": "Enum",
+                    "constants": [
+                        "GOVERNMENT_BONDS",
+                        "CORPORATE_BONDS",
+                        "AGENCY_BONDS",
+                        "VANILLA_IRS",
+                        "AMORTIZING_SWAP",
+                        "BASIS_SWAP"
+                    ],
+                    "dependencies": null,
+                    "dependencyCallback": null,
+                    "subType": null,
+                    "conditional": [
+                        {
+                            "assetClass": "RATES",
+                            "instrumentType": "FIXED_RATE_BOND",
+                            "type": "ENUM",
+                            "constants": [
+                                "GOVERNMENT_BONDS",
+                                "CORPORATE_BONDS",
+                                "AGENCY_BONDS"
+                            ]
+                        },
+                        {
+                            "assetClass": "RATES",
+                            "instrumentType": "FLOATING_RATE_BOND",
+                            "type": "ENUM",
+                            "constants": [
+                                "GOVERNMENT_BONDS",
+                                "CORPORATE_BONDS",
+                                "AGENCY_BONDS"
+                            ]
+                        },
+                        {
+                            "assetClass": "RATES",
+                            "instrumentType": "ABS",
+                            "type": "ENUM",
+                            "constants": [
+                                "GOVERNMENT_BONDS",
+                                "CORPORATE_BONDS",
+                                "AGENCY_BONDS"
+                            ]
+                        },
+                        {
+                            "assetClass": "RATES",
+                            "instrumentType": "SWAP",
+                            "type": "ENUM",
+                            "constants": [
+                                "VANILLA_IRS",
+                                "AMORTIZING_SWAP",
+                                "BASIS_SWAP"
+                            ]
+                        }
+                    ],
+                    "multiple": false
+                },
+                {
+                    "name": "expiryDate",
+                    "displayName": "Expiry Date",
+                    "updatable": true,
+                    "required": false,
+                    "type": "Date",
+                    "constants": null,
+                    "dependencies": null,
+                    "dependencyCallback": null,
+                    "subType": null,
+                    "conditional": null,
+                    "multiple": false
+                },
+                {
+                    "name": "displayID",
+                    "displayName": "Display ID",
+                    "updatable": true,
+                    "required": false,
+                    "type": "Enum",
+                    "constants": [
+                        "SYMBOL",
+                        "ISIN"
+                    ],
+                    "dependencies": null,
+                    "dependencyCallback": null,
+                    "subType": null,
+                    "conditional": null,
+                    "multiple": false
+                },
+                {
+                    "name": "sizeMultiplier",
+                    "displayName": "Size Multiplier",
+                    "updatable": true,
+                    "required": false,
+                    "type": "Integer",
+                    "constants": null,
+                    "dependencies": null,
+                    "dependencyCallback": null,
+                    "subType": null,
+                    "conditional": null,
+                    "multiple": false
+                },
+                {
+                    "name": "priceMultiplier",
+                    "displayName": "Price Multiplier",
+                    "updatable": true,
+                    "required": false,
+                    "type": "Integer",
+                    "constants": null,
+                    "dependencies": null,
+                    "dependencyCallback": null,
+                    "subType": null,
+                    "conditional": null,
+                    "multiple": false
+                },
+                {
+                    "name": "currency",
+                    "displayName": "Currency",
+                    "updatable": true,
+                    "required": false,
+                    "type": "Currency",
+                    "constants": null,
+                    "dependencies": null,
+                    "dependencyCallback": null,
+                    "subType": null,
+                    "conditional": null,
+                    "multiple": false
+                },
+                {
+                    "name": "priceAndQuantityType",
+                    "displayName": "Price And Quantity Type",
+                    "updatable": true,
+                    "required": false,
+                    "type": "Enum",
+                    "constants": [
+                        "PERCENTAGE_AND_FACE_VALUE",
+                        "PER_UNIT"
+                    ],
+                    "dependencies": null,
+                    "dependencyCallback": null,
+                    "subType": null,
+                    "conditional": null,
+                    "multiple": false
+                },
+                {
+                    "name": "riskPortfolio",
+                    "displayName": "Risk Portfolio",
+                    "updatable": true,
+                    "required": false,
+                    "type": "RiskPortfolio",
+                    "constants": null,
+                    "dependencies": null,
+                    "dependencyCallback": null,
+                    "subType": null,
+                    "conditional": null,
+                    "multiple": false
+                },
+                {
+                    "name": "underlying",
+                    "displayName": "Underlying",
+                    "updatable": true,
+                    "required": false,
+                    "type": "Instrument",
+                    "constants": null,
+                    "dependencies": null,
+                    "dependencyCallback": null,
+                    "subType": null,
+                    "conditional": null,
+                    "multiple": false
+                },
+                {
+                    "name": "exerciseStyle",
+                    "displayName": "Exercise Style",
+                    "updatable": true,
+                    "required": false,
+                    "type": "Enum",
+                    "constants": [
+                        "AMERICAN",
+                        "EUROPEAN"
+                    ],
+                    "dependencies": null,
+                    "dependencyCallback": null,
+                    "subType": null,
+                    "conditional": null,
+                    "multiple": false
+                },
+                {
+                    "name": "strikePrice",
+                    "displayName": "Strike Price",
+                    "updatable": true,
+                    "required": false,
+                    "type": "Double",
+                    "constants": null,
+                    "dependencies": null,
+                    "dependencyCallback": null,
+                    "subType": null,
+                    "conditional": null,
+                    "multiple": false
+                },
+                {
+                    "name": "isin",
+                    "displayName": "ISIN",
+                    "updatable": true,
+                    "required": false,
+                    "type": "String",
+                    "constants": null,
+                    "dependencies": null,
+                    "dependencyCallback": null,
+                    "subType": null,
+                    "conditional": null,
+                    "multiple": false
+                },
+                {
+                    "name": "optionType",
+                    "displayName": "Option Type",
+                    "updatable": true,
+                    "required": false,
+                    "type": "Enum",
+                    "constants": [
+                        "CALL_OPTION",
+                        "PUT_OPTION"
+                    ],
+                    "dependencies": null,
+                    "dependencyCallback": null,
+                    "subType": null,
+                    "conditional": null,
+                    "multiple": false
+                },
+                {
+                    "name": "instrumentName",
+                    "displayName": "Instrument Name",
+                    "updatable": true,
+                    "required": false,
+                    "type": "String",
+                    "constants": null,
+                    "dependencies": null,
+                    "dependencyCallback": null,
+                    "subType": null,
+                    "conditional": null,
+                    "multiple": false
+                },
+                {
+                    "name": "vmType",
+                    "displayName": "VM Type",
+                    "updatable": true,
+                    "required": false,
+                    "type": "Enum",
+                    "constants": [
+                        "RVM",
+                        "CVM",
+                        "NONE"
+                    ],
+                    "dependencies": null,
+                    "dependencyCallback": null,
+                    "subType": null,
+                    "conditional": null,
+                    "multiple": false
+                },
+                {
+                    "name": "pvar",
+                    "displayName": "PVaR",
+                    "updatable": true,
+                    "required": false,
+                    "type": "Double",
+                    "constants": null,
+                    "dependencies": null,
+                    "dependencyCallback": null,
+                    "subType": null,
+                    "conditional": null,
+                    "multiple": false
+                },
+                {
+                    "name": "marketSector",
+                    "displayName": "Market Sector",
+                    "updatable": true,
+                    "required": false,
+                    "type": "MarketSector",
+                    "constants": null,
+                    "dependencies": null,
+                    "dependencyCallback": null,
+                    "subType": null,
+                    "conditional": null,
+                    "multiple": false
+                },
+                {
+                    "name": "country",
+                    "displayName": "Country",
+                    "updatable": true,
+                    "required": false,
+                    "type": "Country",
+                    "constants": null,
+                    "dependencies": null,
+                    "dependencyCallback": null,
+                    "subType": null,
+                    "conditional": null,
+                    "multiple": false
+                },
+                {
+                    "name": "fixedIncomeId",
+                    "displayName": "Fixed Income Id",
+                    "updatable": true,
+                    "required": false,
+                    "type": "Long",
+                    "constants": null,
+                    "dependencies": null,
+                    "dependencyCallback": null,
+                    "subType": "fixedIncome",
+                    "conditional": null,
+                    "multiple": false
+                },
+                {
+                    "name": "parValue",
+                    "displayName": "Par Value",
+                    "updatable": true,
+                    "required": false,
+                    "type": "Integer",
+                    "constants": null,
+                    "dependencies": null,
+                    "dependencyCallback": null,
+                    "subType": "fixedIncome",
+                    "conditional": null,
+                    "multiple": false
+                },
+                {
+                    "name": "coupon",
+                    "displayName": "Coupon",
+                    "updatable": true,
+                    "required": false,
+                    "type": "Double",
+                    "constants": null,
+                    "dependencies": null,
+                    "dependencyCallback": null,
+                    "subType": "fixedIncome",
+                    "conditional": null,
+                    "multiple": false
+                },
+                {
+                    "name": "couponFrequency",
+                    "displayName": "Coupon Frequency",
+                    "updatable": true,
+                    "required": false,
+                    "type": "Enum",
+                    "constants": [
+                        "MONTHLY",
+                        "QUARTERLY",
+                        "SEMI_ANNUAL",
+                        "ANNUAL"
+                    ],
+                    "dependencies": null,
+                    "dependencyCallback": null,
+                    "subType": "fixedIncome",
+                    "conditional": null,
+                    "multiple": false
+                },
+                {
+                    "name": "issuer",
+                    "displayName": "Issuer",
+                    "updatable": true,
+                    "required": false,
+                    "type": "String",
+                    "constants": null,
+                    "dependencies": null,
+                    "dependencyCallback": null,
+                    "subType": "fixedIncome",
+                    "conditional": null,
+                    "multiple": false
+                },
+                {
+                    "name": "rating",
+                    "displayName": "Rating",
+                    "updatable": true,
+                    "required": false,
+                    "type": "Enum",
+                    "constants": [
+                        "AAA",
+                        "AA_PLUS",
+                        "AA",
+                        "AA_MINUS",
+                        "A_PLUS",
+                        "A",
+                        "A_MINUS",
+                        "BBB_PLUS",
+                        "BBB",
+                        "BBB_MINUS",
+                        "BB_PLUS",
+                        "BB",
+                        "B",
+                        "CCC",
+                        "CC",
+                        "C",
+                        "D"
+                    ],
+                    "dependencies": null,
+                    "dependencyCallback": null,
+                    "subType": "fixedIncome",
+                    "conditional": null,
+                    "multiple": false
+                },
+                {
+                    "name": "cusip",
+                    "displayName": "CUSIP",
+                    "updatable": true,
+                    "required": false,
+                    "type": "String",
+                    "constants": null,
+                    "dependencies": null,
+                    "dependencyCallback": null,
+                    "subType": "fixedIncome",
+                    "conditional": null,
+                    "multiple": false
+                },
+                {
+                    "name": "spread",
+                    "displayName": "Spread",
+                    "updatable": true,
+                    "required": false,
+                    "type": "Double",
+                    "constants": null,
+                    "dependencies": null,
+                    "dependencyCallback": null,
+                    "subType": "fixedIncome",
+                    "conditional": null,
+                    "multiple": false
+                },
+                {
+                    "name": "issueDate",
+                    "displayName": "Issue Date",
+                    "updatable": true,
+                    "required": false,
+                    "type": "Date",
+                    "constants": null,
+                    "dependencies": null,
+                    "dependencyCallback": null,
+                    "subType": "fixedIncome",
+                    "conditional": null,
+                    "multiple": false
+                },
+                {
+                    "name": "firstCouponDate",
+                    "displayName": "First Coupon Date",
+                    "updatable": true,
+                    "required": false,
+                    "type": "Date",
+                    "constants": null,
+                    "dependencies": null,
+                    "dependencyCallback": null,
+                    "subType": "fixedIncome",
+                    "conditional": null,
+                    "multiple": false
+                },
+                {
+                    "name": "nextToLastDate",
+                    "displayName": "Next To Last Date",
+                    "updatable": true,
+                    "required": false,
+                    "type": "Date",
+                    "constants": null,
+                    "dependencies": null,
+                    "dependencyCallback": null,
+                    "subType": "fixedIncome",
+                    "conditional": null,
+                    "multiple": false
+                },
+                {
+                    "name": "businessDayConvention",
+                    "displayName": "Business Day Convention",
+                    "updatable": true,
+                    "required": false,
+                    "type": "Enum",
+                    "constants": [
+                        "DAY_FOLLOWING",
+                        "DAY_PRECEDING",
+                        "UNADJUSTED",
+                        "MODIFIED_FOLLOWING",
+                        "MODIFIED_PRECEDING"
+                    ],
+                    "dependencies": null,
+                    "dependencyCallback": null,
+                    "subType": "fixedIncome",
+                    "conditional": null,
+                    "multiple": false
+                },
+                {
+                    "name": "dayCountConvention",
+                    "displayName": "Day Count Convention",
+                    "updatable": true,
+                    "required": false,
+                    "type": "Enum",
+                    "constants": [
+                        "THIRTY_DIVIDED_THREE_HUNDRED_AND_SIXTY",
+                        "THIRTY_E_DIVIDED_THREE_HUNDRED_AND_SIXTY_ISDA",
+                        "ZERO_E_DIVIDED_THREE_HUNDRED_AND_SIXTY",
+                        "THIRTY_A_DIVIDED_THREE_HUNDRED_AND_SIXTY",
+                        "ACTUAL_DIVIDED_ACTUAL_ICMA",
+                        "ACTUAL_DIVIDED_ACTUAL_ISDA",
+                        "ACTUAL_DIVIDED_THREE_HUNDRED_AND_SIXTY_FIVE_FIXED",
+                        "ACTUAL_DIVIDED_THREE_HUNDRED_AND_SIXTY",
+                        "ACTUAL_DIVIDED_ACTUAL_AFB",
+                        "ACTUAL_DIVIDED_THREE_HUNDRED_AND_SIXTY_FOUR",
+                        "ACTUAL_DIVIDED_THREE_HUNDRED_AND_SIXTY_FIVE_L",
+                        "BUS_DIVIDED_TWO_HUNDRED_AND_FIFTY_TWO"
+                    ],
+                    "dependencies": null,
+                    "dependencyCallback": null,
+                    "subType": "fixedIncome",
+                    "conditional": null,
+                    "multiple": false
+                },
+                {
+                    "name": "compoundingType",
+                    "displayName": "Compounding Type",
+                    "updatable": true,
+                    "required": false,
+                    "type": "Enum",
+                    "constants": [
+                        "COMPOUNDED_THEN_SINGLE",
+                        "COMPOUNDED",
+                        "SINGLE",
+                        "CONTINUOUS"
+                    ],
+                    "dependencies": null,
+                    "dependencyCallback": null,
+                    "subType": "fixedIncome",
+                    "conditional": null,
+                    "multiple": false
+                },
+                {
+                    "name": "compoundingFrequency",
+                    "displayName": "Compounding Frequency",
+                    "updatable": true,
+                    "required": false,
+                    "type": "Enum",
+                    "constants": [
+                        "ONE_TIME",
+                        "ANNUAL",
+                        "SEMI_ANNUAL",
+                        "QUARTERLY",
+                        "BI_MONTHLY",
+                        "WEEKLY",
+                        "MONTHLY"
+                    ],
+                    "dependencies": null,
+                    "dependencyCallback": null,
+                    "subType": "fixedIncome",
+                    "conditional": null,
+                    "multiple": false
+                },
+                {
+                    "name": "interpolationMethod",
+                    "displayName": "Interpolation Method",
+                    "updatable": true,
+                    "required": false,
+                    "type": "Enum",
+                    "constants": [
+                        "LINEAR"
+                    ],
+                    "dependencies": null,
+                    "dependencyCallback": null,
+                    "subType": "fixedIncome",
+                    "conditional": null,
+                    "multiple": false
+                },
+                {
+                    "name": "tenor",
+                    "displayName": "Tenor",
+                    "updatable": true,
+                    "required": false,
+                    "type": "String",
+                    "constants": null,
+                    "dependencies": null,
+                    "dependencyCallback": null,
+                    "subType": "fixedIncome",
+                    "conditional": null,
+                    "multiple": false
+                },
+                {
+                    "name": "lastFixingRate",
+                    "displayName": "Last Fixing Rate",
+                    "updatable": true,
+                    "required": false,
+                    "type": "Double",
+                    "constants": null,
+                    "dependencies": null,
+                    "dependencyCallback": null,
+                    "subType": "fixedIncome",
+                    "conditional": null,
+                    "multiple": false
+                },
+                {
+                    "name": "fixingOffset",
+                    "displayName": "Fixing Offset",
+                    "updatable": true,
+                    "required": false,
+                    "type": "Integer",
+                    "constants": null,
+                    "dependencies": null,
+                    "dependencyCallback": null,
+                    "subType": "fixedIncome",
+                    "conditional": null,
+                    "multiple": false
+                },
+                {
+                    "name": "discountCurve",
+                    "displayName": "Discount Curve",
+                    "updatable": true,
+                    "required": false,
+                    "type": "Instrument",
+                    "constants": null,
+                    "dependencies": null,
+                    "dependencyCallback": null,
+                    "subType": "fixedIncome",
+                    "conditional": null,
+                    "multiple": false
+                },
+                {
+                    "name": "curveIdentifier",
+                    "displayName": "Curve Identifier",
+                    "updatable": false,
+                    "required": false,
+                    "type": "Instrument",
+                    "constants": null,
+                    "dependencies": null,
+                    "dependencyCallback": null,
+                    "subType": "fixedIncome",
+                    "conditional": null,
+                    "multiple": false
+                },
+                {
+                    "name": "allowedCollateral",
+                    "displayName": "Allowed Collateral",
+                    "updatable": true,
+                    "required": false,
+                    "type": "Instrument",
+                    "constants": null,
+                    "dependencies": null,
+                    "dependencyCallback": null,
+                    "subType": null,
+                    "conditional": null,
+                    "multiple": true
+                }
+            ]
+        },
+        {
+            "endpoint": "risk-models",
+            "classname": "RiskModel",
+            "displayName": "Risk Models",
+            "count": 14,
+            "properties": [
+                {
+                    "name": "id",
+                    "displayName": "Id",
+                    "updatable": false,
+                    "required": true,
+                    "type": "Long",
+                    "constants": null,
+                    "dependencies": null,
+                    "dependencyCallback": null,
+                    "subType": null,
+                    "conditional": null,
+                    "multiple": false
+                },
+                {
+                    "name": "riskModelId",
+                    "displayName": "Risk Model Id",
+                    "updatable": false,
+                    "required": true,
+                    "type": "String",
+                    "constants": null,
+                    "dependencies": null,
+                    "dependencyCallback": null,
+                    "subType": null,
+                    "conditional": null,
+                    "multiple": false
+                },
+                {
+                    "name": "calculateIM",
+                    "displayName": "Calculate IM",
+                    "updatable": true,
+                    "required": true,
+                    "type": "boolean",
+                    "constants": null,
+                    "dependencies": null,
+                    "dependencyCallback": null,
+                    "subType": null,
+                    "conditional": null,
+                    "multiple": false
+                },
+                {
+                    "name": "imMethodology",
+                    "displayName": "Im Methodology",
+                    "updatable": true,
+                    "required": true,
+                    "type": "IMMethodology",
+                    "constants": null,
+                    "dependencies": null,
+                    "dependencyCallback": null,
+                    "subType": null,
+                    "conditional": null,
+                    "multiple": false
+                },
+                {
+                    "name": "stressScenario",
+                    "displayName": "Stress Testing  Methodology",
+                    "updatable": true,
+                    "required": true,
+                    "type": "StressScenario",
+                    "constants": null,
+                    "dependencies": null,
+                    "dependencyCallback": null,
+                    "subType": null,
+                    "conditional": null,
+                    "multiple": true
+                }
+            ]
+        },
+        {
+            "endpoint": "im-methodologies",
+            "classname": "IMMethodology",
+            "displayName": "Im Methodologies",
+            "count": 4,
+            "properties": [
+                {
+                    "name": "id",
+                    "displayName": "Id",
+                    "updatable": false,
+                    "required": true,
+                    "type": "Long",
+                    "constants": null,
+                    "dependencies": null,
+                    "dependencyCallback": null,
+                    "subType": null,
+                    "conditional": null,
+                    "multiple": false
+                },
+                {
+                    "name": "imMethodologyId",
+                    "displayName": "Im Methodology Id",
+                    "updatable": false,
+                    "required": true,
+                    "type": "String",
+                    "constants": null,
+                    "dependencies": null,
+                    "dependencyCallback": null,
+                    "subType": null,
+                    "conditional": null,
+                    "multiple": false
+                },
+                {
+                    "name": "primaryRiskMeasure",
+                    "displayName": "Primary Risk Measure",
+                    "updatable": true,
+                    "required": true,
+                    "type": "Enum",
+                    "constants": [
+                        "PARAMETRIC_VAR",
+                        "FHVAR"
+                    ],
+                    "dependencies": null,
+                    "dependencyCallback": null,
+                    "subType": null,
+                    "conditional": null,
+                    "multiple": false
+                },
+                {
+                    "name": "lookbackPeriod",
+                    "displayName": "Lookback Period",
+                    "updatable": true,
+                    "required": true,
+                    "type": "Integer",
+                    "constants": null,
+                    "dependencies": null,
+                    "dependencyCallback": null,
+                    "subType": null,
+                    "conditional": null,
+                    "multiple": false
+                },
+                {
+                    "name": "returnType",
+                    "displayName": "Return Type",
+                    "updatable": true,
+                    "required": true,
+                    "type": "Enum",
+                    "constants": [
+                        "RELATIVE",
+                        "ABSOLUTE"
+                    ],
+                    "dependencies": null,
+                    "dependencyCallback": null,
+                    "subType": null,
+                    "conditional": null,
+                    "multiple": false
+                },
+                {
+                    "name": "riskPortfolioAggregationRule",
+                    "displayName": "Risk Portfolio Aggregation Rule",
+                    "updatable": true,
+                    "required": false,
+                    "type": "Enum",
+                    "constants": [
+                        "AGGREGATE"
+                    ],
+                    "dependencies": null,
+                    "dependencyCallback": null,
+                    "subType": null,
+                    "conditional": null,
+                    "multiple": false
+                },
+                {
+                    "name": "volatilityCalcMethod",
+                    "displayName": "Volatility Calc Method",
+                    "updatable": true,
+                    "required": false,
+                    "type": "Enum",
+                    "constants": [
+                        "EWMA"
+                    ],
+                    "dependencies": null,
+                    "dependencyCallback": null,
+                    "subType": null,
+                    "conditional": null,
+                    "multiple": false
+                },
+                {
+                    "name": "decayFactor",
+                    "displayName": "Decay Factor",
+                    "updatable": true,
+                    "required": false,
+                    "type": "Double",
+                    "constants": null,
+                    "dependencies": null,
+                    "dependencyCallback": null,
+                    "subType": null,
+                    "conditional": null,
+                    "multiple": false
+                },
+                {
+                    "name": "zmultiplier",
+                    "displayName": "Zmultiplier",
+                    "updatable": true,
+                    "required": false,
+                    "type": "Double",
+                    "constants": null,
+                    "dependencies": null,
+                    "dependencyCallback": null,
+                    "subType": null,
+                    "conditional": null,
+                    "multiple": false
+                },
+                {
+                    "name": "volatilityFloor",
+                    "displayName": "Volatility Floor",
+                    "updatable": true,
+                    "required": false,
+                    "type": "Double",
+                    "constants": null,
+                    "dependencies": null,
+                    "dependencyCallback": null,
+                    "subType": null,
+                    "conditional": null,
+                    "multiple": false
+                },
+                {
+                    "name": "volatilitySeedPeriod",
+                    "displayName": "Volatility Seed Period",
+                    "updatable": true,
+                    "required": false,
+                    "type": "Integer",
+                    "constants": null,
+                    "dependencies": null,
+                    "dependencyCallback": null,
+                    "subType": null,
+                    "conditional": null,
+                    "multiple": false
+                },
+                {
+                    "name": "adjustmentFactor",
+                    "displayName": "Adjustment Factor",
+                    "updatable": true,
+                    "required": false,
+                    "type": "Double",
+                    "constants": null,
+                    "dependencies": null,
+                    "dependencyCallback": null,
+                    "subType": null,
+                    "conditional": null,
+                    "multiple": false
+                },
+                {
+                    "name": "numberOfTailLosses",
+                    "displayName": "Number Of Tail Losses",
+                    "updatable": true,
+                    "required": false,
+                    "type": "Integer",
+                    "constants": null,
+                    "dependencies": null,
+                    "dependencyCallback": null,
+                    "subType": null,
+                    "conditional": null,
+                    "multiple": false
+                },
+                {
+                    "name": "scalingWeight",
+                    "displayName": "Scaling Weight",
+                    "updatable": true,
+                    "required": false,
+                    "type": "Double",
+                    "constants": null,
+                    "dependencies": null,
+                    "dependencyCallback": null,
+                    "subType": null,
+                    "conditional": null,
+                    "multiple": false
+                },
+                {
+                    "name": "tail",
+                    "displayName": "Tail",
+                    "updatable": true,
+                    "required": false,
+                    "type": "Enum",
+                    "constants": [
+                        "SINGLE",
+                        "TWO"
+                    ],
+                    "dependencies": null,
+                    "dependencyCallback": null,
+                    "subType": null,
+                    "conditional": null,
+                    "multiple": false
+                }
+            ]
+        },
+        {
+            "endpoint": "currencies",
+            "classname": "Currency",
+            "displayName": "Currencies",
+            "count": 56,
+            "properties": [
+                {
+                    "name": "id",
+                    "displayName": "Id",
+                    "updatable": false,
+                    "required": true,
+                    "type": "Long",
+                    "constants": null,
+                    "dependencies": null,
+                    "dependencyCallback": null,
+                    "subType": null,
+                    "conditional": null,
+                    "multiple": false
+                },
+                {
+                    "name": "currencyId",
+                    "displayName": "Currency Id",
+                    "updatable": false,
+                    "required": true,
+                    "type": "String",
+                    "constants": null,
+                    "dependencies": null,
+                    "dependencyCallback": null,
+                    "subType": null,
+                    "conditional": null,
+                    "multiple": false
+                },
+                {
+                    "name": "description",
+                    "displayName": "Description",
+                    "updatable": true,
+                    "required": false,
+                    "type": "String",
+                    "constants": null,
+                    "dependencies": null,
+                    "dependencyCallback": null,
+                    "subType": null,
+                    "conditional": null,
+                    "multiple": false
+                },
+                {
+                    "name": "currencyPrecision",
+                    "displayName": "Currency Precision",
+                    "updatable": true,
+                    "required": true,
+                    "type": "int",
+                    "constants": null,
+                    "dependencies": null,
+                    "dependencyCallback": null,
+                    "subType": null,
+                    "conditional": null,
+                    "multiple": false
+                },
+                {
+                    "name": "currencySymbol",
+                    "displayName": "Currency Symbol",
+                    "updatable": true,
+                    "required": false,
+                    "type": "String",
+                    "constants": null,
+                    "dependencies": null,
+                    "dependencyCallback": null,
+                    "subType": null,
+                    "conditional": null,
+                    "multiple": false
+                }
+            ]
+        },
+        {
+            "endpoint": "risk-portfolios",
+            "classname": "RiskPortfolio",
+            "displayName": "Risk Portfolios",
+            "count": 11,
+            "properties": [
+                {
+                    "name": "id",
+                    "displayName": "Id",
+                    "updatable": false,
+                    "required": true,
+                    "type": "Long",
+                    "constants": null,
+                    "dependencies": null,
+                    "dependencyCallback": null,
+                    "subType": null,
+                    "conditional": null,
+                    "multiple": false
+                },
+                {
+                    "name": "riskPortfolioId",
+                    "displayName": "Risk Portfolio Id",
+                    "updatable": false,
+                    "required": true,
+                    "type": "String",
+                    "constants": null,
+                    "dependencies": null,
+                    "dependencyCallback": null,
+                    "subType": null,
+                    "conditional": null,
+                    "multiple": false
+                },
+                {
+                    "name": "riskMeasure",
+                    "displayName": "Risk Measure",
+                    "updatable": true,
+                    "required": true,
+                    "type": "Enum",
+                    "constants": [
+                        "PRIMARY",
+                        "PROXY",
+                        "FLAT"
+                    ],
+                    "dependencies": null,
+                    "dependencyCallback": null,
+                    "subType": null,
+                    "conditional": null,
+                    "multiple": false
+                },
+                {
+                    "name": "holdingPeriod",
+                    "displayName": "Holding Period",
+                    "updatable": true,
+                    "required": true,
+                    "type": "int",
+                    "constants": null,
+                    "dependencies": null,
+                    "dependencyCallback": null,
+                    "subType": null,
+                    "conditional": null,
+                    "multiple": false
+                },
+                {
+                    "name": "holdingPeriodMultiplier",
+                    "displayName": "Holding Period Multiplier",
+                    "updatable": true,
+                    "required": false,
+                    "type": "Double",
+                    "constants": null,
+                    "dependencies": null,
+                    "dependencyCallback": null,
+                    "subType": null,
+                    "conditional": null,
+                    "multiple": false
+                },
+                {
+                    "name": "riskMeasureMultiplier",
+                    "displayName": "Risk Measure Multiplier",
+                    "updatable": true,
+                    "required": false,
+                    "type": "Double",
+                    "constants": null,
+                    "dependencies": null,
+                    "dependencyCallback": null,
+                    "subType": null,
+                    "conditional": null,
+                    "multiple": false
+                },
+                {
+                    "name": "proxy",
+                    "displayName": "Proxy",
+                    "updatable": true,
+                    "required": false,
+                    "type": "Instrument",
+                    "constants": null,
+                    "dependencies": null,
+                    "dependencyCallback": null,
+                    "subType": null,
+                    "conditional": null,
+                    "multiple": false
+                },
+                {
+                    "name": "flatRate",
+                    "displayName": "Flat Rate",
+                    "updatable": true,
+                    "required": false,
+                    "type": "Double",
+                    "constants": null,
+                    "dependencies": null,
+                    "dependencyCallback": null,
+                    "subType": null,
+                    "conditional": null,
+                    "multiple": false
+                },
+                {
+                    "name": "hedgeRiskFactor",
+                    "displayName": "Hedge Risk Factor",
+                    "updatable": true,
+                    "required": false,
+                    "type": "Enum",
+                    "constants": [
+                        "DV01",
+                        "MODIFIED_DURATION",
+                        "EFFECTIVE_DURATION",
+                        "MACAULAY_DURATION"
+                    ],
+                    "dependencies": null,
+                    "dependencyCallback": null,
+                    "subType": null,
+                    "conditional": null,
+                    "multiple": false
+                },
+                {
+                    "name": "rfValue",
+                    "displayName": "Rf Value",
+                    "updatable": true,
+                    "required": false,
+                    "type": "Double",
+                    "constants": null,
+                    "dependencies": null,
+                    "dependencyCallback": null,
+                    "subType": null,
+                    "conditional": null,
+                    "multiple": false
+                },
+                {
+                    "name": "hedgeInstrument",
+                    "displayName": "Hedge Instrument",
+                    "updatable": true,
+                    "required": false,
+                    "type": "Instrument",
+                    "constants": null,
+                    "dependencies": null,
+                    "dependencyCallback": null,
+                    "subType": null,
+                    "conditional": null,
+                    "multiple": false
+                }
+            ]
+        },
+        {
+            "endpoint": "time-zones",
+            "classname": "TimeZone",
+            "displayName": "Time Zones",
+            "count": 3,
+            "properties": [
+                {
+                    "name": "id",
+                    "displayName": "Id",
+                    "updatable": false,
+                    "required": true,
+                    "type": "Long",
+                    "constants": null,
+                    "dependencies": null,
+                    "dependencyCallback": null,
+                    "subType": null,
+                    "conditional": null,
+                    "multiple": false
+                },
+                {
+                    "name": "timeZoneId",
+                    "displayName": "Time Zone Id",
+                    "updatable": false,
+                    "required": true,
+                    "type": "String",
+                    "constants": null,
+                    "dependencies": null,
+                    "dependencyCallback": null,
+                    "subType": null,
+                    "conditional": null,
+                    "multiple": false
+                },
+                {
+                    "name": "offset",
+                    "displayName": "Offset",
+                    "updatable": true,
+                    "required": true,
+                    "type": "Double",
+                    "constants": null,
+                    "dependencies": null,
+                    "dependencyCallback": null,
+                    "subType": null,
+                    "conditional": null,
+                    "multiple": false
+                },
+                {
+                    "name": "name",
+                    "displayName": "Name",
+                    "updatable": true,
+                    "required": true,
+                    "type": "String",
+                    "constants": null,
+                    "dependencies": null,
+                    "dependencyCallback": null,
+                    "subType": null,
+                    "conditional": null,
+                    "multiple": false
+                }
+            ]
+        },
+        {
+            "endpoint": "countries",
+            "classname": "Country",
+            "displayName": "Countries",
+            "count": 4,
+            "properties": [
+                {
+                    "name": "id",
+                    "displayName": "Id",
+                    "updatable": false,
+                    "required": true,
+                    "type": "Long",
+                    "constants": null,
+                    "dependencies": null,
+                    "dependencyCallback": null,
+                    "subType": null,
+                    "conditional": null,
+                    "multiple": false
+                },
+                {
+                    "name": "countryId",
+                    "displayName": "Country Id",
+                    "updatable": false,
+                    "required": true,
+                    "type": "String",
+                    "constants": null,
+                    "dependencies": null,
+                    "dependencyCallback": null,
+                    "subType": null,
+                    "conditional": null,
+                    "multiple": false
+                },
+                {
+                    "name": "countryIsoCode",
+                    "displayName": "Country Iso Code",
+                    "updatable": false,
+                    "required": true,
+                    "type": "String",
+                    "constants": null,
+                    "dependencies": null,
+                    "dependencyCallback": null,
+                    "subType": null,
+                    "conditional": null,
+                    "multiple": false
+                },
+                {
+                    "name": "countryName",
+                    "displayName": "Country Name",
+                    "updatable": true,
+                    "required": false,
+                    "type": "String",
+                    "constants": null,
+                    "dependencies": null,
+                    "dependencyCallback": null,
+                    "subType": null,
+                    "conditional": null,
+                    "multiple": false
+                }
+            ]
+        },
+        {
+            "endpoint": "markets",
+            "classname": "Market",
+            "displayName": "Markets",
+            "count": 11,
+            "properties": [
+                {
+                    "name": "id",
+                    "displayName": "Id",
+                    "updatable": false,
+                    "required": true,
+                    "type": "Long",
+                    "constants": null,
+                    "dependencies": null,
+                    "dependencyCallback": null,
+                    "subType": null,
+                    "conditional": null,
+                    "multiple": false
+                },
+                {
+                    "name": "marketId",
+                    "displayName": "Market Id",
+                    "updatable": false,
+                    "required": true,
+                    "type": "String",
+                    "constants": null,
+                    "dependencies": null,
+                    "dependencyCallback": null,
+                    "subType": null,
+                    "conditional": null,
+                    "multiple": false
+                },
+                {
+                    "name": "description",
+                    "displayName": "Description",
+                    "updatable": true,
+                    "required": false,
+                    "type": "String",
+                    "constants": null,
+                    "dependencies": null,
+                    "dependencyCallback": null,
+                    "subType": null,
+                    "conditional": null,
+                    "multiple": false
+                }
+            ]
+        },
+        {
+            "endpoint": "market-sectors",
+            "classname": "MarketSector",
+            "displayName": "Market Sectors",
+            "count": 4,
+            "properties": [
+                {
+                    "name": "id",
+                    "displayName": "Id",
+                    "updatable": false,
+                    "required": true,
+                    "type": "Long",
+                    "constants": null,
+                    "dependencies": null,
+                    "dependencyCallback": null,
+                    "subType": null,
+                    "conditional": null,
+                    "multiple": false
+                },
+                {
+                    "name": "marketSectorId",
+                    "displayName": "Market Sector Id",
+                    "updatable": false,
+                    "required": true,
+                    "type": "String",
+                    "constants": null,
+                    "dependencies": null,
+                    "dependencyCallback": null,
+                    "subType": null,
+                    "conditional": null,
+                    "multiple": false
+                },
+                {
+                    "name": "description",
+                    "displayName": "Description",
+                    "updatable": true,
+                    "required": false,
+                    "type": "String",
+                    "constants": null,
+                    "dependencies": null,
+                    "dependencyCallback": null,
+                    "subType": null,
+                    "conditional": null,
+                    "multiple": false
+                },
+                {
+                    "name": "country",
+                    "displayName": "Country",
+                    "updatable": true,
+                    "required": false,
+                    "type": "Country",
+                    "constants": null,
+                    "dependencies": null,
+                    "dependencyCallback": null,
+                    "subType": null,
+                    "conditional": null,
+                    "multiple": false
+                }
+            ]
+        },
+        {
+            "endpoint": "position-keys",
+            "classname": "PositionKey",
+            "displayName": "Position Keys",
+            "count": 17,
+            "properties": [
+                {
+                    "name": "id",
+                    "displayName": "Id",
+                    "updatable": false,
+                    "required": true,
+                    "type": "Long",
+                    "constants": null,
+                    "dependencies": null,
+                    "dependencyCallback": null,
+                    "subType": null,
+                    "conditional": null,
+                    "multiple": false
+                },
+                {
+                    "name": "positionKeyId",
+                    "displayName": "Position Key Id",
+                    "updatable": false,
+                    "required": true,
+                    "type": "String",
+                    "constants": null,
+                    "dependencies": null,
+                    "dependencyCallback": null,
+                    "subType": null,
+                    "conditional": null,
+                    "multiple": false
+                },
+                {
+                    "name": "priority",
+                    "displayName": "Priority",
+                    "updatable": true,
+                    "required": true,
+                    "type": "int",
+                    "constants": null,
+                    "dependencies": null,
+                    "dependencyCallback": null,
+                    "subType": null,
+                    "conditional": null,
+                    "multiple": false
+                },
+                {
+                    "name": "assetClass",
+                    "displayName": "Asset Class",
+                    "updatable": true,
+                    "required": true,
+                    "type": "Enum",
+                    "constants": [
+                        "EQUITY",
+                        "RATES",
+                        "CREDIT",
+                        "FX",
+                        "COMMODITY",
+                        "DIGITAL_ASSET"
+                    ],
+                    "dependencies": null,
+                    "dependencyCallback": null,
+                    "subType": null,
+                    "conditional": null,
+                    "multiple": false
+                },
+                {
+                    "name": "instrumentType",
+                    "displayName": "Instrument Type",
+                    "updatable": true,
+                    "required": false,
+                    "type": "Enum",
+                    "constants": [
+                        "SPOT",
+                        "FUTURE",
+                        "OPTION",
+                        "SWAP",
+                        "FORWARD",
+                        "CFD",
+                        "GC_REPO",
+                        "SPECIAL_REPO",
+                        "FIXED_RATE_BOND",
+                        "FLOATING_RATE_BOND",
+                        "SPOT_RATE",
+                        "FORWARD_RATE",
+                        "ABS",
+                        "CDS",
+                        "CURVES"
+                    ],
+                    "dependencies": null,
+                    "dependencyCallback": null,
+                    "subType": null,
+                    "conditional": null,
+                    "multiple": false
+                },
+                {
+                    "name": "tradeType",
+                    "displayName": "Trade Type",
+                    "updatable": true,
+                    "required": false,
+                    "type": "Enum",
+                    "constants": [
+                        "STANDARD",
+                        "GC_REPO",
+                        "SPECIAL_REPO",
+                        "CRYPTO_LOAN",
+                        "VANILLA_IRS",
+                        "CROSS_MARGIN",
+                        "ISOLATED_MARGIN"
+                    ],
+                    "dependencies": null,
+                    "dependencyCallback": null,
+                    "subType": null,
+                    "conditional": null,
+                    "multiple": false
+                },
+                {
+                    "name": "currency",
+                    "displayName": "Currency",
+                    "updatable": true,
+                    "required": false,
+                    "type": "Enum",
+                    "constants": [
+                        "YES",
+                        "NO"
+                    ],
+                    "dependencies": null,
+                    "dependencyCallback": null,
+                    "subType": null,
+                    "conditional": null,
+                    "multiple": false
+                },
+                {
+                    "name": "symbol",
+                    "displayName": "Symbol",
+                    "updatable": true,
+                    "required": true,
+                    "type": "Enum",
+                    "constants": [
+                        "YES",
+                        "NO"
+                    ],
+                    "dependencies": null,
+                    "dependencyCallback": null,
+                    "subType": null,
+                    "conditional": null,
+                    "multiple": false
+                },
+                {
+                    "name": "market",
+                    "displayName": "Market",
+                    "updatable": true,
+                    "required": true,
+                    "type": "Enum",
+                    "constants": [
+                        "YES",
+                        "NO"
+                    ],
+                    "dependencies": null,
+                    "dependencyCallback": null,
+                    "subType": null,
+                    "conditional": null,
+                    "multiple": false
+                },
+                {
+                    "name": "tradeDate",
+                    "displayName": "Trade Date",
+                    "updatable": true,
+                    "required": true,
+                    "type": "Enum",
+                    "constants": [
+                        "YES",
+                        "NO"
+                    ],
+                    "dependencies": null,
+                    "dependencyCallback": null,
+                    "subType": null,
+                    "conditional": null,
+                    "multiple": false
+                },
+                {
+                    "name": "settlementDate",
+                    "displayName": "Settlement Date",
+                    "updatable": true,
+                    "required": true,
+                    "type": "Enum",
+                    "constants": [
+                        "YES",
+                        "NO"
+                    ],
+                    "dependencies": null,
+                    "dependencyCallback": null,
+                    "subType": null,
+                    "conditional": null,
+                    "multiple": false
+                },
+                {
+                    "name": "expiryDate",
+                    "displayName": "Expiry Date",
+                    "updatable": true,
+                    "required": true,
+                    "type": "Enum",
+                    "constants": [
+                        "YES",
+                        "NO"
+                    ],
+                    "dependencies": null,
+                    "dependencyCallback": null,
+                    "subType": null,
+                    "conditional": null,
+                    "multiple": false
+                },
+                {
+                    "name": "startDate",
+                    "displayName": "Start Date",
+                    "updatable": true,
+                    "required": true,
+                    "type": "Enum",
+                    "constants": [
+                        "YES",
+                        "NO"
+                    ],
+                    "dependencies": null,
+                    "dependencyCallback": null,
+                    "subType": null,
+                    "conditional": null,
+                    "multiple": false
+                },
+                {
+                    "name": "endDate",
+                    "displayName": "End Date",
+                    "updatable": true,
+                    "required": true,
+                    "type": "Enum",
+                    "constants": [
+                        "YES",
+                        "NO"
+                    ],
+                    "dependencies": null,
+                    "dependencyCallback": null,
+                    "subType": null,
+                    "conditional": null,
+                    "multiple": false
+                },
+                {
+                    "name": "reserved",
+                    "displayName": "Reserved",
+                    "updatable": true,
+                    "required": true,
+                    "type": "Enum",
+                    "constants": [
+                        "YES",
+                        "NO"
+                    ],
+                    "dependencies": null,
+                    "dependencyCallback": null,
+                    "subType": null,
+                    "conditional": null,
+                    "multiple": false
+                },
+                {
+                    "name": "createdTimestamp",
+                    "displayName": "Created Timestamp",
+                    "updatable": true,
+                    "required": false,
+                    "type": "Date",
+                    "constants": null,
+                    "dependencies": null,
+                    "dependencyCallback": null,
+                    "subType": null,
+                    "conditional": null,
+                    "multiple": false
+                },
+                {
+                    "name": "createdBy",
+                    "displayName": "Created By",
+                    "updatable": true,
+                    "required": false,
+                    "type": "String",
+                    "constants": null,
+                    "dependencies": null,
+                    "dependencyCallback": null,
+                    "subType": null,
+                    "conditional": null,
+                    "multiple": false
+                },
+                {
+                    "name": "updatedTimestamp",
+                    "displayName": "Updated Timestamp",
+                    "updatable": true,
+                    "required": false,
+                    "type": "Date",
+                    "constants": null,
+                    "dependencies": null,
+                    "dependencyCallback": null,
+                    "subType": null,
+                    "conditional": null,
+                    "multiple": false
+                },
+                {
+                    "name": "updatedBy",
+                    "displayName": "Updated By",
+                    "updatable": true,
+                    "required": false,
+                    "type": "String",
+                    "constants": null,
+                    "dependencies": null,
+                    "dependencyCallback": null,
+                    "subType": null,
+                    "conditional": null,
+                    "multiple": false
+                },
+                {
+                    "name": "status",
+                    "displayName": "Status",
+                    "updatable": true,
+                    "required": false,
+                    "type": "Enum",
+                    "constants": [
+                        "ACTIVE",
+                        "INACTIVE",
+                        "DELETED"
+                    ],
+                    "dependencies": null,
+                    "dependencyCallback": null,
+                    "subType": null,
+                    "conditional": null,
+                    "multiple": false
+                }
+            ]
+        },
+        {
+            "endpoint": "collateral-policies",
+            "classname": "CollateralPolicy",
+            "displayName": "Collateral Policies",
+            "count": 3,
+            "properties": [
+                {
+                    "name": "id",
+                    "displayName": "Id",
+                    "updatable": false,
+                    "required": true,
+                    "type": "Long",
+                    "constants": null,
+                    "dependencies": null,
+                    "dependencyCallback": null,
+                    "subType": null,
+                    "conditional": null,
+                    "multiple": false
+                },
+                {
+                    "name": "collateralPolicyId",
+                    "displayName": "Collateral Policy Id",
+                    "updatable": false,
+                    "required": true,
+                    "type": "String",
+                    "constants": null,
+                    "dependencies": null,
+                    "dependencyCallback": null,
+                    "subType": null,
+                    "conditional": null,
+                    "multiple": false
+                },
+                {
+                    "name": "collateralType",
+                    "displayName": "Eligible Collateral",
+                    "updatable": true,
+                    "required": true,
+                    "type": "CollateralType",
+                    "constants": null,
+                    "dependencies": null,
+                    "dependencyCallback": null,
+                    "subType": null,
+                    "conditional": null,
+                    "multiple": true
+                },
+                {
+                    "name": "haircutScheme",
+                    "displayName": "Haircut Scheme",
+                    "updatable": true,
+                    "required": false,
+                    "type": "HaircutScheme",
+                    "constants": null,
+                    "dependencies": null,
+                    "dependencyCallback": null,
+                    "subType": null,
+                    "conditional": null,
+                    "multiple": true
+                },
+                {
+                    "name": "concentrationLimit",
+                    "displayName": "Concentration Limits",
+                    "updatable": true,
+                    "required": false,
+                    "type": "ConcentrationLimit",
+                    "constants": null,
+                    "dependencies": null,
+                    "dependencyCallback": null,
+                    "subType": null,
+                    "conditional": null,
+                    "multiple": true
+                },
+                {
+                    "name": "allocationUtilizationRule",
+                    "displayName": "Allocation & Utilization Rules",
+                    "updatable": true,
+                    "required": false,
+                    "type": "AllocationUtilizationRule",
+                    "constants": null,
+                    "dependencies": null,
+                    "dependencyCallback": null,
+                    "subType": null,
+                    "conditional": null,
+                    "multiple": true
+                },
+                {
+                    "name": "utilizationLimit",
+                    "displayName": "Utilization Limits",
+                    "updatable": true,
+                    "required": false,
+                    "type": "UtilizationLimit",
+                    "constants": null,
+                    "dependencies": null,
+                    "dependencyCallback": null,
+                    "subType": null,
+                    "conditional": null,
+                    "multiple": true
+                }
+            ]
+        },
+        {
+            "endpoint": "collateral-types",
+            "classname": "CollateralType",
+            "displayName": "Collateral Types",
+            "count": 9,
+            "properties": [
+                {
+                    "name": "id",
+                    "displayName": "Id",
+                    "updatable": false,
+                    "required": true,
+                    "type": "Long",
+                    "constants": null,
+                    "dependencies": null,
+                    "dependencyCallback": null,
+                    "subType": null,
+                    "conditional": null,
+                    "multiple": false
+                },
+                {
+                    "name": "collateralTypeId",
+                    "displayName": "Collateral Type Id",
+                    "updatable": false,
+                    "required": true,
+                    "type": "String",
+                    "constants": null,
+                    "dependencies": null,
+                    "dependencyCallback": null,
+                    "subType": null,
+                    "conditional": null,
+                    "multiple": false
+                },
+                {
+                    "name": "assetClass",
+                    "displayName": "Asset Class",
+                    "updatable": true,
+                    "required": false,
+                    "type": "Enum",
+                    "constants": [
+                        "EQUITY",
+                        "RATES",
+                        "CREDIT",
+                        "FX",
+                        "COMMODITY",
+                        "DIGITAL_ASSET"
+                    ],
+                    "dependencies": null,
+                    "dependencyCallback": null,
+                    "subType": null,
+                    "conditional": null,
+                    "multiple": false
+                },
+                {
+                    "name": "instrumentSubType",
+                    "displayName": "Instrument Sub Type",
+                    "updatable": true,
+                    "required": false,
+                    "type": "Enum",
+                    "constants": [
+                        "GOVERNMENT_BONDS",
+                        "CORPORATE_BONDS",
+                        "AGENCY_BONDS",
+                        "VANILLA_IRS",
+                        "AMORTIZING_SWAP",
+                        "BASIS_SWAP"
+                    ],
+                    "dependencies": null,
+                    "dependencyCallback": null,
+                    "subType": null,
+                    "conditional": null,
+                    "multiple": false
+                },
+                {
+                    "name": "marketSector",
+                    "displayName": "Market Sector",
+                    "updatable": true,
+                    "required": false,
+                    "type": "MarketSector",
+                    "constants": null,
+                    "dependencies": null,
+                    "dependencyCallback": null,
+                    "subType": null,
+                    "conditional": null,
+                    "multiple": false
+                },
+                {
+                    "name": "country",
+                    "displayName": "Country",
+                    "updatable": true,
+                    "required": false,
+                    "type": "Country",
+                    "constants": null,
+                    "dependencies": null,
+                    "dependencyCallback": null,
+                    "subType": null,
+                    "conditional": null,
+                    "multiple": false
+                },
+                {
+                    "name": "symbol",
+                    "displayName": "Symbol",
+                    "updatable": true,
+                    "required": false,
+                    "type": "Instrument",
+                    "constants": null,
+                    "dependencies": null,
+                    "dependencyCallback": null,
+                    "subType": null,
+                    "conditional": null,
+                    "multiple": false
+                },
+                {
+                    "name": "currency",
+                    "displayName": "Currency",
+                    "updatable": true,
+                    "required": false,
+                    "type": "Currency",
+                    "constants": null,
+                    "dependencies": null,
+                    "dependencyCallback": null,
+                    "subType": null,
+                    "conditional": null,
+                    "multiple": false
+                }
+            ]
+        },
+        {
+            "endpoint": "haircut-schemes",
+            "classname": "HaircutScheme",
+            "displayName": "Haircut Schemes",
+            "count": 6,
+            "properties": [
+                {
+                    "name": "id",
+                    "displayName": "Id",
+                    "updatable": false,
+                    "required": true,
+                    "type": "Long",
+                    "constants": null,
+                    "dependencies": null,
+                    "dependencyCallback": null,
+                    "subType": null,
+                    "conditional": null,
+                    "multiple": false
+                },
+                {
+                    "name": "haircutSchemeId",
+                    "displayName": "Haircut Scheme Id",
+                    "updatable": false,
+                    "required": true,
+                    "type": "String",
+                    "constants": null,
+                    "dependencies": null,
+                    "dependencyCallback": null,
+                    "subType": null,
+                    "conditional": null,
+                    "multiple": false
+                },
+                {
+                    "name": "collateralType",
+                    "displayName": "Collateral Type",
+                    "updatable": true,
+                    "required": false,
+                    "type": "CollateralType",
+                    "constants": null,
+                    "dependencies": null,
+                    "dependencyCallback": null,
+                    "subType": null,
+                    "conditional": null,
+                    "multiple": false
+                },
+                {
+                    "name": "haircutType",
+                    "displayName": "Haircut Type",
+                    "updatable": true,
+                    "required": false,
+                    "type": "Enum",
+                    "constants": [
+                        "VAR",
+                        "FLAT"
+                    ],
+                    "dependencies": null,
+                    "dependencyCallback": null,
+                    "subType": null,
+                    "conditional": null,
+                    "multiple": false
+                },
+                {
+                    "name": "haircutRate",
+                    "displayName": "Haircut Rate",
+                    "updatable": true,
+                    "required": false,
+                    "type": "Double",
+                    "constants": null,
+                    "dependencies": null,
+                    "dependencyCallback": null,
+                    "subType": null,
+                    "conditional": null,
+                    "multiple": false
+                }
+            ]
+        },
+        {
+            "endpoint": "concentration-limits",
+            "classname": "ConcentrationLimit",
+            "displayName": "Concentration Limits",
+            "count": 4,
+            "properties": [
+                {
+                    "name": "id",
+                    "displayName": "Id",
+                    "updatable": false,
+                    "required": true,
+                    "type": "Long",
+                    "constants": null,
+                    "dependencies": null,
+                    "dependencyCallback": null,
+                    "subType": null,
+                    "conditional": null,
+                    "multiple": false
+                },
+                {
+                    "name": "concentrationLimitId",
+                    "displayName": "Concentration Limit Id",
+                    "updatable": false,
+                    "required": true,
+                    "type": "String",
+                    "constants": null,
+                    "dependencies": null,
+                    "dependencyCallback": null,
+                    "subType": null,
+                    "conditional": null,
+                    "multiple": false
+                },
+                {
+                    "name": "collateralType",
+                    "displayName": "Collateral Type",
+                    "updatable": true,
+                    "required": false,
+                    "type": "CollateralType",
+                    "constants": null,
+                    "dependencies": null,
+                    "dependencyCallback": null,
+                    "subType": null,
+                    "conditional": null,
+                    "multiple": false
+                },
+                {
+                    "name": "valueLimit",
+                    "displayName": "Value Limit",
+                    "updatable": true,
+                    "required": false,
+                    "type": "Double",
+                    "constants": null,
+                    "dependencies": null,
+                    "dependencyCallback": null,
+                    "subType": null,
+                    "conditional": null,
+                    "multiple": false
+                },
+                {
+                    "name": "percentageLimit",
+                    "displayName": "Percentage Limit",
+                    "updatable": true,
+                    "required": false,
+                    "type": "Double",
+                    "constants": null,
+                    "dependencies": null,
+                    "dependencyCallback": null,
+                    "subType": null,
+                    "conditional": null,
+                    "multiple": false
+                }
+            ]
+        },
+        {
+            "endpoint": "allocation-rules",
+            "classname": "AllocationRule",
+            "displayName": "Allocation Rules",
+            "count": 5,
+            "properties": [
+                {
+                    "name": "id",
+                    "displayName": "Id",
+                    "updatable": false,
+                    "required": true,
+                    "type": "Long",
+                    "constants": null,
+                    "dependencies": null,
+                    "dependencyCallback": null,
+                    "subType": null,
+                    "conditional": null,
+                    "multiple": false
+                },
+                {
+                    "name": "allocationRuleId",
+                    "displayName": "Allocation Rule Id",
+                    "updatable": false,
+                    "required": true,
+                    "type": "String",
+                    "constants": null,
+                    "dependencies": null,
+                    "dependencyCallback": null,
+                    "subType": null,
+                    "conditional": null,
+                    "multiple": false
+                },
+                {
+                    "name": "collateralType",
+                    "displayName": "Collateral Type",
+                    "updatable": true,
+                    "required": false,
+                    "type": "CollateralType",
+                    "constants": null,
+                    "dependencies": null,
+                    "dependencyCallback": null,
+                    "subType": null,
+                    "conditional": null,
+                    "multiple": false
+                },
+                {
+                    "name": "priority",
+                    "displayName": "Priority",
+                    "updatable": true,
+                    "required": false,
+                    "type": "Integer",
+                    "constants": null,
+                    "dependencies": null,
+                    "dependencyCallback": null,
+                    "subType": null,
+                    "conditional": null,
+                    "multiple": false
+                },
+                {
+                    "name": "allowedMax",
+                    "displayName": "Allowed Max",
+                    "updatable": true,
+                    "required": false,
+                    "type": "Double",
+                    "constants": null,
+                    "dependencies": null,
+                    "dependencyCallback": null,
+                    "subType": null,
+                    "conditional": null,
+                    "multiple": false
+                },
+                {
+                    "name": "allowedMin",
+                    "displayName": "Allowed Min",
+                    "updatable": true,
+                    "required": false,
+                    "type": "Double",
+                    "constants": null,
+                    "dependencies": null,
+                    "dependencyCallback": null,
+                    "subType": null,
+                    "conditional": null,
+                    "multiple": false
+                }
+            ]
+        },
+        {
+            "endpoint": "allocation-utilization-rules",
+            "classname": "AllocationUtilizationRule",
+            "displayName": "Allocation & Utilization Rules",
+            "count": 2,
+            "properties": [
+                {
+                    "name": "id",
+                    "displayName": "Id",
+                    "updatable": false,
+                    "required": true,
+                    "type": "Long",
+                    "constants": null,
+                    "dependencies": null,
+                    "dependencyCallback": null,
+                    "subType": null,
+                    "conditional": null,
+                    "multiple": false
+                },
+                {
+                    "name": "allocationUtilizationRuleId",
+                    "displayName": "Allocation & Utilization Rule Id",
+                    "updatable": false,
+                    "required": true,
+                    "type": "String",
+                    "constants": null,
+                    "dependencies": null,
+                    "dependencyCallback": null,
+                    "subType": null,
+                    "conditional": null,
+                    "multiple": false
+                },
+                {
+                    "name": "utilizationSequence",
+                    "displayName": "Utilization Sequence",
+                    "updatable": true,
+                    "required": false,
+                    "type": "Integer",
+                    "constants": null,
+                    "dependencies": null,
+                    "dependencyCallback": null,
+                    "subType": null,
+                    "conditional": null,
+                    "multiple": false
+                },
+                {
+                    "name": "liabilityType",
+                    "displayName": "Liability Type",
+                    "updatable": true,
+                    "required": false,
+                    "type": "Enum",
+                    "constants": [
+                        "IM",
+                        "VM"
+                    ],
+                    "dependencies": null,
+                    "dependencyCallback": null,
+                    "subType": null,
+                    "conditional": null,
+                    "multiple": false
+                },
+                {
+                    "name": "allocationRule",
+                    "displayName": "Allocation Rule",
+                    "updatable": true,
+                    "required": false,
+                    "type": "AllocationRule",
+                    "constants": null,
+                    "dependencies": null,
+                    "dependencyCallback": null,
+                    "subType": null,
+                    "conditional": null,
+                    "multiple": true
+                }
+            ]
+        },
+        {
+            "endpoint": "utilization-limits",
+            "classname": "UtilizationLimit",
+            "displayName": "Utilization Limits",
+            "count": 6,
+            "properties": [
+                {
+                    "name": "id",
+                    "displayName": "Id",
+                    "updatable": false,
+                    "required": true,
+                    "type": "Long",
+                    "constants": null,
+                    "dependencies": null,
+                    "dependencyCallback": null,
+                    "subType": null,
+                    "conditional": null,
+                    "multiple": false
+                },
+                {
+                    "name": "utilizationLimitId",
+                    "displayName": "Utilization Limit Id",
+                    "updatable": false,
+                    "required": true,
+                    "type": "String",
+                    "constants": null,
+                    "dependencies": null,
+                    "dependencyCallback": null,
+                    "subType": null,
+                    "conditional": null,
+                    "multiple": false
+                },
+                {
+                    "name": "event",
+                    "displayName": "Event",
+                    "updatable": true,
+                    "required": false,
+                    "type": "Enum",
+                    "constants": [
+                        "TRADE_UPDATES",
+                        "MARKET_DATA_UPDATES",
+                        "COLLATERAL_UPDATES"
+                    ],
+                    "dependencies": null,
+                    "dependencyCallback": null,
+                    "subType": null,
+                    "conditional": null,
+                    "multiple": false
+                },
+                {
+                    "name": "utilizationLimitPercentage",
+                    "displayName": "Utilization Limit Percentage",
+                    "updatable": true,
+                    "required": false,
+                    "type": "Double",
+                    "constants": null,
+                    "dependencies": null,
+                    "dependencyCallback": null,
+                    "subType": null,
+                    "conditional": null,
+                    "multiple": false
+                },
+                {
+                    "name": "breachAction",
+                    "displayName": "Breach Action",
+                    "updatable": true,
+                    "required": false,
+                    "type": "Enum",
+                    "constants": [
+                        "WARNING",
+                        "PENDING",
+                        "TRIGGER_MARGIN_CALL"
+                    ],
+                    "dependencies": null,
+                    "dependencyCallback": null,
+                    "subType": null,
+                    "conditional": null,
+                    "multiple": false
+                }
+            ]
+        },
+        {
+            "endpoint": "shifts",
+            "classname": "Shift",
+            "displayName": "Shifts",
+            "count": 609,
+            "properties": [
+                {
+                    "name": "id",
+                    "displayName": "Id",
+                    "updatable": false,
+                    "required": true,
+                    "type": "Long",
+                    "constants": null,
+                    "dependencies": null,
+                    "dependencyCallback": null,
+                    "subType": null,
+                    "conditional": null,
+                    "multiple": false
+                },
+                {
+                    "name": "riskFactorType",
+                    "displayName": "Risk Factor Type",
+                    "updatable": true,
+                    "required": true,
+                    "type": "Enum",
+                    "constants": [
+                        "FX",
+                        "PRICE",
+                        "INTEREST_RATE"
+                    ],
+                    "dependencies": null,
+                    "dependencyCallback": null,
+                    "subType": null,
+                    "conditional": null,
+                    "multiple": false
+                },
+                {
+                    "name": "symbol",
+                    "displayName": "Symbol",
+                    "updatable": true,
+                    "required": false,
+                    "type": "Instrument",
+                    "constants": null,
+                    "dependencies": null,
+                    "dependencyCallback": null,
+                    "subType": null,
+                    "conditional": null,
+                    "multiple": false
+                },
+                {
+                    "name": "marketSector",
+                    "displayName": "Market Sector",
+                    "updatable": true,
+                    "required": false,
+                    "type": "MarketSector",
+                    "constants": null,
+                    "dependencies": null,
+                    "dependencyCallback": null,
+                    "subType": null,
+                    "conditional": null,
+                    "multiple": false
+                },
+                {
+                    "name": "shiftType",
+                    "displayName": "Shift Type",
+                    "updatable": true,
+                    "required": true,
+                    "type": "Enum",
+                    "constants": [
+                        "RELATIVE",
+                        "ABSOLUTE"
+                    ],
+                    "dependencies": null,
+                    "dependencyCallback": null,
+                    "subType": null,
+                    "conditional": null,
+                    "multiple": false
+                },
+                {
+                    "name": "shiftPercentage",
+                    "displayName": "Shift Percentage",
+                    "updatable": true,
+                    "required": true,
+                    "type": "Double",
+                    "constants": null,
+                    "dependencies": null,
+                    "dependencyCallback": null,
+                    "subType": null,
+                    "conditional": null,
+                    "multiple": false
+                }
+            ]
+        },
+        {
+            "endpoint": "stress-scenarios",
+            "classname": "StressScenario",
+            "displayName": "Stress Scenarios",
+            "count": 33,
+            "properties": [
+                {
+                    "name": "id",
+                    "displayName": "Id",
+                    "updatable": false,
+                    "required": true,
+                    "type": "Long",
+                    "constants": null,
+                    "dependencies": null,
+                    "dependencyCallback": null,
+                    "subType": null,
+                    "conditional": null,
+                    "multiple": false
+                },
+                {
+                    "name": "stressScenarioId",
+                    "displayName": "Stress Scenario Id",
+                    "updatable": false,
+                    "required": true,
+                    "type": "String",
+                    "constants": null,
+                    "dependencies": null,
+                    "dependencyCallback": null,
+                    "subType": null,
+                    "conditional": null,
+                    "multiple": false
+                },
+                {
+                    "name": "stressScenarioName",
+                    "displayName": "Stress Scenario Name",
+                    "updatable": true,
+                    "required": false,
+                    "type": "String",
+                    "constants": null,
+                    "dependencies": null,
+                    "dependencyCallback": null,
+                    "subType": null,
+                    "conditional": null,
+                    "multiple": false
+                },
+                {
+                    "name": "shift",
+                    "displayName": "Shift",
+                    "updatable": true,
+                    "required": false,
+                    "type": "Shift",
+                    "constants": null,
+                    "dependencies": null,
+                    "dependencyCallback": null,
+                    "subType": null,
+                    "conditional": null,
+                    "multiple": true
+                }
+            ]
+        }
+    ]
+}

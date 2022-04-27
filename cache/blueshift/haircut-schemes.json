@@ -1,0 +1,66 @@
+{
+    "content": [
+        {
+            "id": 2,
+            "haircutSchemeId": "Gov_Bonds",
+            "collateralType": {
+                "id": 2,
+                "name": "Gov_Bonds"
+            },
+            "haircutType": "FLAT",
+            "haircutRate": 0.1
+        },
+        {
+            "id": 3,
+            "haircutSchemeId": "Cash.CAD",
+            "collateralType": {
+                "id": 3,
+                "name": "Cash.CAD"
+            },
+            "haircutType": "FLAT",
+            "haircutRate": 0.1
+        },
+        {
+            "id": 4,
+            "haircutSchemeId": "Scheme-1",
+            "collateralType": {
+                "id": 6,
+                "name": "Gov_Bonds_US"
+            },
+            "haircutType": "FLAT",
+            "haircutRate": 0.1
+        },
+        {
+            "id": 5,
+            "haircutSchemeId": "Scheme-2",
+            "collateralType": {
+                "id": 7,
+                "name": "Corp_Bonds_US"
+            },
+            "haircutType": "FLAT",
+            "haircutRate": 0.2
+        },
+        {
+            "id": 6,
+            "haircutSchemeId": "Scheme-3",
+            "collateralType": {
+                "id": 4,
+                "name": "Cash.USD"
+            },
+            "haircutType": "FLAT",
+            "haircutRate": 0.05
+        },
+        {
+            "id": 7,
+            "haircutSchemeId": "Scheme-4",
+            "collateralType": {
+                "id": 9,
+                "name": "Equity_US"
+            },
+            "haircutType": "FLAT",
+            "haircutRate": 0.2
+        }
+    ],
+    "page": 0,
+    "totalNumberOfElements": 6
+}

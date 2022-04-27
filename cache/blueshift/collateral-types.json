@@ -1,0 +1,135 @@
+{
+    "content": [
+        {
+            "id": 2,
+            "collateralTypeId": "Gov_Bonds",
+            "assetClass": "RATES",
+            "instrumentSubType": "GOVERNMENT_BONDS",
+            "marketSector": null,
+            "country": null,
+            "symbol": null,
+            "currency": null
+        },
+        {
+            "id": 3,
+            "collateralTypeId": "Cash.CAD",
+            "assetClass": null,
+            "instrumentSubType": null,
+            "marketSector": null,
+            "country": null,
+            "symbol": {
+                "id": 50,
+                "name": "Cash.CAD"
+            },
+            "currency": {
+                "id": 5,
+                "name": "CAD"
+            }
+        },
+        {
+            "id": 4,
+            "collateralTypeId": "Cash.USD",
+            "assetClass": null,
+            "instrumentSubType": null,
+            "marketSector": null,
+            "country": null,
+            "symbol": {
+                "id": 51,
+                "name": "Cash.USD"
+            },
+            "currency": {
+                "id": 1,
+                "name": "USD"
+            }
+        },
+        {
+            "id": 5,
+            "collateralTypeId": "Agency MBS",
+            "assetClass": "RATES",
+            "instrumentSubType": "AGENCY_BONDS",
+            "marketSector": null,
+            "country": {
+                "id": 1,
+                "name": "US"
+            },
+            "symbol": null,
+            "currency": {
+                "id": 1,
+                "name": "USD"
+            }
+        },
+        {
+            "id": 6,
+            "collateralTypeId": "Gov_Bonds_US",
+            "assetClass": "RATES",
+            "instrumentSubType": "GOVERNMENT_BONDS",
+            "marketSector": null,
+            "country": {
+                "id": 1,
+                "name": "US"
+            },
+            "symbol": null,
+            "currency": {
+                "id": 1,
+                "name": "USD"
+            }
+        },
+        {
+            "id": 7,
+            "collateralTypeId": "Corp_Bonds_US",
+            "assetClass": "RATES",
+            "instrumentSubType": "CORPORATE_BONDS",
+            "marketSector": null,
+            "country": {
+                "id": 1,
+                "name": "US"
+            },
+            "symbol": null,
+            "currency": {
+                "id": 1,
+                "name": "USD"
+            }
+        },
+        {
+            "id": 8,
+            "collateralTypeId": "Cash.USD-1",
+            "assetClass": null,
+            "instrumentSubType": null,
+            "marketSector": null,
+            "country": null,
+            "symbol": null,
+            "currency": {
+                "id": 1,
+                "name": "USD"
+            }
+        },
+        {
+            "id": 9,
+            "collateralTypeId": "Equity_US",
+            "assetClass": "EQUITY",
+            "instrumentSubType": null,
+            "marketSector": null,
+            "country": {
+                "id": 1,
+                "name": "US"
+            },
+            "symbol": null,
+            "currency": {
+                "id": 1,
+                "name": "USD"
+            }
+        },
+        {
+            "id": 10,
+            "collateralTypeId": "DigitalAssets",
+            "assetClass": "DIGITAL_ASSET",
+            "instrumentSubType": null,
+            "marketSector": null,
+            "country": null,
+            "symbol": null,
+            "currency": null
+        }
+    ],
+    "page": 0,
+    "totalNumberOfElements": 9
+}

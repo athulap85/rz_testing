@@ -1,0 +1,171 @@
+{
+    "content": [
+        {
+            "id": 1,
+            "participantId": "HSBC",
+            "name": "HSBC",
+            "type": "CLIENT",
+            "status": "ACTIVE",
+            "grossExposureLimit": 0.5,
+            "netExposureLimit": null,
+            "marginLimit": null,
+            "leicode": null
+        },
+        {
+            "id": 2,
+            "participantId": "CITI",
+            "name": "CITI",
+            "type": "CLIENT",
+            "status": "ACTIVE",
+            "grossExposureLimit": null,
+            "netExposureLimit": null,
+            "marginLimit": null,
+            "leicode": null
+        },
+        {
+            "id": 7,
+            "participantId": "TST1",
+            "name": "TST1",
+            "type": "CLEARING_MEMBER",
+            "status": "INACTIVE",
+            "grossExposureLimit": 100000.0,
+            "netExposureLimit": 100000.0,
+            "marginLimit": 200000.0,
+            "leicode": null
+        },
+        {
+            "id": 9,
+            "participantId": "HSBC-17",
+            "name": "HSBC-17",
+            "type": "CLIENT",
+            "status": "ACTIVE",
+            "grossExposureLimit": null,
+            "netExposureLimit": null,
+            "marginLimit": null,
+            "leicode": null
+        },
+        {
+            "id": 10,
+            "participantId": "DEMO",
+            "name": "DEMO",
+            "type": "CLIENT",
+            "status": "ACTIVE",
+            "grossExposureLimit": null,
+            "netExposureLimit": null,
+            "marginLimit": null,
+            "leicode": null
+        },
+        {
+            "id": 11,
+            "participantId": "BUC",
+            "name": "Buckler",
+            "type": "CLEARING_MEMBER",
+            "status": "ACTIVE",
+            "grossExposureLimit": null,
+            "netExposureLimit": null,
+            "marginLimit": null,
+            "leicode": "2549008I7DKL974K4B68"
+        },
+        {
+            "id": 12,
+            "participantId": "TEST",
+            "name": "TEST",
+            "type": "CLIENT",
+            "status": "ACTIVE",
+            "grossExposureLimit": null,
+            "netExposureLimit": null,
+            "marginLimit": null,
+            "leicode": null
+        },
+        {
+            "id": 13,
+            "participantId": "1",
+            "name": "parttcipant-1",
+            "type": "TRADING_MEMBER",
+            "status": "ACTIVE",
+            "grossExposureLimit": null,
+            "netExposureLimit": null,
+            "marginLimit": null,
+            "leicode": null
+        },
+        {
+            "id": 14,
+            "participantId": "GSC",
+            "name": "GSC",
+            "type": "CLEARING_MEMBER",
+            "status": "ACTIVE",
+            "grossExposureLimit": null,
+            "netExposureLimit": null,
+            "marginLimit": null,
+            "leicode": null
+        },
+        {
+            "id": 15,
+            "participantId": "Sally Street",
+            "name": "Sally Street",
+            "type": "CLIENT",
+            "status": "ACTIVE",
+            "grossExposureLimit": null,
+            "netExposureLimit": null,
+            "marginLimit": null,
+            "leicode": null
+        },
+        {
+            "id": 16,
+            "participantId": "Leap Capital",
+            "name": "Leap Capital",
+            "type": "CLIENT",
+            "status": "ACTIVE",
+            "grossExposureLimit": null,
+            "netExposureLimit": null,
+            "marginLimit": null,
+            "leicode": null
+        },
+        {
+            "id": 17,
+            "participantId": "Satoshi Lives",
+            "name": "Satoshi Lives",
+            "type": "CLIENT",
+            "status": "ACTIVE",
+            "grossExposureLimit": null,
+            "netExposureLimit": null,
+            "marginLimit": null,
+            "leicode": null
+        },
+        {
+            "id": 18,
+            "participantId": "JPMC",
+            "name": "JPMC",
+            "type": "CLIENT",
+            "status": "ACTIVE",
+            "grossExposureLimit": null,
+            "netExposureLimit": null,
+            "marginLimit": null,
+            "leicode": null
+        },
+        {
+            "id": 20,
+            "participantId": "HNKTEST",
+            "name": "HNKTEST",
+            "type": "CLIENT",
+            "status": "ACTIVE",
+            "grossExposureLimit": null,
+            "netExposureLimit": null,
+            "marginLimit": null,
+            "leicode": null
+        },
+        {
+            "id": 37,
+            "participantId": "MEM_002",
+            "name": "Participant Test 002",
+            "type": "CLEARING_MEMBER",
+            "status": "ACTIVE",
+            "grossExposureLimit": 0.5,
+            "netExposureLimit": null,
+            "marginLimit": null,
+            "leicode": "LEI_TEST"
+        }
+    ],
+    "page": 0,
+    "totalNumberOfElements": 15
+}

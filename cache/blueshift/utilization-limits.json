@@ -1,0 +1,48 @@
+{
+    "content": [
+        {
+            "id": 1,
+            "utilizationLimitId": "Trades_Level 1",
+            "event": "TRADE_UPDATES",
+            "utilizationLimitPercentage": 0.8,
+            "breachAction": "WARNING"
+        },
+        {
+            "id": 2,
+            "utilizationLimitId": "Trades_Level 2",
+            "event": "TRADE_UPDATES",
+            "utilizationLimitPercentage": 0.95,
+            "breachAction": "WARNING"
+        },
+        {
+            "id": 3,
+            "utilizationLimitId": "Trades_Level 3",
+            "event": "TRADE_UPDATES",
+            "utilizationLimitPercentage": 1.0,
+            "breachAction": "WARNING"
+        },
+        {
+            "id": 4,
+            "utilizationLimitId": "Collateral_Level 1",
+            "event": "COLLATERAL_UPDATES",
+            "utilizationLimitPercentage": 0.75,
+            "breachAction": "WARNING"
+        },
+        {
+            "id": 5,
+            "utilizationLimitId": "Collateral_Level 2",
+            "event": "COLLATERAL_UPDATES",
+            "utilizationLimitPercentage": 0.9,
+            "breachAction": "WARNING"
+        },
+        {
+            "id": 6,
+            "utilizationLimitId": "MD_Level 1",
+            "event": "MARKET_DATA_UPDATES",
+            "utilizationLimitPercentage": 0.95,
+            "breachAction": "WARNING"
+        }
+    ],
+    "page": 0,
+    "totalNumberOfElements": 6
+}

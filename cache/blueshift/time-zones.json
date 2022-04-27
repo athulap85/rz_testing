@@ -1,0 +1,24 @@
+{
+    "content": [
+        {
+            "id": 1,
+            "timeZoneId": "TZ2938442195",
+            "offset": 5.0,
+            "name": "SL"
+        },
+        {
+            "id": 2,
+            "timeZoneId": "TZ2938442195copy",
+            "offset": -5.3,
+            "name": "SL"
+        },
+        {
+            "id": 3,
+            "timeZoneId": "Timezone",
+            "offset": 6.0,
+            "name": "Test1"
+        }
+    ],
+    "page": 0,
+    "totalNumberOfElements": 3
+}

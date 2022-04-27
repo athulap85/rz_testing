@@ -51,12 +51,13 @@ Feature: refdata add edit delete instances
       | Instance ID | Market Id          | Description          |
       | Res01       | [Mark01.Market Id] | [Mark01.Description] |
 
-
+@final
   Scenario: TC_011 Deleting instances
-    Given instance "ACC_001" of entity "Accounts" is deleted
-    Given instance "AED" of entity "Currencies" is deleted
-    Given instance "MEM_001" of entity "Participants" is deleted
-    Given instance "TZ_001" of entity "Time Zones" is deleted
-    Given instance "RM_001" of entity "Risk Models" is deleted
-    Given instance "AED1" of entity "Currencies" is deleted
-    Given instance "BINANCE1" of entity "Markets" is deleted
+  Given instance "HNK_Short" of entity "Accounts" is deleted
+  Given instance "HNK_Long" of entity "Accounts" is deleted
+  Given instance "HN_Long" of entity "Accounts" is deleted
+  Given instance "HN_Short" of entity "Accounts" is deleted
+  Given instance "H_Long" of entity "Accounts" is deleted
+  Given instance "H_Short" of entity "Accounts" is deleted
+  Given instance "Home_NKG1" of entity "Accounts" is deleted
+

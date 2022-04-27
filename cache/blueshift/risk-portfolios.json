@@ -1,0 +1,161 @@
+{
+    "content": [
+        {
+            "id": 1,
+            "riskPortfolioId": "SUBPORT_1",
+            "riskMeasure": "PRIMARY",
+            "holdingPeriod": 1,
+            "riskMeasureMultiplier": 1.0,
+            "proxy": null,
+            "flatRate": null,
+            "hedgeRiskFactor": null,
+            "rfValue": null,
+            "holdingPeriodMultiplier": 3.0,
+            "hedgeInstrument": null
+        },
+        {
+            "id": 2,
+            "riskPortfolioId": "SUBPORT_2",
+            "riskMeasure": "PRIMARY",
+            "holdingPeriod": 10,
+            "riskMeasureMultiplier": 0.2856,
+            "proxy": null,
+            "flatRate": 0.8,
+            "hedgeRiskFactor": null,
+            "rfValue": null,
+            "holdingPeriodMultiplier": 1.0,
+            "hedgeInstrument": null
+        },
+        {
+            "id": 3,
+            "riskPortfolioId": "SUBPORT_FLAT",
+            "riskMeasure": "FLAT",
+            "holdingPeriod": 2,
+            "riskMeasureMultiplier": 0.2856,
+            "proxy": null,
+            "flatRate": 0.8,
+            "hedgeRiskFactor": null,
+            "rfValue": null,
+            "holdingPeriodMultiplier": 1.0,
+            "hedgeInstrument": null
+        },
+        {
+            "id": 5,
+            "riskPortfolioId": "SUBPORT_3",
+            "riskMeasure": "PRIMARY",
+            "holdingPeriod": 2,
+            "riskMeasureMultiplier": 0.2856,
+            "proxy": {
+                "id": 43,
+                "name": "AJ-AS3"
+            },
+            "flatRate": 0.75,
+            "hedgeRiskFactor": "DV01",
+            "rfValue": 5000.0,
+            "holdingPeriodMultiplier": 1.0,
+            "hedgeInstrument": null
+        },
+        {
+            "id": 6,
+            "riskPortfolioId": "Sub_1_primary",
+            "riskMeasure": "PRIMARY",
+            "holdingPeriod": 1,
+            "riskMeasureMultiplier": 1.0,
+            "proxy": null,
+            "flatRate": null,
+            "hedgeRiskFactor": null,
+            "rfValue": 200.0,
+            "holdingPeriodMultiplier": 3.0,
+            "hedgeInstrument": null
+        },
+        {
+            "id": 7,
+            "riskPortfolioId": "Sub_1_Flat",
+            "riskMeasure": "FLAT",
+            "holdingPeriod": 1,
+            "riskMeasureMultiplier": 1.0,
+            "proxy": null,
+            "flatRate": null,
+            "hedgeRiskFactor": null,
+            "rfValue": 200.0,
+            "holdingPeriodMultiplier": 3.0,
+            "hedgeInstrument": null
+        },
+        {
+            "id": 8,
+            "riskPortfolioId": "TreasuryBonds",
+            "riskMeasure": "FLAT",
+            "holdingPeriod": 1,
+            "riskMeasureMultiplier": null,
+            "proxy": null,
+            "flatRate": 0.1,
+            "hedgeRiskFactor": "DV01",
+            "rfValue": null,
+            "holdingPeriodMultiplier": null,
+            "hedgeInstrument": null
+        },
+        {
+            "id": 9,
+            "riskPortfolioId": "BTC Futures",
+            "riskMeasure": "FLAT",
+            "holdingPeriod": 1,
+            "riskMeasureMultiplier": null,
+            "proxy": null,
+            "flatRate": 0.1,
+            "hedgeRiskFactor": null,
+            "rfValue": null,
+            "holdingPeriodMultiplier": null,
+            "hedgeInstrument": null
+        },
+        {
+            "id": 10,
+            "riskPortfolioId": "US912810RQ31",
+            "riskMeasure": "FLAT",
+            "holdingPeriod": 1,
+            "riskMeasureMultiplier": 1.0,
+            "proxy": null,
+            "flatRate": null,
+            "hedgeRiskFactor": "DV01",
+            "rfValue": null,
+            "holdingPeriodMultiplier": null,
+            "hedgeInstrument": {
+                "id": 19822,
+                "name": "US912810RQ31"
+            }
+        },
+        {
+            "id": 12,
+            "riskPortfolioId": "25-Years-T",
+            "riskMeasure": "FLAT",
+            "holdingPeriod": 25,
+            "riskMeasureMultiplier": null,
+            "proxy": null,
+            "flatRate": null,
+            "hedgeRiskFactor": "DV01",
+            "rfValue": null,
+            "holdingPeriodMultiplier": null,
+            "hedgeInstrument": {
+                "id": 19822,
+                "name": "US912810RQ31"
+            }
+        },
+        {
+            "id": 13,
+            "riskPortfolioId": "5-Years-T",
+            "riskMeasure": "FLAT",
+            "holdingPeriod": 5,
+            "riskMeasureMultiplier": null,
+            "proxy": null,
+            "flatRate": null,
+            "hedgeRiskFactor": "DV01",
+            "rfValue": null,
+            "holdingPeriodMultiplier": null,
+            "hedgeInstrument": {
+                "id": 19824,
+                "name": "US91282CCW91"
+            }
+        }
+    ],
+    "page": 0,
+    "totalNumberOfElements": 11
+}

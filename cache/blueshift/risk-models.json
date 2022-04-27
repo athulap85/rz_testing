@@ -1,0 +1,328 @@
+{
+    "content": [
+        {
+            "id": 1,
+            "riskModelId": "RiskModel1",
+            "calculateIM": true,
+            "imMethodology": {
+                "id": 1,
+                "name": "Methodology 1"
+            },
+            "stressScenario": [
+                {
+                    "id": 4,
+                    "name": "Fed_rate_cut_2008"
+                },
+                {
+                    "id": 5,
+                    "name": "Covid_March_2020"
+                },
+                {
+                    "id": 6,
+                    "name": "LTCM_Crisis"
+                },
+                {
+                    "id": 7,
+                    "name": "Lehman_negative"
+                },
+                {
+                    "id": 25,
+                    "name": "Butterfly-USTreasury_SOFR"
+                }
+            ]
+        },
+        {
+            "id": 4,
+            "riskModelId": "RiskModel2",
+            "calculateIM": true,
+            "imMethodology": {
+                "id": 1,
+                "name": "Methodology 1"
+            },
+            "stressScenario": [
+                {
+                    "id": 2,
+                    "name": "Test-1"
+                },
+                {
+                    "id": 3,
+                    "name": "Test-2"
+                }
+            ]
+        },
+        {
+            "id": 5,
+            "riskModelId": "Risk-MO1",
+            "calculateIM": false,
+            "imMethodology": {
+                "id": 1,
+                "name": "Methodology 1"
+            },
+            "stressScenario": [
+                {
+                    "id": 1,
+                    "name": "Scenario 1"
+                },
+                {
+                    "id": 2,
+                    "name": "Test-1"
+                },
+                {
+                    "id": 3,
+                    "name": "Test-2"
+                },
+                {
+                    "id": 8,
+                    "name": "Scenario01"
+                }
+            ]
+        },
+        {
+            "id": 6,
+            "riskModelId": "Risk-O1",
+            "calculateIM": false,
+            "imMethodology": {
+                "id": 1,
+                "name": "Methodology 1"
+            },
+            "stressScenario": [
+                {
+                    "id": 8,
+                    "name": "Scenario01"
+                }
+            ]
+        },
+        {
+            "id": 7,
+            "riskModelId": "RM-1",
+            "calculateIM": true,
+            "imMethodology": {
+                "id": 2,
+                "name": "IM-1"
+            },
+            "stressScenario": [
+                {
+                    "id": 24,
+                    "name": "+1%-USTreasury_SOFR"
+                }
+            ]
+        },
+        {
+            "id": 13,
+            "riskModelId": "RM-0",
+            "calculateIM": true,
+            "imMethodology": {
+                "id": 1,
+                "name": "Methodology 1"
+            },
+            "stressScenario": [
+                {
+                    "id": 9,
+                    "name": "USTreasury_0"
+                }
+            ]
+        },
+        {
+            "id": 14,
+            "riskModelId": "RM-Sc1",
+            "calculateIM": false,
+            "imMethodology": {
+                "id": 1,
+                "name": "Methodology 1"
+            },
+            "stressScenario": [
+                {
+                    "id": 24,
+                    "name": "+1%-USTreasury_SOFR"
+                },
+                {
+                    "id": 25,
+                    "name": "Butterfly-USTreasury_SOFR"
+                },
+                {
+                    "id": 27,
+                    "name": "+0.5%-USTreasury_Repo"
+                },
+                {
+                    "id": 28,
+                    "name": "Butterfly-USTreasury_Repo"
+                },
+                {
+                    "id": 26,
+                    "name": "+1%-USTreasury_Repo"
+                }
+            ]
+        },
+        {
+            "id": 15,
+            "riskModelId": "RM-Sc2",
+            "calculateIM": true,
+            "imMethodology": {
+                "id": 1,
+                "name": "Methodology 1"
+            },
+            "stressScenario": [
+                {
+                    "id": 11,
+                    "name": "USTreasury_Sc2"
+                },
+                {
+                    "id": 12,
+                    "name": "USTreasury_Sc3"
+                },
+                {
+                    "id": 13,
+                    "name": "USTreasury_Sc4"
+                },
+                {
+                    "id": 9,
+                    "name": "USTreasury_0"
+                },
+                {
+                    "id": 10,
+                    "name": "USTreasury_Sc1"
+                },
+                {
+                    "id": 16,
+                    "name": "USTreasury_Sc5"
+                },
+                {
+                    "id": 17,
+                    "name": "USTreasury_Sc6"
+                }
+            ]
+        },
+        {
+            "id": 16,
+            "riskModelId": "RM-Sc3",
+            "calculateIM": true,
+            "imMethodology": {
+                "id": 1,
+                "name": "Methodology 1"
+            },
+            "stressScenario": [
+                {
+                    "id": 12,
+                    "name": "USTreasury_Sc3"
+                },
+                {
+                    "id": 15,
+                    "name": "LIBOR_USD_Sc3"
+                }
+            ]
+        },
+        {
+            "id": 17,
+            "riskModelId": "RM-Sc4",
+            "calculateIM": true,
+            "imMethodology": {
+                "id": 1,
+                "name": "Methodology 1"
+            },
+            "stressScenario": [
+                {
+                    "id": 18,
+                    "name": "LIBOR_USD_Sc4"
+                },
+                {
+                    "id": 13,
+                    "name": "USTreasury_Sc4"
+                },
+                {
+                    "id": 19,
+                    "name": "LIBOR_USD_Sc5"
+                },
+                {
+                    "id": 20,
+                    "name": "LIBOR_USD_Sc6"
+                },
+                {
+                    "id": 21,
+                    "name": "LIBOR_Sc4+Treasury1%"
+                },
+                {
+                    "id": 22,
+                    "name": "AAPL+LIBOR_Sc4+Treasury1%"
+                }
+            ]
+        },
+        {
+            "id": 18,
+            "riskModelId": "RM-Sc5",
+            "calculateIM": true,
+            "imMethodology": {
+                "id": 1,
+                "name": "Methodology 1"
+            },
+            "stressScenario": [
+                {
+                    "id": 16,
+                    "name": "USTreasury_Sc5"
+                },
+                {
+                    "id": 19,
+                    "name": "LIBOR_USD_Sc5"
+                }
+            ]
+        },
+        {
+            "id": 19,
+            "riskModelId": "RM-Sc6",
+            "calculateIM": true,
+            "imMethodology": {
+                "id": 1,
+                "name": "Methodology 1"
+            },
+            "stressScenario": [
+                {
+                    "id": 17,
+                    "name": "USTreasury_Sc6"
+                },
+                {
+                    "id": 20,
+                    "name": "LIBOR_USD_Sc6"
+                }
+            ]
+        },
+        {
+            "id": 20,
+            "riskModelId": "RM-Sc7",
+            "calculateIM": true,
+            "imMethodology": {
+                "id": 1,
+                "name": "Methodology 1"
+            },
+            "stressScenario": [
+                {
+                    "id": 27,
+                    "name": "+0.5%-USTreasury_Repo"
+                },
+                {
+                    "id": 23,
+                    "name": "+1%-USTreasury_LIBORUSD"
+                }
+            ]
+        },
+        {
+            "id": 21,
+            "riskModelId": "Crypto",
+            "calculateIM": true,
+            "imMethodology": {
+                "id": 1,
+                "name": "Methodology 1"
+            },
+            "stressScenario": [
+                {
+                    "id": 33,
+                    "name": "Crypto+20"
+                },
+                {
+                    "id": 34,
+                    "name": "Crypto-30"
+                }
+            ]
+        }
+    ],
+    "page": 0,
+    "totalNumberOfElements": 14
+}

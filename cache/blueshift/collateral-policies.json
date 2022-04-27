@@ -1,0 +1,170 @@
+{
+    "content": [
+        {
+            "id": 1,
+            "collateralPolicyId": "Policy1",
+            "collateralType": [
+                {
+                    "id": 2,
+                    "name": "Gov_Bonds"
+                },
+                {
+                    "id": 3,
+                    "name": "Cash.CAD"
+                },
+                {
+                    "id": 4,
+                    "name": "Cash.USD"
+                },
+                {
+                    "id": 5,
+                    "name": "Agency MBS"
+                },
+                {
+                    "id": 10,
+                    "name": "DigitalAssets"
+                },
+                {
+                    "id": 7,
+                    "name": "Corp_Bonds_US"
+                }
+            ],
+            "haircutScheme": [
+                {
+                    "id": 2,
+                    "name": "Gov_Bonds"
+                },
+                {
+                    "id": 3,
+                    "name": "Cash.CAD"
+                }
+            ],
+            "concentrationLimit": [],
+            "allocationUtilizationRule": [
+                {
+                    "id": 1,
+                    "name": "VM Rule"
+                },
+                {
+                    "id": 2,
+                    "name": "IM Rule"
+                }
+            ],
+            "utilizationLimit": [
+                {
+                    "id": 1,
+                    "name": "Trades_Level 1"
+                },
+                {
+                    "id": 2,
+                    "name": "Trades_Level 2"
+                },
+                {
+                    "id": 3,
+                    "name": "Trades_Level 3"
+                },
+                {
+                    "id": 4,
+                    "name": "Collateral_Level 1"
+                },
+                {
+                    "id": 5,
+                    "name": "Collateral_Level 2"
+                },
+                {
+                    "id": 6,
+                    "name": "MD_Level 1"
+                }
+            ]
+        },
+        {
+            "id": 2,
+            "collateralPolicyId": "Policy2",
+            "collateralType": [
+                {
+                    "id": 3,
+                    "name": "Cash.CAD"
+                },
+                {
+                    "id": 6,
+                    "name": "Gov_Bonds_US"
+                },
+                {
+                    "id": 7,
+                    "name": "Corp_Bonds_US"
+                },
+                {
+                    "id": 8,
+                    "name": "Cash.USD-1"
+                }
+            ],
+            "haircutScheme": [
+                {
+                    "id": 4,
+                    "name": "Scheme-1"
+                },
+                {
+                    "id": 5,
+                    "name": "Scheme-2"
+                },
+                {
+                    "id": 6,
+                    "name": "Scheme-3"
+                }
+            ],
+            "concentrationLimit": [],
+            "allocationUtilizationRule": [],
+            "utilizationLimit": []
+        },
+        {
+            "id": 3,
+            "collateralPolicyId": "policy3",
+            "collateralType": [
+                {
+                    "id": 9,
+                    "name": "Equity_US"
+                },
+                {
+                    "id": 3,
+                    "name": "Cash.CAD"
+                },
+                {
+                    "id": 4,
+                    "name": "Cash.USD"
+                },
+                {
+                    "id": 6,
+                    "name": "Gov_Bonds_US"
+                }
+            ],
+            "haircutScheme": [
+                {
+                    "id": 4,
+                    "name": "Scheme-1"
+                },
+                {
+                    "id": 7,
+                    "name": "Scheme-4"
+                }
+            ],
+            "concentrationLimit": [
+                {
+                    "id": 2,
+                    "name": "Limit_Gov_Bonds1"
+                },
+                {
+                    "id": 3,
+                    "name": "Limit_Cash_CAD"
+                },
+                {
+                    "id": 4,
+                    "name": "Limit_Equity_US"
+                }
+            ],
+            "allocationUtilizationRule": [],
+            "utilizationLimit": []
+        }
+    ],
+    "page": 0,
+    "totalNumberOfElements": 3
+}
