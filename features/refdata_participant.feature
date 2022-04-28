@@ -10,34 +10,33 @@ Scenario: TC_002 Create Participant with already existing Participant ID
      | Instance ID | Participant Id | Name                 | LEI Code | Type             |Status|
      | Mem01       |  MEM_001       | Participant Test 001 | LEI_TEST | CLEARING_MEMBER  |ACTIVE|
 
-    Then the request should be rejected with the error "Participant Id already exists."
+    Then the request should be rejected with the error "Participant already exists"
 
 Scenario: TC_003 create an Participant without Participant ID
     When instance of entity "Participants" is created with following values
-     | Instance ID | Participant Id | Name                 | LEI Code | Type             |Status|
-     | Mem02       |                | Participant Test 002 | LEI_TEST | CLEARING_MEMBER  |ACTIVE|
+     | Instance ID | Name                 | LEI Code | Type             |Status|
+     | Mem02       | Participant Test 002 | LEI_TEST | CLEARING_MEMBER  |ACTIVE|
 
-    Then the request should be rejected with the error "Participant Id is missing."
+    Then the request should be rejected with the error "Participant id is required."
 
 Scenario: TC_004 create an Participant without Name
     When instance of entity "Participants" is created with following values
-     | Instance ID | Participant Id | Name                 | LEI Code | Type             |Status|
-     | Mem02       | MEM_002        |                      | LEI_TEST | CLEARING_MEMBER  |ACTIVE|
+     | Instance ID | Participant Id | LEI Code | Type             |Status|
+     | Mem02       | MEM_002        | LEI_TEST | CLEARING_MEMBER  |ACTIVE|
 
-    Then the request should be rejected with the error "Name is missing."
+    Then the request should be rejected with the error "Participant name is required."
 
 Scenario: TC_005 Update the Name in an existing Participant
     And instance "MEM_001" of entity "Participants" is updated with following values
       | Instance ID | Name                 |
       | Mem01       | Participant Test 011 |
 
-
 Scenario: TC_006 create an Participant without Type
     When instance of entity "Participants" is created with following values
-     | Instance ID | Participant Id | Name                 | LEI Code | Type             |Status|
-     | Mem02       | MEM_002        | Participant Test 002 | LEI_TEST |                  |ACTIVE|
+     | Instance ID | Participant Id | Name                 | LEI Code | Status|
+     | Mem02       | MEM_002        | Participant Test 002 | LEI_TEST | ACTIVE|
 
-    Then the request should be rejected with the error "Type is missing."
+    Then the request should be rejected with the error "Participant type is required."
 
 Scenario: TC_007 create an Participant with invalid Type
     When instance of entity "Participants" is created with following values
@@ -48,8 +47,8 @@ Scenario: TC_007 create an Participant with invalid Type
 
 Scenario: TC_008 create an Participant without Status
     When instance of entity "Participants" is created with following values
-     | Instance ID | Participant Id | Name                 | LEI Code | Type             |Status|
-     | Mem02       | MEM_002        | Participant Test 002 | LEI_TEST | CLIENT TEST      |      |
+     | Instance ID | Participant Id | Name                 | LEI Code | Type             |
+     | Mem02       | MEM_002        | Participant Test 002 | LEI_TEST | CLIENT TEST      |
 
     Then the request should be rejected with the error "Status is missing."
 
