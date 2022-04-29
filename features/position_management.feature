@@ -1,4 +1,4 @@
-Feature: RefData Management
+Feature: Position Management
 
 
     Scenario: 1 Submitting a position update request

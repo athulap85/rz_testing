@@ -3,7 +3,7 @@
   "fields" :
   {
     "symbol": "BCHEUR",
-    "currency": "EUR",
+    "currency": "USD",
     "dataClass": "PRICE",
     "subClass": "ACTUAL",
     "type": "BB",
