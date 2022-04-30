@@ -27,7 +27,7 @@ Scenario: TC_004 create an Participant without Name
     Then the request should be rejected with the error "Participant name is required."
 
 Scenario: TC_005 Update the Name in an existing Participant
-    And instance "MEM_001" of entity "Participants" is updated with following values
+    Given instance "MEM_001" of entity "Participants" is updated with following values
       | Instance ID | Name                 |
       | Mem01       | Participant Test 011 |
 
@@ -60,7 +60,7 @@ Scenario: TC_009 create an Participant with invalid Status
     Then the request should be rejected with the error "Invalid Status."
 
 Scenario: TC_010 Update the Status in an existing Participant
-    And instance "MEM_001" of entity "Participants" is updated with following values
+    Given instance "MEM_001" of entity "Participants" is updated with following values
       | Instance ID | Status   |
       | Mem01       | INACTIVE |
 
@@ -86,11 +86,12 @@ Scenario: TC_013 create an Participant with invalid Margin Limit
     Then the request should be rejected with the error "Invalid Margin Limit."
 
 Scenario: TC_014 Update the LEI Code in an existing Participant
-    And instance "MEM_001" of entity "Participants" is updated with following values
+    Given instance "MEM_001" of entity "Participants" is updated with following values
       | Instance ID | LEI Code      |
       | Mem01       | LEI_TEST 1212 |
 
 Scenario: TC_015 Update the Gross Exposure Limit/Net Exposure Limit/Margin Limit in an existing Participant
-    And instance "MEM_001" of entity "Participants" is updated with following values
+    Given instance "MEM_001" of entity "Participants" is updated with following values
       | Instance ID | Gross Exposure Limit |Net Exposure Limit|Margin Limit |
       | Mem01       | 0.5                  |0.5               |0.5          |
+    And instance "MEM_001" of entity "Participants" is deleted
