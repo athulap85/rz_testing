@@ -236,6 +236,10 @@ class RefDataAdaptor(IRefDataInterface):
                     value = value.replace(" ", "_").upper()
 
             name = field_def.get_property("name")
+
+            if entity_definition.name == "Instruments" and (name == "instrumentId" or name == "fixedIncomeId"):
+                value = None
+
             request[name] = value
 
         return request
