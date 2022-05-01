@@ -28,6 +28,7 @@ class DataLoader:
             self.load(entity_def, endpoint)
 
     def load(self, entity_definition, entity_endpoint):
+
         entity_name = entity_definition.name
         cache_file = f"{REFDATA_CACHE_LOCATION}{entity_endpoint}.json"
         if exists(cache_file):
@@ -59,14 +60,30 @@ class DataLoader:
         self.ref_data_instances[entity_name] = instance_id_map
 
     def get_instance_id(self, entity, key_field_value):
+        logging.debug(f"get_instance_id: entity[{entity}], key_field_value[{key_field_value}]")
         return self.ref_data_instances[entity].get(key_field_value)
 
     def set_instance_id(self, entity, key_field_value, instance_id):
+        logging.debug(f"set_instance_id: entity[{entity}], key_field_value[{key_field_value}],"
+                      f" instance_id[{instance_id}]")
         self.ref_data_instances[entity][key_field_value] = instance_id
 
+    def remove_instance_id(self, entity, key_field_value):
+        logging.debug(f"remove_instance_id: entity[{entity}], key_field_value[{key_field_value}]")
+        self.ref_data_instances[entity].pop(key_field_value, None)
+
     def get_acc_instance_id(self, participant, account):
+        logging.debug(f"get_acc_instance_id: participant_name[{participant}], account[{account}]")
         assert self.accounts_structure.get(participant) is not None, f"Unable to find participant[{participant}] in" \
                                                                  f" account structure"
         instance_id = self.accounts_structure[participant].get(account)
         assert instance_id is not None, f"Unable to find the account. Participant:[{participant}], Account:[{account}]"
         return instance_id
+
+    def set_acc_instance_id(self, participant_name, account, instance_id):
+        logging.debug(f"set_acc_instance_id: participant_name[{participant_name}], account[{account}],"
+                      f" instance_id[{instance_id}]")
+        if self.accounts_structure.get(participant_name) is None:
+            self.accounts_structure[participant_name] = {account: instance_id}
+        else:
+            self.accounts_structure[participant_name][account] = instance_id

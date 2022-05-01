@@ -17,11 +17,13 @@ class InterfaceManager:
             assert False, f"Interface {interface_id} is already registered in InterfaceManager"
 
     def submit_request(self, interface_id, request_message):
+        logging.debug(f"submit_request: interface_id : [{interface_id}]")
         interface = self.interfaces.get(interface_id)
         assert interface is not None, f"submit_request:Interface {interface_id} is not registered in InterfaceManager"
         return interface.submit_request(request_message)
 
     def query_data(self, interface_id, query):
+        logging.debug(f"query_data: interface_id : [{interface_id}]")
         interface = self.interfaces.get(interface_id)
         assert interface is not None, f"query_data:Interface {interface_id} is not registered in InterfaceManager"
         return interface.query_data(query)

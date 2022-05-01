@@ -96,6 +96,7 @@ class RefDataAdaptor(IRefDataInterface):
         loader.load_instances(self.entity_definitions)
 
     def fetch_instance(self, entity_name, instance_key):
+        logging.debug(f"fetch_instance: entity_name[{entity_name}], instance_key[{instance_key}]")
         entity_def = self.entity_definitions.get(entity_name)
         assert entity_def is not None, f"Cannot find the specified entity [{entity_name}] in the Blue Shift"
         sub_endpoint = entity_def.get_property("endpoint")
@@ -107,7 +108,7 @@ class RefDataAdaptor(IRefDataInterface):
         filter_values = {"data": [instance_key], "type": field_def.get_property("type")}
         query_obj = {field_def.name: filter_values}
 
-        status_code, response = self.http_client.post_request("/" + sub_endpoint + "-search", query_obj)
+        status_code, response = self.http_client.post_request("/" + sub_endpoint + "-search?userName=ranush", query_obj)
         if status_code == 200:
             response_json = json.loads(response)
             assert len(response_json["content"]) > 0, f"Unable to find the instance [{instance_key}] of entity [{entity_name}]"
@@ -117,11 +118,13 @@ class RefDataAdaptor(IRefDataInterface):
                 if instance[field_def.name] == instance_key:
                     response_msg = instance
             logging.info(f"fetch_instance: selected instance: \n {response_msg}")
+            assert response_msg is not None, f"Unable to find the instance [{instance_key}] of entity [{entity_name}]"
             return self.create_response_msg(entity_def, response_msg), None
         else:
             return None, response
 
     def update_instance(self, original_instance_msg, changes_msg):
+        logging.debug(f"update_instance")
         entity_def = self.entity_definitions.get(original_instance_msg.definition)
         sub_endpoint = entity_def.get_property("endpoint")
         instance_id = original_instance_msg.get_field_value("Id")
@@ -134,41 +137,44 @@ class RefDataAdaptor(IRefDataInterface):
             return None, response
 
     def copy_instance(self, original_instance_msg, changes_msg):
+        logging.debug(f"copy_instance")
         entity_def = self.entity_definitions.get(original_instance_msg.definition)
-        sub_endpoint = entity_def.get_property("endpoint")
         request = self.copy_and_create_request_msg(entity_def, original_instance_msg, changes_msg)
-
-        status_code, response = self.http_client.post_request("/" + sub_endpoint, request)
-        if status_code == 200:
-            response_json = json.loads(response)
-            return self.create_response_msg(entity_def, response_json), None
-        else:
-            return None, response
+        return self.post_create_instance(entity_def, request)
 
     def create_instance(self, message):
+        logging.debug(f"create_instance")
         entity_def = self.entity_definitions.get(message.definition)
-        sub_endpoint = entity_def.get_property("endpoint")
         request = self.create_request_msg(entity_def, message)
+        return self.post_create_instance(entity_def, request)
 
+    def post_create_instance(self, entity_def, request):
+        logging.debug(f"post_create_instance")
+        sub_endpoint = entity_def.get_property("endpoint")
         status_code, response = self.http_client.post_request("/" + sub_endpoint, request)
         if status_code == 200:
             response_json = json.loads(response)
-            return self.create_response_msg(entity_def, response_json), None
+            response_msg = self.create_response_msg(entity_def, response_json)
+            self.update_loader(entity_def.name, response_msg)
+            return response_msg, None
         else:
             return None, response
 
     def delete_instance(self, entity, instance_key):
+        logging.debug(f"delete_instance: entity[{entity}], instance_key[{instance_key}]")
         entity_def = self.entity_definitions.get(entity)
         sub_endpoint = entity_def.get_property("endpoint")
         instance_id = self.get_instance_id(entity, instance_key)
 
         status_code, response = self.http_client.delete_request("/" + sub_endpoint + "/" + str(instance_id))
         if status_code == 204:
+            DataLoader().remove_instance_id(entity, instance_key)
             return None, None
         else:
             return None, response
 
     def create_response_msg(self, entity_definition, response):
+        logging.debug(f"create_response_msg: entity[{entity_definition.name}]")
         msg = Message(entity_definition.name)
         for key, value in response.items():
             field_def = entity_definition.find_field_def_by_name(key)
@@ -210,6 +216,7 @@ class RefDataAdaptor(IRefDataInterface):
 
     def copy_and_create_request_msg(self, entity_definition, original_instance_msg, changes_msg):
         logging.debug(f"copy_and_create_request_msg entity [{entity_definition.name}]")
+        logging.info(f"change msg : {str(changes_msg)}")
         request = {}
         for key, value in original_instance_msg.fieldValues.items():
             if key == "Id":
@@ -257,6 +264,15 @@ class RefDataAdaptor(IRefDataInterface):
 
         return instance_id
 
+    def update_loader(self, entity,  response):
+        logging.debug(f"update_loader entity [{entity}] response:[{str(response)}]")
+        instance_id = response.get_field_value("Id")
+        instance_name = response.get_field_value(self.get_key_field(entity))
+        if entity == "Accounts":
+            participant = response.get_field_value("Participant")
+            DataLoader().set_acc_instance_id(participant, instance_name, instance_id)
+        else:
+            DataLoader().set_instance_id(entity, instance_name, instance_id)
 
 
 
