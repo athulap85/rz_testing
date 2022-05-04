@@ -81,7 +81,8 @@ def pack_row_to_query(message_definition, header, row, filters):
     query = DataQuery(message_definition)
     for field in header:
         if field in filter_list:
-            query.add_filter(field, Operator.EQUAL, row[field])
+            value = ResolverChain().resolve(row[field])
+            query.add_filter(field, Operator.EQUAL, value)
     logging.debug(f"pack_row_to_query: Output : {str(query)}")
     return query;
 
