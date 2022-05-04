@@ -36,7 +36,7 @@ class DataLoader:
             response_json = json.loads(f.read())
             f.close()
         else:
-            status_code, response = self.http_client.post_request(f"/{entity_endpoint}-search", {})
+            status_code, response = self.http_client.post_request(f"/{entity_endpoint}-search?userName=ranush", {})
             response_json = json.loads(response)
             json_object = json.dumps(response_json, indent=4)
             f = open(cache_file, "w")
@@ -52,10 +52,7 @@ class DataLoader:
             instance_id_map[key_value] = instance_id
             if entity_name == "Accounts":
                 participant_name = instance["participant"]["name"]
-                if self.accounts_structure.get(participant_name) is None:
-                    self.accounts_structure[participant_name] = {key_value: instance_id}
-                else:
-                    self.accounts_structure[participant_name][key_value] = instance_id
+                self.set_acc_instance_id(participant_name, key_value, instance_id)
 
         self.ref_data_instances[entity_name] = instance_id_map
 
