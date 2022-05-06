@@ -2,6 +2,7 @@ from behave import *
 import logging
 from src.utils.messaging import pack_row_to_new_message, compare
 from src.refdata.refdata_manager import RefDataManager
+from src.utils.resolvers import ResolverChain
 
 
 @Given(u'instance of entity "{entity}" is created with following values')
@@ -72,6 +73,7 @@ def step_impl(context, instance_key, entity):
 
 @Given(u'instance "{instance_key}" of entity "{entity}" is deleted')
 def step_impl(context, instance_key, entity):
+    instance_key = ResolverChain().resolve(instance_key)
     response_msg, error_msg = RefDataManager().delete_instance(entity, instance_key)
     assert error_msg is None, f"Unable to delete the instance [{instance_key}] of entity [{entity}]. Error [{error_msg}]"
 
