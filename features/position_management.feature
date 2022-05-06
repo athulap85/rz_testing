@@ -48,15 +48,15 @@ Feature: Position Management
         @hello
     Scenario: TC_005 Validating Account - Margin Account Valid
 
-#        Given instance "Home_NK9" of entity "Accounts" is deleted
+#        Given instance "Home_NK118" of entity "Accounts" is deleted
 
-        Given instance "Home" of entity "Accounts" is copied with following values
-        | Instance ID       | Account Id   | Name       | Participant    |
-        | TC005Ins1         | Home_NK18    | Home_NK18  | HSBC           |
+#        Given instance "Home" of entity "Accounts" is copied with following values
+#        | Instance ID       | Account Id   | Name       | Participant    |
+#        | TC005Ins1         | Home_NK118    | Home_NK118  | HSBC           |
 
-        When "Position_Updates" are submitted with following values
+        Given "Position_Updates" are submitted with following values
         | Instance ID | account                      | quantity | price | side | participant             | type    |
-        | TC005Ins2   | [TC005Ins1.Account Id]       | 1000     | 50.0  | SHORT| [TC005Ins1.Participant] | MARGIN  |
+        | TC005Ins2   | Home_NN     | 1000     | 50.0  | SHORT| HSBC | MARGIN  |
 
         Then response of the request "TC005Ins2" should be
         | Instance ID         | status   | subStatus   |
