@@ -1,7 +1,7 @@
 import logging
 import re
 from src.utils.instance_registry import InstanceRegistry
-
+from random import randint
 
 class ResolverChain:
     instance = None
@@ -14,7 +14,7 @@ class ResolverChain:
         return cls.instance
 
     def build_chain(self):
-        self.resolver = InstanceResolver(DateTimeResolver(None))
+        self.resolver = InstanceResolver(DateTimeResolver(StringResolver(None)))
 
     def resolve(self, value):
         return self.resolver.resolve(value)
@@ -59,4 +59,21 @@ class InstanceResolver(Resolver):
 class DateTimeResolver(Resolver):
 
     def process(self, value):
+        return value
+
+
+class StringResolver(Resolver):
+
+    def process(self, value):
+        match = re.search("random\\((.+)\\)", value)
+
+        if match is not None:
+            matched_value = match.group(1)
+            value_list = matched_value.split(",")
+            if len(value_list) == 2:
+                number_size = int(value_list[1])
+                random_num = str(randint(0, 10 ** number_size))
+                temp_number = random_num.zfill(number_size)
+                value = value_list[0] + str(temp_number)
+
         return value

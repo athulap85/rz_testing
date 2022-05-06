@@ -1,5 +1,5 @@
 import logging
-
+import time
 
 class InterfaceManager:
     instance = None
@@ -26,5 +26,20 @@ class InterfaceManager:
         logging.debug(f"query_data: interface_id : [{interface_id}]")
         interface = self.interfaces.get(interface_id)
         assert interface is not None, f"query_data:Interface {interface_id} is not registered in InterfaceManager"
-        return interface.query_data(query)
+        msg_array, error = interface.query_data(query)
+
+        msg_array = error = None
+        retry_count = 5
+        for x in range(retry_count):
+            logging.info(f"Querying for data[attempt {x + 1}/{retry_count}]")
+            msg_array, error = interface.query_data(query)
+
+            if msg_array is None or len(msg_array) == 0:
+                time.sleep(1)
+            else:
+                break
+
+        return msg_array, error
+
+
 

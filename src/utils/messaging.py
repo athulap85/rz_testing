@@ -59,6 +59,7 @@ def compare(expected_msg, received_msg, should_assert=True):
 
 
 def pack_row_to_message(message, header, row):
+    logging.debug(f"pack_row_to_message")
     instance_id = None
     for field in header:
         if field == "Instance ID":
@@ -72,11 +73,13 @@ def pack_row_to_message(message, header, row):
 
 
 def pack_row_to_new_message(message_name, header, row):
+    logging.debug(f"pack_row_to_new_message - message_name[{message_name}]")
     msg = Message(message_name)
     return pack_row_to_message(msg, header, row)
 
 
 def pack_row_to_query(message_definition, header, row, filters):
+    logging.debug(f"pack_row_to_query - message_definition[{message_definition}]")
     filter_list = filters.split(",")
     query = DataQuery(message_definition)
     for field in header:
