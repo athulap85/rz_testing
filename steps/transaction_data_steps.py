@@ -2,7 +2,8 @@ import logging
 
 from behave import *
 from src.transaction_data.interfaceManager import InterfaceManager
-from src.utils.messaging import pack_row_to_message, pack_row_to_query, compare, Message, pack_row_to_new_message
+from src.utils.messaging import pack_row_to_message, pack_row_to_query, Message, pack_row_to_new_message
+from src.utils.comparators import compare, compare_message_arrays
 import json
 
 response_messages = {}
@@ -85,26 +86,3 @@ def extract_queries_and_expected_messages(message_name, table, filters):
 
     logging.info(f"Output map {str(output_map)}")
     return output_map
-
-
-def compare_message_arrays(expected_array, response_array):
-    assert len(expected_array) == len(response_array), f"Expected and received messages count mismatch." \
-        f" \nExpected : {print_msg_array(expected_array)} \nReceived : {print_msg_array(response_array)}\n"
-
-    for expecting_msg in expected_array:
-        found = False
-        for response_msg in response_array:
-            if compare(expecting_msg, response_msg, False):
-                found = True
-                break
-        if found is False:
-            assert False, f"Expected message not received.\n" \
-                      f"Expected : {str(expecting_msg)} \nAvailable messages : {print_msg_array(response_array)}\n"
-
-
-def print_msg_array(array):
-    str1 = "{\n"
-    for item in array:
-        str1 += str(item)
-    str1 += "}\n"
-    return str1

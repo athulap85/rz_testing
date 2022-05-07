@@ -1,6 +1,7 @@
 from behave import *
 import logging
-from src.utils.messaging import pack_row_to_new_message, compare
+from src.utils.messaging import pack_row_to_new_message
+from src.utils.comparators import compare
 from src.refdata.refdata_manager import RefDataManager
 from src.utils.resolvers import ResolverChain
 
@@ -68,7 +69,7 @@ def step_impl(context, instance_key, entity):
     assert error_msg is None, f"Unable to find the instance [{instance_key}] of entity [{entity}]. Error [{error_msg}]"
     expected_msg = pack_row_to_new_message(entity, context.table.headings, context.table[0])
     compare(expected_msg, response_msg)
-    #assert False
+    # assert False
 
 
 @Given(u'instance "{instance_key}" of entity "{entity}" is deleted')
