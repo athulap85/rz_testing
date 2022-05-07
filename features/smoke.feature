@@ -33,7 +33,7 @@ Feature: testing
     | Instance ID | Participant  | Account Id | Name       |
     | Acc01       | TEST_HSBC    | TestAcc    | TestAcc    |
 
-    When "Position_Updates" are submitted with following values
+    When "Position Update" messages are submitted with following values
     | Instance ID | account    | quantity | price | participant  |
     | POU1        | TestAcc    | 1000     | 50.0  | TEST_HSBC    |
 
@@ -53,7 +53,7 @@ Feature: testing
 
 
   Scenario: Market data smoke
-    When "Realtime_Risk_Factor_Updates" are submitted with following values
+    When "Realtime Risk Factor Update" messages are submitted with following values
     | Instance ID | symbol   | type   | value |
     | RFU01       | TST_INS1 | BB     | 1.0   |
     | RFU02       | TST_INS1 | BO     | 2.0   |

@@ -1,5 +1,5 @@
 {
-    "messageName": "PositionUpdate",
+    "messageName": "Position Update",
     "fields" :
     {
       "symbol": "ACH",

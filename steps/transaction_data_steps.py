@@ -10,18 +10,19 @@ response_messages = {}
 BLUESHIFT_API = "BLUESHIFT_API"
 
 
-@Given(u'"{template_name}" are submitted with following values')
+@Given(u'"{template_name}" messages are submitted with following values')
 def step_impl(context, template_name):
     process_request(context, template_name, False)
 
 
-@When(u'"{template_name}" are submitted with following values')
+@When(u'"{template_name}" messages are submitted with following values')
 def step_impl(context, template_name):
     process_request(context, template_name, True)
 
 
-def process_request(context, template_name, expect_response):
+def process_request(context, entity, expect_response):
     try:
+        template_name = entity.replace(" ", "_")
         f = open(f'configs/templates/{template_name}.json', 'r')
         json_message = json.load(f)
         f.close()

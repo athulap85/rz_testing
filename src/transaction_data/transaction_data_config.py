@@ -1,6 +1,7 @@
 message_to_endpoint_mapping = {
-    "PositionUpdate": "position-api/position-updates",
+    "Position Update": "position-api/position-updates",
     "Position": "position-api/positions",
-    "RealtimeRiskFactorUpdate": "market-data-api/realtime-risk-factor-updates",
-    "Realtime_Risk_Factor_Values": "market-data-api/realtime-risk-factor-values"
+    "Realtime Risk Factor Update": "market-data-api/realtime-risk-factor-updates",
+    "Realtime Risk Factor Value": "market-data-api/realtime-risk-factor-values",
+    "Hedge Efficiency": "margin-value-api/hedge-efficiency"
 }

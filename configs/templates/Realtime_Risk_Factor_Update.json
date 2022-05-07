@@ -1,5 +1,5 @@
 {
-  "messageName": "RealtimeRiskFactorUpdate",
+  "messageName": "Realtime Risk Factor Update",
   "fields" :
   {
     "symbol": "BCHEUR",
