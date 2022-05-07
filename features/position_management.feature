@@ -3,7 +3,7 @@ Feature: Position Management
 
     Scenario: 1 Submitting a position update request
 
-        When "Position_Updates" are submitted with following values
+        When "Position Update" messages are submitted with following values
         | Instance ID | account | value | price | side | participant |
         | POU1        | Home1   | 1000  | 50.0  | SHORT|  CITI       |
 
@@ -13,7 +13,7 @@ Feature: Position Management
 
 
     Scenario: 2 Validating the position message
-        Then "Position" messages are filtered by "level,participant,account" should be
+        Then "Position" messages are filtered by "level,participant,account,symbol" should be
         | Instance ID | participant | account   | level     | symbol       | shortPosition |
         | POU_Res1    | HSBC        | Home      | ACCOUNT   | BTCUSD_FUT9  | 0.0           |
 

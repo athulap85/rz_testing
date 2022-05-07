@@ -33,33 +33,36 @@ class TransactionDataAdaptor(ITransactionDataInterface):
     def query_data(self, query):
         logging.info(f"Query Message: {str(query)}")
         entity = query.entity
+        endpoint = message_to_endpoint_mapping.get(entity)
+        assert endpoint is not None, f"Unable to find endpoint mapping for [{entity}] " \
+                                     f"in the src/blueshift/transaction_data_config.py"
         if entity == "Position":
-            return self.process_position_query(query)
-        elif entity == "Realtime_Risk_Factor_Values":
-            return self.process_risk_factor_values_query(query)
+            return self.process_position_query(endpoint, query)
+        elif entity == "Realtime Risk Factor Value":
+            return self.process_risk_factor_values_query(endpoint, query)
+        elif entity == "Hedge Efficiency":
+            return self.process_hedge_efficiency(endpoint, query)
         else:
-            assert False, f"Unhandled query type: {query.entity}"
+            assert False, f"Unhandled query type: {query.entity} in src/transaction_data/transaction_data_adaptor.py"
 
-    def process_risk_factor_values_query(self, query):
-        endpoint = message_to_endpoint_mapping.get(query.entity)
+    def process_risk_factor_values_query(self, endpoint, query):
         symbol = None
         filters = query.get_filters()
         for filter_item in filters:
             if filter_item.field == "symbol":
                 symbol = filter_item.value
 
-        url = f"{endpoint}/{symbol}"
+        url = f"{endpoint}"
         status_code, response = self.http_client.get_request(url)
         if status_code == 200:
             response_json = json.loads(response)
-            msg_array = self.create_response_array(query, response_json)
+            msg_array = self.create_response_array(query, response_json["content"])
 
             return msg_array, None
         else:
             return None, response
 
-    def process_position_query(self, query):
-        endpoint = message_to_endpoint_mapping.get(query.entity)
+    def process_position_query(self, endpoint, query):
         filters = query.get_filters()
         level = participant = account = None
         for filter in filters:
@@ -106,6 +109,35 @@ class TransactionDataAdaptor(ITransactionDataInterface):
             return msg_array, None
         else:
             return None, response
+
+    def process_hedge_efficiency(self, endpoint, query):
+        account = symbol = None
+        filters = query.get_filters()
+        for filter_item in filters:
+            if filter_item.field == "symbol":
+                symbol = filter_item.value
+            elif filter_item.field == "account":
+                account = filter_item.value
+
+        assert account is not None, "Field [account] must to be present as a filter criteria for Hedge Efficiency query"
+
+        url = f"{endpoint}?accountId={account}"
+        status_code, response = self.http_client.get_request(url)
+        if status_code == 200:
+            response_json = json.loads(response)
+            updated_response = self.reformat_hedge_efficiency_response(account, response_json)
+            msg_array = self.create_response_array(query, updated_response)
+
+            return msg_array, None
+        else:
+            return None, response
+
+    def reformat_hedge_efficiency_response(self, account, response):
+        output = []
+        for time, value in response.items():
+            for symbol, hedge_value in value.items():
+                output.append({"time": time, "account": account, "symbol": symbol, "hedgeEfficiency": hedge_value })
+        return output
 
     def create_request_msg(self, message):
         return message.fieldValues
