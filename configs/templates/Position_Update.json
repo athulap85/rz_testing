@@ -2,7 +2,7 @@
     "messageName": "Position Update",
     "fields" :
     {
-      "symbol": "ACH",
+      "symbol": "Bond_Test_1",
       "participant": "HSBC",
       "account": "Home",
       "currency": "USD",
