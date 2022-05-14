@@ -59,6 +59,7 @@ def step_impl(context, instance_id):
 def step_impl(context, message_name, filters):
     results_map = extract_queries_and_expected_messages(message_name, context.table, filters)
     for query, expecting_msg_array in results_map.items():
+        query.set_expected_msg_count(len(expecting_msg_array))
         responses, error_message = InterfaceManager().query_data(BLUESHIFT_API, query)
         assert error_message is None, f"Error occurred when querying the data. error: [{error_message}]"
         compare_message_arrays(expecting_msg_array, responses)
@@ -67,7 +68,7 @@ def step_impl(context, message_name, filters):
 def extract_queries_and_expected_messages(message_name, table, filters):
     filter_list = filters.split(",")
     query_objects = {}
-    output_map = {}
+    expected_msgs_by_query_obj = {}
     for row in table:
         key_str = ""
         for field in filter_list:
@@ -81,9 +82,9 @@ def extract_queries_and_expected_messages(message_name, table, filters):
         if key_str not in query_objects:
             query = pack_row_to_query(message_name, table.headings, row, filters)
             query_objects[key_str] = query
-            output_map[query] = [expected_msg]
+            expected_msgs_by_query_obj[query] = [expected_msg]
         else:
-            output_map[query_objects[key_str]].append(expected_msg)
+            expected_msgs_by_query_obj[query_objects[key_str]].append(expected_msg)
 
-    logging.info(f"Output map {str(output_map)}")
-    return output_map
+    logging.info(f"Output map {str(expected_msgs_by_query_obj)}")
+    return expected_msgs_by_query_obj

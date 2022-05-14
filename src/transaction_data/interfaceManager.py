@@ -29,12 +29,12 @@ class InterfaceManager:
         msg_array, error = interface.query_data(query)
 
         msg_array = error = None
-        retry_count = 5
+        retry_count = 15
         for x in range(retry_count):
             logging.info(f"Querying for data[attempt {x + 1}/{retry_count}]")
             msg_array, error = interface.query_data(query)
 
-            if msg_array is None or len(msg_array) == 0:
+            if msg_array is None or len(msg_array) != query.get_expected_msg_count():
                 time.sleep(1)
             else:
                 break

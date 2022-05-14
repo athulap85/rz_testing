@@ -77,6 +77,11 @@ def pack_row_to_query(message_definition, header, row, filters):
     return query;
 
 
+def pack_table_entry_to_table(table_key, table_entry_msg):
+    logging.debug(f"pack_table_entry_to_table - table_key[{table_key}]")
+    InstanceRegistry().register_table_entry(table_key, table_entry_msg.get_field_value("Instance ID"))
+
+
 class Operator(Enum):
     EQUAL = "eq"
     GREATER_THAN = "gt"
@@ -99,6 +104,7 @@ class DataQuery:
     def __init__(self, entity):
         self.entity = entity
         self.filters = []
+        self.expected_msg_count = 0
 
     def add_filter(self, field, operator, value):
         if not isinstance(operator, Operator):
@@ -107,6 +113,12 @@ class DataQuery:
 
     def get_filters(self):
         return self.filters
+
+    def set_expected_msg_count(self, count):
+        self.expected_msg_count = count
+
+    def get_expected_msg_count(self):
+        return self.expected_msg_count
 
     def __str__(self):
         value = "\nDataQuery{\n"
