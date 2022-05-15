@@ -364,7 +364,7 @@ Feature: Position Attributes
        Given instance "[TC_011_Inst2.Symbol]" of entity "Instruments" is deleted
 
        @done
-       Scenario: TC_012 Validate MTM Value when LTP is empty and updated
+       Scenario: TC_012 Validate MTM Value when LTP is empty and updated before the next position update
 
         Given instance "Home" of entity "Accounts" is copied with following values
         | Instance ID | Account Id     | Name          | Participant    |
@@ -409,7 +409,7 @@ Feature: Position Attributes
        Given instance "[TC_012_Ins1.Account Id] " of entity "Accounts" is deleted
        Given instance "[TC_012_Inst.Symbol]" of entity "Instruments" is deleted
 
-       @wip
+       @done @fail
        Scenario: TC_013 Validate MTM Value when AI is empty and updated
 
         Given instance "Home" of entity "Accounts" is copied with following values
@@ -442,7 +442,45 @@ Feature: Position Attributes
 
         Then "Position" messages are filtered by "level,participant,account,shortPosition" should be
         | Instance ID         | level   | participant               |  symbol              | shortPosition    | shortValue  | netPosition    | netValue  | avgPrice   | account                 |   mtmValue     |
-        | TC_013_Ins3_Res2    | ACCOUNT | [TC_013_Ins3.participant] | [TC_013_Ins3.symbol] | 1000.0           | 75000.0    | -1000.0        | -75000.0 |   75.0       | [TC_013_Ins3.account]   |   -70000.0     |
+        | TC_013_Ins2_Res3    | ACCOUNT | [TC_013_Ins2.participant] | [TC_013_Ins2.symbol] | 1000.0           | 75000.0    | -1000.0        | -75000.0 |   75.0       | [TC_013_Ins2.account]   |   -70000.0     |
 
        Given instance "[TC_013_Ins1.Account Id] " of entity "Accounts" is deleted
        Given instance "[TC_013_Inst.Symbol]" of entity "Instruments" is deleted
+
+       @done @fail
+       Scenario: TC_014 Validate MTM Value when LTP is empty and updated
+
+        Given instance "Home" of entity "Accounts" is copied with following values
+        | Instance ID | Account Id     | Name          | Participant    |
+        | TC_014_Ins1 | random(ACC,6)  | random(ACN,6) | HSBC           |
+
+		And  instance "Bond_Test_1" of entity "Instruments" is copied with following values
+        | Instance ID | Symbol               |
+        | TC_014_Inst | random(FR_BOND_CUR,6)|
+
+        When "Realtime Risk Factor Update" messages are submitted with following values
+        | Instance ID | symbol                  | type    | value  |
+        | TC_014_MD1 | [TC_014_Inst.Symbol]     | AI      | 25.0   |
+
+        And "Position Update" messages are submitted with following values
+        | Instance ID   | account                     | symbol                | quantity  | price | value   | side  | participant                 | notional |
+        | TC_014_Ins2   | [TC_014_Ins1.Account Id]    | [TC_014_Inst.Symbol]  |  1000     | 60.0  | 60000.0 | SHORT |  [TC_014_Ins1.Participant]  | 100000   |
+
+        Then response of the request "TC_014_Ins2" should be
+        | Instance ID       | status   | subStatus   |
+        | TC_014_Ins2_Res1  | POSTED   | PROCESSING  |
+
+        And "Position" messages are filtered by "level,participant,account" should be
+        | Instance ID         | level   | participant               |  symbol              | shortPosition    | shortValue | netPosition    | netValue | avgPrice   | account                  |   mtmValue     |
+        | TC_014_Ins2_Res2    | ACCOUNT |  [TC_014_Ins2.participant]| [TC_014_Ins2.symbol] | 1000.0           | 85000.0    | -1000.0        | -85000.0 | 85.0       | [TC_014_Ins2.account]   |   -25000.0     |
+
+        When "Realtime Risk Factor Update" messages are submitted with following values
+        | Instance ID | symbol                  | type    | value  |
+        | TC_014_MD2  | [TC_014_Inst.Symbol]    | LTP     | 65.0   |
+
+        Then "Position" messages are filtered by "level,participant,account,shortPosition" should be
+        | Instance ID         | level   | participant               |  symbol              | shortPosition    | shortValue  | netPosition    | netValue  | avgPrice   | account                 |   mtmValue     |
+        | TC_014_Ins2_Res3    | ACCOUNT | [TC_014_Ins2.participant] | [TC_014_Ins2.symbol] | 1000.0           | 90000.0     | -1000.0        | -90000.0  |   90.0     | [TC_014_Ins2.account]   |   -90000.0     |
+
+       Given instance "[TC_014_Ins1.Account Id] " of entity "Accounts" is deleted
+       Given instance "[TC_014_Inst.Symbol]" of entity "Instruments" is deleted
