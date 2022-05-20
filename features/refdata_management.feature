@@ -1,11 +1,6 @@
 Feature: refdata add edit delete instances
 
-  Scenario: TC_002 Copy & create an new currecny
-    Given instance "USD" of entity "Currencies" is copied with following values
-      | Instance ID | Currency Id | Description | Currency Precision |
-      | Cur01       | AED         | Dirham      | 0                  |
-
-  Scenario: TC_003 Copy & create an new Participant
+   Scenario: TC_003 Copy & create an new Participant
     Given instance "HSBC" of entity "Participants" is copied with following values
       | Instance ID | Participant Id | Name                 | LEI Code | Type             |
       | Mem01       | MEM_001        | Participant Test 001 | LEI_TEST | CLEARING_MEMBER  |
@@ -50,6 +45,12 @@ Feature: refdata add edit delete instances
     Then instance "BINANCE1" of entity "Markets" should be
       | Instance ID | Market Id          | Description          |
       | Res01       | [Mark01.Market Id] | [Mark01.Description] |
+
+    @test
+      Scenario: TC_002 Copy & create an new Instrument
+    Given instance "test_SYM_GB_01" of entity "Instruments" is copied with following values
+      | Instance ID |Symbol          |
+      | INST_1      | SL_DEV_BOND         |
 
 @final
   Scenario: TC_011 Deleting instances
