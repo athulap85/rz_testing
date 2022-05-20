@@ -54,7 +54,6 @@ class RefDataManager:
         logging.debug("On feature start")
 
     def on_feature_complete(self):
-        logging.debug("On feature complete")
         for key, value in self.reversal_msgs.items():
             logging.debug(key + '->' + value)
         self.reversal_msgs.clear()

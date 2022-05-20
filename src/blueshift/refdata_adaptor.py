@@ -100,12 +100,17 @@ class RefDataAdaptor(IRefDataInterface):
         entity_def = self.entity_definitions.get(entity_name)
         assert entity_def is not None, f"Cannot find the specified entity [{entity_name}] in the Blue Shift"
         sub_endpoint = entity_def.get_property("endpoint")
-        assert sub_endpoint is not None, f"Cannot find the property 'endpoint' in Blue Shift entity [{entity_name}]"
+        assert sub_endpoint is not None, f"Cannot find the property 'endpoint' in Blueshift entity [{entity_name}]"
         key_field = self.get_key_field(entity_name)
 
         field_def = entity_def.find_field_def_by_display_name(key_field)
         assert field_def is not None, f"Cannot find the specified field [{key_field}] in entity [{entity_name}]"
-        filter_values = {"data": [instance_key], "type": field_def.get_property("type")}
+        data_type = field_def.get_property("type")
+
+        if key_field == "Id":
+            data_type = "String"
+
+        filter_values = {"data": [instance_key], "type": data_type}
         query_obj = {field_def.name: filter_values}
 
         status_code, response = self.http_client.post_request("/" + sub_endpoint + "-search?userName=ranush", query_obj)
@@ -115,7 +120,7 @@ class RefDataAdaptor(IRefDataInterface):
 
             response_msg = None
             for instance in response_json["content"]:
-                if instance[field_def.name] == instance_key:
+                if str(instance[field_def.name]) == str(instance_key):
                     response_msg = instance
             logging.info(f"fetch_instance: selected instance: \n {response_msg}")
             assert response_msg is not None, f"Unable to find the instance [{instance_key}] of entity [{entity_name}]"
@@ -183,11 +188,13 @@ class RefDataAdaptor(IRefDataInterface):
             if value is not None:
                 if data_type in self.entity_name_to_display_name_map:
                     if type(value) == list:
-                        value = '|'.join([x["name"] for x in value])
+                        value = ','.join([x["name"] for x in value])
                     else:
                         value = value["name"]
                 elif data_type == "Enum":
                     value = value.replace("_", " ").title()
+                elif data_type == "Date" and value is not None:
+                    value = value[0:10]
 
             display_name = field_def.get_property("displayName")
             msg.set_field_value(display_name, value)
@@ -202,10 +209,12 @@ class RefDataAdaptor(IRefDataInterface):
 
             field_def = entity_definition.find_field_def_by_display_name(key)
             data_type = field_def.get_property("type")
+            multiple = field_def.get_property("multiple")
 
             if value is not None:
                 if data_type in self.entity_name_to_display_name_map:
-                    value = self.enrich_linked_instance_details(self.entity_name_to_display_name_map[data_type], value)
+                    value = self.enrich_linked_instance_details(self.entity_name_to_display_name_map[data_type],
+                                                                multiple)
                 elif data_type == "Enum":
                     value = value.replace(" ", "_").upper()
 
@@ -228,10 +237,16 @@ class RefDataAdaptor(IRefDataInterface):
             if changed_value is not None:
                 value = changed_value
 
+            if changed_value == "":
+                value = None
+
             data_type = field_def.get_property("type")
+            multiple = field_def.get_property("multiple")
+
             if value is not None:
                 if data_type in self.entity_name_to_display_name_map:
-                    value = self.enrich_linked_instance_details(self.entity_name_to_display_name_map[data_type], value)
+                    value = self.enrich_linked_instance_details(self.entity_name_to_display_name_map[data_type], value,
+                                                                multiple)
                 elif data_type == "Enum":
                     value = value.replace(" ", "_").upper()
 
@@ -244,10 +259,11 @@ class RefDataAdaptor(IRefDataInterface):
 
         return request
 
-    def enrich_linked_instance_details(self, related_entity_name, received_value):
-        logging.debug(f"enrich_linked_instance_details entity [{related_entity_name}] value [{received_value}]")
-        if "|" in received_value:
-            values = received_value.split("|")
+    def enrich_linked_instance_details(self, related_entity_name, received_value, multi_value):
+        logging.debug(f"enrich_linked_instance_details entity [{related_entity_name}] value [{received_value}]"
+                      f" multiple [{multi_value}]")
+        if multi_value:
+            values = received_value.split(",")
             item_list = []
             for value in values:
                 instance_id = self.get_instance_id(related_entity_name, value)
