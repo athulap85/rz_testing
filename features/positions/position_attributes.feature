@@ -5,19 +5,15 @@ Feature: Position Attributes
 
       Given instance "Home" of entity "Accounts" is copied with following values
         | Instance ID | Account Id     | Name             | Participant    |
-        | TC_003_Ins  | random(ACC,6)  | random(ACN,6)    | HSBC           |
+        | TC_003_Ins  | random(ACC,6)  | random(ACN,6)    | PS_001           |
 
         When "Position Update" messages are submitted with following values
         | Instance ID    | symbol      | quantity | price | side | participant              | type   | account                 |  notional | Position Key Id |
-        | TC_003_Ins1    | Bond_Test_1 | 1000     | 50.0  | SHORT| [TC_003_Ins.Participant] | MARGIN | [TC_003_Ins.Account Id] |  5000     |  1              |
-
-        Then response of the request "TC_003_Ins1" should be
-        | Instance ID       | status    | subStatus            |
-        | TC_003_Ins1_Res1  | POSTED    | ACCEPTED           |
+        | TC_003_Ins1    | Bond_Test_1 | 1000     | 50.0  | SHORT| [TC_003_Ins.Participant] | MARGIN | [TC_003_Ins.Account Id] |  50000    |  1              |
 
         Then "Position" messages are filtered by "level,account,participant" should be
         | Instance ID      | symbol                   | level    | account                       | participant                | type   | shortPosition   | netPosition |  positionKey  |
-        | TC_003_Ins1_Res2 | [TC_003_Ins1.symbol]     | ACCOUNT  | [TC_003_Ins.Account Id]       | [TC_003_Ins1.participant]  | MARGIN | 1000.0          | -1000.0     |  NOT_EMPTY    |
+        | TC_003_Ins1_Res1 | [TC_003_Ins1.symbol]     | ACCOUNT  | [TC_003_Ins.Account Id]       | [TC_003_Ins1.participant]  | MARGIN | 1000.0          | -1000.0     |  NOT_EMPTY    |
 
       Given instance "[TC_003_Ins.Account Id]" of entity "Accounts" is deleted
 
@@ -26,7 +22,7 @@ Feature: Position Attributes
 
       Given instance "Home" of entity "Accounts" is copied with following values
         | Instance ID | Account Id     | Name             | Participant    |
-        | TC_004_Ins  | random(ACC,6)  | random(ACN,6)    | HSBC           |
+        | TC_004_Ins  | random(ACC,6)  | random(ACN,6)    | PS_001           |
 
         And  instance "Bond_Test_1" of entity "Instruments" is copied with following values
         | Instance ID | Instrument Type    | Symbol               |
@@ -34,15 +30,11 @@ Feature: Position Attributes
 
         When "Position Update" messages are submitted with following values
         | Instance ID    | symbol                   | quantity | price | side | participant              | type   | account                 |  notional | Position Key Id |
-        | TC_004_Ins1    | [TC_004_Inst.Symbol]     | 1000     | 50.0  | SHORT| [TC_004_Ins.Participant] | MARGIN | [TC_004_Ins.Account Id] |  1000     |  1              |
-
-        Then response of the request "TC_004_Ins1" should be
-        | Instance ID       | status    | subStatus            |
-        | TC_004_Ins1_Res1  | POSTED    | ACCEPTED           |
+        | TC_004_Ins1    | [TC_004_Inst.Symbol]     | 1000     | 50.0  | SHORT| [TC_004_Ins.Participant] | MARGIN | [TC_004_Ins.Account Id] |  50000     |  1              |
 
         Then "Position" messages are filtered by "level,account,participant" should be
         | Instance ID      | symbol                   | level    | account                       | participant                | type   | shortPosition   | netPosition |  positionKey  |
-        | TC_004_Ins1_Res2 | [TC_004_Ins1.symbol]     | ACCOUNT  | [TC_004_Ins.Account Id]       | [TC_004_Ins1.participant]  | MARGIN | 1000.0          | -1000.0     |  NOT_EMPTY    |
+        | TC_004_Ins1_Res1 | [TC_004_Ins1.symbol]     | ACCOUNT  | [TC_004_Ins.Account Id]       | [TC_004_Ins1.participant]  | MARGIN | 1000.0          | -1000.0     |  NOT_EMPTY    |
 
       Given instance "[TC_004_Ins.Account Id]" of entity "Accounts" is deleted
       Given instance "[TC_004_Inst.Symbol]" of entity "Instruments" is deleted
@@ -52,7 +44,7 @@ Feature: Position Attributes
 
       Given instance "Home" of entity "Accounts" is copied with following values
         | Instance ID | Account Id     | Name             | Participant    |
-        | TC_005_Ins  | random(ACC,6)  | random(ACN,6)    | HSBC           |
+        | TC_005_Ins  | random(ACC,6)  | random(ACN,6)    | PS_001           |
 
        And  instance "Bond_Test_1" of entity "Instruments" is copied with following values
         | Instance ID | Symbol               | Currency    |
@@ -60,11 +52,7 @@ Feature: Position Attributes
 
         When "Position Update" messages are submitted with following values
         | Instance ID    | symbol     | quantity   | price | side | participant              | type   | account                 |  notional  | market     |
-        | TC_005_Ins1    | Bond_Test_1|   1000     | 50.0  | SHORT| [TC_005_Ins.Participant] | MARGIN | [TC_005_Ins.Account Id] |  1000      |  BitStamp  |
-
-        Then response of the request "TC_005_Ins1" should be
-        | Instance ID       | status    | subStatus            |
-        | TC_005_Ins1_Res1  | POSTED    | ACCEPTED           |
+        | TC_005_Ins1    | Bond_Test_1|   1000     | 50.0  | SHORT| [TC_005_Ins.Participant] | MARGIN | [TC_005_Ins.Account Id] |  50000     |  BitStamp  |
 
         Then "Position" messages are filtered by "level,account,participant,shortPosition" should be
         | Instance ID      |  symbol                |  level    | account                       | participant                | type   | shortPosition   | netPosition |   currency |
@@ -72,15 +60,11 @@ Feature: Position Attributes
 
 	    When "Position Update" messages are submitted with following values
         | Instance ID    | symbol               | quantity | price | side | participant              | type   | account                 |  notional  |
-        | TC_005_Ins2    | [TC_005_Inst.Symbol] | 1000     | 50.0  | SHORT| [TC_005_Ins.Participant] | MARGIN | [TC_005_Ins.Account Id] |  1000      |
-
-        Then response of the request "TC_005_Ins1" should be
-        | Instance ID       | status    | subStatus            |
-        | TC_005_Ins2_Res1  | POSTED    | ACCEPTED           |
+        | TC_005_Ins2    | [TC_005_Inst.Symbol] | 1000     | 50.0  | SHORT| [TC_005_Ins.Participant] | MARGIN | [TC_005_Ins.Account Id] |  50000     |
 
         Then "Position" messages are filtered by "level,account,participant" should be
         | Instance ID      | symbol                   | level    | account                       | participant                | type   | shortPosition   | netPosition |  currency                 |
-        | TC_005_Ins2_Res2 | [TC_005_Ins2.symbol]     | ACCOUNT  | [TC_005_Ins.Account Id]       | [TC_005_Ins2.participant]  | MARGIN | 1000.0          | -1000.0     |  TC_005_Inst.Currency]    |
+        | TC_005_Ins2_Res1 | [TC_005_Ins2.symbol]     | ACCOUNT  | [TC_005_Ins.Account Id]       | [TC_005_Ins2.participant]  | MARGIN | 1000.0          | -1000.0     |  TC_005_Inst.Currency]    |
 
       Given instance "[TC_005_Ins.Account Id]" of entity "Accounts" is deleted
 	  Given instance "[TC_005_Inst.Symbol]" of entity "Instruments" is deleted
@@ -90,18 +74,15 @@ Feature: Position Attributes
 
       Given instance "Home" of entity "Accounts" is copied with following values
         | Instance ID | Account Id     | Name             | Participant    |
-        | TC_006_Ins  | random(ACC,6)  | random(ACN,6)    | HSBC           |
+        | TC_006_Ins  | random(ACC,6)  | random(ACN,6)    | PS_001           |
 
         When "Position Update" messages are submitted with following values
         | Instance ID    | symbol     | quantity   | price | side | participant                | type   | account                 |  notional  |  settlement Date |
-        | TC_006_Ins1    | Bond_Test_1|   1000     | 50.0  | SHORT| [TC_006_Ins.Participant]   | MARGIN | [TC_006_Ins.Account Id] |  1000      |  2022-04-20      |
-        Then response of the request "TC_006_Ins1" should be
-        | Instance ID       | status    | subStatus            |
-        | TC_006_Ins1_Res1  | POSTED    | ACCEPTED           |
+        | TC_006_Ins1    | Bond_Test_1|   1000     | 50.0  | SHORT| [TC_006_Ins.Participant]   | MARGIN | [TC_006_Ins.Account Id] |  50000     |  2022-04-20      |
 
         Then "Position" messages are filtered by "level,account,participant" should be
         | Instance ID      |  symbol                |  level    | account                       | participant                | type   | shortPosition   | netPosition |    settlementDate					  |
-        | TC_006_Ins1_Res2 | [TC_006_Ins1.symbol]   | ACCOUNT   | [TC_006_Ins.Account Id]       | [TC_006_Ins1.participant]  | MARGIN | 1000.0          | -1000.0     |   [TC_006_Ins1.settlement Date]      |
+        | TC_006_Ins1_Res1 | [TC_006_Ins1.symbol]   | ACCOUNT   | [TC_006_Ins.Account Id]       | [TC_006_Ins1.participant]  | MARGIN | 1000.0          | -1000.0     |   [TC_006_Ins1.settlement Date]      |
 
       Given instance "[TC_006_Ins.Account Id]" of entity "Accounts" is deleted
 
@@ -110,31 +91,23 @@ Feature: Position Attributes
 
       Given instance "Home" of entity "Accounts" is copied with following values
         | Instance ID | Account Id     | Name             | Participant    |
-        | TC_007_Ins  | random(ACC,6)  | random(ACN,6)    | HSBC           |
+        | TC_007_Ins  | random(ACC,6)  | random(ACN,6)    | PS_001           |
 
         When "Position Update" messages are submitted with following values
         | Instance ID    | symbol     | quantity   | price | side | participant              | type   | account                 |  notional  | market   |
-        | TC_007_Ins1    | Bond_Test_1|   1000     | 50.0  | SHORT| [TC_007_Ins.Participant] | MARGIN | [TC_007_Ins.Account Id] |  1000      | BitStamp |
-
-        Then response of the request "TC_007_Ins1" should be
-        | Instance ID       | status    | subStatus            |
-        | TC_007_Ins1_Res1  | POSTED    | ACCEPTED           |
+        | TC_007_Ins1    | Bond_Test_1|   1000     | 50.0  | SHORT| [TC_007_Ins.Participant] | MARGIN | [TC_007_Ins.Account Id] |  50000     | BitStamp |
 
         Then "Position" messages are filtered by "level,account,participant,shortPosition" should be
         | Instance ID      |  symbol                |  level    | account                       | participant                | type   | shortPosition   | netPosition |   market                |
-        | TC_007_Ins1_Res2 | [TC_007_Ins1.symbol]   | ACCOUNT   | [TC_007_Ins.Account Id]       | [TC_007_Ins1.participant]  | MARGIN | 1000.0          | -1000.0     |   [TC_007_Ins1.market]  |
+        | TC_007_Ins1_Res1 | [TC_007_Ins1.symbol]   | ACCOUNT   | [TC_007_Ins.Account Id]       | [TC_007_Ins1.participant]  | MARGIN | 1000.0          | -1000.0     |   [TC_007_Ins1.market]  |
 
         When "Position Update" messages are submitted with following values
         | Instance ID    | symbol     | quantity   | price | side | participant              | type   | account                 |  notional  | market   |
-        | TC_007_Ins2    | Bond_Test_1|   1000     | 50.0  | SHORT| [TC_007_Ins.Participant] | MARGIN | [TC_007_Ins.Account Id] |  1000      | BINANCE |
-
-        Then response of the request "TC_007_Ins1" should be
-        | Instance ID       | status    | subStatus            |
-        | TC_007_Ins2_Res1  | POSTED    | ACCEPTED           |
+        | TC_007_Ins2    | Bond_Test_1|   1000     | 50.0  | SHORT| [TC_007_Ins.Participant] | MARGIN | [TC_007_Ins.Account Id] |  500000    | BINANCE |
 
         Then "Position" messages are filtered by "level,account,participant,shortPosition" should be
         | Instance ID      |  symbol                |  level    | account                       | participant                | type   | shortPosition   | netPosition |   market               |
-        | TC_007_Ins2_Res2 | [TC_007_Ins2.symbol]   | ACCOUNT   | [TC_007_Ins.Account Id]       | [TC_007_Ins2.participant]  | MARGIN | 1000.0          | -1000.0     |   [TC_007_Ins2.market]  |
+        | TC_007_Ins2_Res1 | [TC_007_Ins2.symbol]   | ACCOUNT   | [TC_007_Ins.Account Id]       | [TC_007_Ins2.participant]  | MARGIN | 1000.0          | -1000.0     |   [TC_007_Ins2.market] |
 
       Given instance "[TC_007_Ins.Account Id]" of entity "Accounts" is deleted
 
@@ -143,7 +116,7 @@ Feature: Position Attributes
 
         Given instance "Home" of entity "Accounts" is copied with following values
         | Instance ID | Account Id     | Name               | Participant    |
-        | TC_008_Ins  | random(ACC,6)  | random(ACN,6)       | HSBC           |
+        | TC_008_Ins  | random(ACC,6)  | random(ACN,6)       | PS_001           |
 
         And  instance "Bond_Test_1" of entity "Instruments" is copied with following values
         | Instance ID | Symbol               | Currency    |
@@ -155,27 +128,19 @@ Feature: Position Attributes
 
         When "Position Update" messages are submitted with following values
         | Instance ID | account                 | symbol                   |  quantity | price | value   | side | participant               | notional  |
-        | TC_008_Ins1 | [TC_008_Ins.Account Id] | [TC_008_Inst.Symbol]     | 6000      | 5.0   | 30000.0 | LONG | [TC_008_Ins.Participant]  | 50000      |
-
-        Then response of the request "TC_008_Ins1" should be
-        | Instance ID      | status   | subStatus   |
-        | TC_008_Ins1_Res1 | POSTED   | ACCEPTED  |
+        | TC_008_Ins1 | [TC_008_Ins.Account Id] | [TC_008_Inst.Symbol]     | 6000      | 5.0   | 30000.0 | LONG | [TC_008_Ins.Participant]  | 30000     |
 
         Then "Position" messages are filtered by "level,participant,account" should be
-        | Instance ID     | level   | participant                   |  symbol                  | longPosition   | longValue | netPosition  | netValue | account                  | avgPrice                |  notional    |
-        | TC_008_Ins1_Res2| ACCOUNT | [TC_008_Ins1.participant]     | [TC_008_Ins1.symbol]     | 6000.0         | 3500.0    | 6000.0       | 3500.0   | [TC_008_Ins1.account]    | 0.5833333333333334      |  50000.0       |
+        | Instance ID     | level   | participant                   |  symbol                  | longPosition   | longValue | netPosition  | netValue | account                  | avgPrice     |  notional    |
+        | TC_008_Ins1_Res1| ACCOUNT | [TC_008_Ins1.participant]     | [TC_008_Ins1.symbol]     | 6000.0         | 2100.0    | 6000.0       | 2100.0   | [TC_008_Ins1.account]    | 0.35         |  30000.0      |
 
 	   When "Position Update" messages are submitted with following values
         | Instance ID | account                 | symbol                   |  quantity | price | value   | side | participant               | notional  |
-        | TC_008_Ins2 | [TC_008_Ins.Account Id] | [TC_008_Inst.Symbol]     |  4000     | 4.0   | 16000.0 | LONG | [TC_008_Ins.Participant]  | 50000     |
-
-        Then response of the request "TC_008_Ins2" should be
-        | Instance ID      | status   | subStatus   |
-        | TC_008_Ins2_Res1 | POSTED   | ACCEPTED  |
+        | TC_008_Ins2 | [TC_008_Ins.Account Id] | [TC_008_Inst.Symbol]     |  4000     | 4.0   | 16000.0 | LONG | [TC_008_Ins.Participant]  | 16000     |
 
         Then "Position" messages are filtered by "level,participant,account,longPosition" should be
         | Instance ID     | level   | participant                   |  symbol                  | longPosition   | longValue | netPosition  | netValue | account                  | avgPrice  |  notional   |
-        | TC_008_Ins2_Res2| ACCOUNT | [TC_008_Ins2.participant]     | [TC_008_Ins2.symbol]     | 10000.0        | 6500.0    | 10000.0      | 6500.0   | [TC_008_Ins2.account]    | 0.65      |  100000.0   |
+        | TC_008_Ins2_Res1| ACCOUNT | [TC_008_Ins2.participant]     | [TC_008_Ins2.symbol]     | 10000.0        | 3060.0    | 10000.0      | 3060.0   | [TC_008_Ins2.account]    | 0.306     |  46000.0   |
 
 	    Given instance "[TC_008_Ins.Account Id]" of entity "Accounts" is deleted
         Given instance "[TC_008_Inst.Symbol]" of entity "Instruments" is deleted
@@ -185,7 +150,7 @@ Feature: Position Attributes
 
         Given instance "Home" of entity "Accounts" is copied with following values
         | Instance ID | Account Id        | Name              | Participant    |
-        | TC_009_Ins1 | random(ACC,6)     | random(ACN,6)     | HSBC           |
+        | TC_009_Ins1 | random(ACC,6)     | random(ACN,6)     | PS_001           |
 
 		And  instance "Bond_Test_1" of entity "Instruments" is copied with following values
         | Instance ID | Symbol               | Currency    |
@@ -196,28 +161,20 @@ Feature: Position Attributes
         | TC_009_MD1 | [TC_009_Inst.Symbol]     | AI     | 2.0   |  USD        |
 
         When "Position Update" messages are submitted with following values
-        | Instance ID   | account                  | symbol                 |quantity | price | value   | side  | participant                 | notional     |
+        | Instance ID   | account                  | symbol                 |quantity   | price | value   | side  | participant                 | notional     |
         | TC_009_Ins2   | [TC_009_Ins1.Account Id] | [TC_009_Inst.Symbol]   |  600      | 50.0  | 30000.0 | SHORT |  [TC_009_Ins1.Participant]  |  30000       |
-
-        Then response of the request "TC_009_Ins2" should be
-        | Instance ID      | status   | subStatus   |
-        | TC_009_Ins2_Res1 | POSTED   | ACCEPTED  |
 
        And "Position" messages are filtered by "level,participant,account,shortPosition" should be
         | Instance ID        | level   | participant               | symbol                | shortPosition   | shortValue | netPosition  | netValue  | avgPrice | account                 |
-        | TC_009_Ins2_Res2   | ACCOUNT | [TC_009_Ins2.participant] | [TC_009_Ins2.symbol]  | 600.0           | 15600.0    | -600.0       | -15600.0  | 26.0     | [TC_009_Ins2.account]   |
+        | TC_009_Ins2_Res1   | ACCOUNT | [TC_009_Ins2.participant] | [TC_009_Ins2.symbol]  | 600.0           | 15600.0    | -600.0       | -15600.0  | 26.0     | [TC_009_Ins2.account]   |
 
         When "Position Update" messages are submitted with following values
         | Instance ID   | account                   | symbol                | quantity  | price | value   | side  | participant               | notional  |
-        | TC_009_Ins3   | [TC_009_Ins1.Account Id]  | [TC_009_Inst.Symbol]  |  1000     | 51.0  | 51000.0 | SHORT |  [TC_009_Ins1.Participant]|  30000    |
-
-        Then response of the request "TC_009_Ins3" should be
-        | Instance ID      | status   | subStatus   |
-        | TC_009_Ins3_Res1 | POSTED   | ACCEPTED  |
+        | TC_009_Ins3   | [TC_009_Ins1.Account Id]  | [TC_009_Inst.Symbol]  |  1000     | 51.0  | 51000.0 | SHORT |  [TC_009_Ins1.Participant]|  51000    |
 
          And "Position" messages are filtered by "level,participant,account,shortPosition" should be
         | Instance ID       | level   | participant              | symbol                 |  shortPosition   | shortValue | netPosition  | netValue  | avgPrice    | account                 |
-        | TC_009_Ins3_Res2  | ACCOUNT | [TC_009_Ins2.participant]| [TC_009_Ins3.symbol]   | 1600.0           | 31500.0    | -1600.0      | -31500.0  | 19.6875     | [TC_009_Ins2.account]   |
+        | TC_009_Ins3_Res1  | ACCOUNT | [TC_009_Ins2.participant]| [TC_009_Ins3.symbol]   |  1600.0          | 42630.0    | -1600.0      | -42630.0  | 26.64375     | [TC_009_Ins2.account]   |
 
       Given instance "[TC_009_Ins1.Account Id]" of entity "Accounts" is deleted
 	  Given instance "[TC_009_Inst.Symbol]" of entity "Instruments" is deleted
@@ -227,7 +184,7 @@ Feature: Position Attributes
 
         Given instance "Home" of entity "Accounts" is copied with following values
         | Instance ID | Account Id     | Name          | Participant    |
-        | TC_010_Ins1 | random(ACC,6)  | random(ACN,6) | HSBC           |
+        | TC_010_Ins1 | random(ACC,6)  | random(ACN,6) | PS_001           |
 
 		And  instance "Bond_Test_1" of entity "Instruments" is copied with following values
         | Instance ID | Symbol               | Currency    |
@@ -239,15 +196,11 @@ Feature: Position Attributes
 
         When "Position Update" messages are submitted with following values
         | Instance ID   | account                     | symbol                | quantity  | price | value   | side  | participant                 | notional |
-        | TC_010_Ins2   | [TC_010_Ins1.Account Id]    | [TC_010_Inst.Symbol]  |  800      | 50.0  | 40000.0 | SHORT |  [TC_010_Ins1.Participant]  | 100000   |
-
-        Then response of the request "TC_010_Ins2" should be
-        | Instance ID       | status   | subStatus   |
-        | TC_010_Ins2_Res1  | POSTED   | ACCEPTED  |
+        | TC_010_Ins2   | [TC_010_Ins1.Account Id]    | [TC_010_Inst.Symbol]  |  800      | 50.0  | 40000.0 | SHORT |  [TC_010_Ins1.Participant]  | 40000    |
 
         And "Position" messages are filtered by "level,participant,account,netPosition,netValue" should be
         | Instance ID         | level   | participant               |  symbol              | shortPosition   | shortValue | netPosition  | netValue | avgPrice | account                    |
-        | TC_010_Ins2_Res2    | ACCOUNT |  [TC_010_Ins1.Participant]| [TC_010_Ins2.symbol] | 800.0           | 55000.0    | -800.0       | -55000.0 | 68.75    | [TC_010_Ins1.Account Id]   |
+        | TC_010_Ins2_Res1    | ACCOUNT |  [TC_010_Ins1.Participant]| [TC_010_Ins2.symbol] | 800.0           | 22000.0    | -800.0       | -22000.0 | 27.5     | [TC_010_Ins1.Account Id]   |
 
         When "Realtime Risk Factor Update" messages are submitted with following values
         | Instance ID | symbol                  | type   | value |  currency   |
@@ -263,7 +216,7 @@ Feature: Position Attributes
 
        And "Position" messages are filtered by "level,participant,account,shortPosition,longPosition,netPosition" should be
         | Instance ID         | level   | participant   | symbol               |  shortPosition   | longPosition  | shortValue | longValue  | netPosition  | netValue  | avgPrice    | account                    |
-        | TC_010_Ins3_Res2    | ACCOUNT | HSBC          | [TC_010_Ins3.symbol] |  800.0           | 1000.0        | 55000.0    | 122000.0   | 200.0        | 67000.0   | 335.0       | [TC_010_Ins1.Account Id]   |
+        | TC_010_Ins3_Res2    | ACCOUNT | PS_001          | [TC_010_Ins3.symbol] |  800.0           | 1000.0        | 55000.0    | 122000.0   | 200.0        | 67000.0   | 335.0       | [TC_010_Ins1.Account Id]   |
 
        Given instance "[TC_010_Ins1.Account Id] " of entity "Accounts" is deleted
        Given instance "[TC_010_Inst.Symbol]" of entity "Instruments" is deleted
@@ -273,7 +226,7 @@ Feature: Position Attributes
 
         Given instance "Home" of entity "Accounts" is copied with following values
         | Instance ID | Account Id     | Name          | Participant    |
-        | TC_011_Ins1 | random(ACC,6)  | random(ACN,6) | HSBC           |
+        | TC_011_Ins1 | random(ACC,6)  | random(ACN,6) | PS_001           |
 
 		And  instance "Bond_Test_1" of entity "Instruments" is copied with following values
         | Instance ID | Symbol               |
@@ -326,7 +279,7 @@ Feature: Position Attributes
 
         Given instance "Home" of entity "Accounts" is copied with following values
         | Instance ID | Account Id     | Name          | Participant    |
-        | TC_012_Ins1 | random(ACC,6)  | random(ACN,6) | HSBC           |
+        | TC_012_Ins1 | random(ACC,6)  | random(ACN,6) | PS_001           |
 
 		And  instance "Bond_Test_1" of entity "Instruments" is copied with following values
         | Instance ID | Symbol               |
@@ -372,7 +325,7 @@ Feature: Position Attributes
 
         Given instance "Home" of entity "Accounts" is copied with following values
         | Instance ID | Account Id     | Name          | Participant    |
-        | TC_013_Ins1 | random(ACC,6)  | random(ACN,6) | HSBC           |
+        | TC_013_Ins1 | random(ACC,6)  | random(ACN,6) | PS_001           |
 
 		And  instance "Bond_Test_1" of entity "Instruments" is copied with following values
         | Instance ID | Symbol               |
@@ -410,7 +363,7 @@ Feature: Position Attributes
 
         Given instance "Home" of entity "Accounts" is copied with following values
         | Instance ID | Account Id     | Name          | Participant    |
-        | TC_014_Ins1 | random(ACC,6)  | random(ACN,6) | HSBC           |
+        | TC_014_Ins1 | random(ACC,6)  | random(ACN,6) | PS_001           |
 
 		And  instance "Bond_Test_1" of entity "Instruments" is copied with following values
         | Instance ID | Symbol               |
@@ -448,7 +401,7 @@ Feature: Position Attributes
 
         Given instance "Home" of entity "Accounts" is copied with following values
         | Instance ID | Account Id     | Name          | Participant    |
-        | TC_015_Ins1 | random(ACC,6)  | random(ACN,6) | HSBC           |
+        | TC_015_Ins1 | random(ACC,6)  | random(ACN,6) | PS_001           |
 
 		When  instance "Bond_Test_1" of entity "Instruments" is copied with following values
         | Instance ID  | Symbol               | Size Multiplier|
@@ -456,20 +409,15 @@ Feature: Position Attributes
 
         When "Realtime Risk Factor Update" messages are submitted with following values
         | Instance ID | symbol                  | type   | value   |
-        | TC_015_MD1  | [TC_015_Inst.Symbol]    | AI     | 15.0    |
 		| TC_015_MD2  | [TC_015_Inst.Symbol]    | LTP    | 1000.0  |
 
         And "Position Update" messages are submitted with following values
         | Instance ID   | account                     | symbol                | quantity  | price | value     | side  | participant                 | notional |
         | TC_015_Ins2   | [TC_015_Ins1.Account Id]    | [TC_015_Inst.Symbol]  |  1000     | 900.0 | 900000.0  | LONG  | [TC_015_Ins1.Participant]   | 900000   |
 
-        Then response of the request "TC_015_Ins2" should be
-        | Instance ID       | status   | subStatus   |
-        | TC_015_Ins2_Res1  | POSTED   | ACCEPTED    |
-
-        And "Position" messages are filtered by "level,participant,account,netValue,mtmValue,realizedmtmValue" should be
-        | Instance ID         | level   | participant               |  symbol              | longPosition    | longValue    | netPosition    | netValue   | avgPrice  | account                  |   mtmValue      | realizedmtmValue | unrealizedmtmValue | unrealizedmtm%|
-        | TC_015_Ins2_Res2    | ACCOUNT |  [TC_015_Ins2.participant]| [TC_015_Ins2.symbol] | 1000.0          | 9135000.0    | 1000.0         | 9135000.0  | 9135.0    | [TC_015_Ins2.account]    |   2030000.0     |   0              | -9135000.0         | -100.0        |
+        Then "Position" messages are filtered by "level,participant,account,netPosition" should be
+        | Instance ID         | level   | participant               |  symbol              | longPosition    | longValue    | netPosition    | netValue   | avgPrice  | account                  |   mtmValue      | realizedMtmValue | unrealizedMtmValue | unrealizedMtmPercentage%|
+        | TC_015_Ins2_Res1    | ACCOUNT |  [TC_015_Ins2.participant]| [TC_015_Ins2.symbol] | 1000.0          | 9135000.0    | 1000.0         | 9135000.0  | 9135.0    | [TC_015_Ins2.account]    |   2030000.0     |   0.0              | -9135000.0         | -100.0        |
 
         When "Position Update" messages are submitted with following values
         | Instance ID   | account                     | symbol                | quantity  | price | value   | side  | participant                 | notional |

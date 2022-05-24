@@ -5,11 +5,11 @@ Feature: refdata add for position tests
 
     Given instance "HSBC" of entity "Participants" is copied with following values
       | Instance ID        | Participant Id | Name          |  Type             |
-      | TC_001_Req_001     | POS_001        | PART POS 001  |  TRADING_MEMBER   |
+      | TC_001_Req_001     | PS_001        | PART PS 001  |  TRADING_MEMBER   |
 
     And instance "HSBC" of entity "Participants" is copied with following values
       | Instance ID        | Participant Id | Name          |  Type             |
-      | TC_001_Req_002     | POS_002        | PART POS 002  |  TRADING_MEMBER   |
+      | TC_001_Req_002     | PS_002        | PART PS 002  |  TRADING_MEMBER   |
 
       @positionkeys
     Scenario: TC_002 Copy & create new Position Keys
@@ -36,42 +36,42 @@ Feature: refdata add for position tests
 
     And instance "Rule1" of entity "Position Keys" is copied with following values
       | Instance ID        | Position Key Id | Priority | Asset Class | Currency | Instrument Type   | Symbol |
-      | TC_002_Req_006     | PK_Rule6        | 6        | RATES       | YES      |  null             | YES    |
+      | TC_002_Req_006     | PK_Rule6        | 6        | RATES       | YES      |                   | YES    |
 
   @account
   Scenario: TC_003 Copy & create a new Account
 
     Given instance "Home" of entity "Accounts" is copied with following values
       | Instance ID   | Account Id          | Name                 | Participant    | Type   | Account Currency | Category  |  Position Key Ids |
-      | TC_003_Req_001|random(ACC_POS_001,6) |random(ACC Pos 001,6)|POS_001         |MARGIN  |   USD            | CLIENT    |  PK_Rule1         |
+      | TC_003_Req_001|random(ACC_PS_001,6) |random(ACC Pos 001,6)| PS_001   |MARGIN  |   USD            | CLIENT    |  PK_Rule1         |
 
    And instance "Home" of entity "Accounts" is copied with following values
       | Instance ID   | Account Id| Name      | Participant    | Type  | Account Currency | Category  |  Position Key Ids |
-      | TC_003_Req_002|ACC_POS_002|ACC Pos 002|POS_002         |MARGIN |   USD            | CLIENT    | PK_Rule1,PK_Rule3 |
+      | TC_003_Req_002|random(ACC_PS_002,6) |random(ACC Pos 002,6)|PS_002    |MARGIN |   USD            | CLIENT    | PK_Rule1,PK_Rule3 |
+
+   Given instance "Home" of entity "Accounts" is copied with following values
+      | Instance ID   | Account Id| Name      | Participant    | Type  | Account Currency | Category  |  Position Key Ids |
+      | TC_003_Req_003|random(ACC_PS_003,6) |random(ACC Pos 003,6)|PS_001    |MARGIN |   USD            | CLIENT    | PK_Rule6          |
 
    And instance "Home" of entity "Accounts" is copied with following values
       | Instance ID   | Account Id| Name      | Participant    | Type  | Account Currency | Category  |  Position Key Ids |
-      | TC_003_Req_003|ACC_POS_003|ACC Pos 003|POS_003         |MARGIN |   USD            | CLIENT    | PK_Rule6          |
-
-   And instance "Home" of entity "Accounts" is copied with following values
-      | Instance ID   | Account Id| Name      | Participant    | Type  | Account Currency | Category  |  Position Key Ids |
-      | TC_003_Req_004|ACC_POS_004|ACC Pos 004|POS_004         |MARGIN |   USD            | CLIENT    | PK_Rule1,PK_Rule6 |
+      | TC_003_Req_004|random(ACC_PS_004,6) |random(ACC Pos 004,6)|PS_002   |MARGIN |   USD            | CLIENT    | PK_Rule1,PK_Rule6 |
 
    And instance "Home" of entity "Accounts" is copied with following values
       | Instance ID   | Account Id| Name      | Participant    | Type  | Account Currency | Category  |  Position Key Ids            |
-      | TC_003_Req_005|ACC_POS_005|ACC Pos 005|POS_005         |MARGIN |   USD            | CLIENT    | PK_Rule4,PK_Rule5,PK_Rule6   |
+      | TC_003_Req_005|random(ACC_PS_005,6) |random(ACC Pos 005,6)|PS_001    |MARGIN |   USD            | CLIENT    | PK_Rule4,PK_Rule5,PK_Rule6   |
 
    And instance "Home" of entity "Accounts" is copied with following values
       | Instance ID   | Account Id| Name      | Participant    | Type  | Account Currency | Category  |  Position Key Ids |
-      | TC_003_Req_006|ACC_POS_006|ACC Pos 006|POS_006         |MARGIN |   USD            | CLIENT    | PK_Rule3,PK_Rule5 |
+      | TC_003_Req_006|random(ACC_PS_006,6) |random(ACC Pos 006,6)|PS_002    |MARGIN |   USD            | CLIENT    | PK_Rule3,PK_Rule5 |
 
    And instance "Home" of entity "Accounts" is copied with following values
       | Instance ID   | Account Id| Name      | Participant    | Type  | Account Currency | Category  |  Position Key Ids |
-      | TC_003_Req_007|ACC_POS_007|ACC Pos 007|POS_007         |MARGIN |   USD            | CLIENT    | PK_Rule4          |
+      | TC_003_Req_007|random(ACC_PS_007,6) |random(ACC Pos 007,6)|PS_001    |MARGIN |   USD            | CLIENT    | PK_Rule4          |
 
    And instance "Home" of entity "Accounts" is copied with following values
       | Instance ID   | Account Id| Name      | Participant    | Type  | Account Currency | Category  |  Position Key Ids |
-      | TC_003_Req_008|ACC_POS_008|ACC Pos 008|POS_008         |MARGIN |   USD            | CLIENT    | PK_Rule5          |
+      | TC_003_Req_008|random(ACC_PS_008,6) |random(ACC Pos 008,6)|PS_002    |MARGIN |   USD            | CLIENT    | PK_Rule5          |
 
 
 @delete
@@ -85,11 +85,11 @@ Feature: refdata add for position tests
 
   @delete
   Scenario: Deleting Accounts
-  Given instance "ACC_POS_001" of entity "Accounts" is deleted
-  Given instance "ACC_POS_002" of entity "Accounts" is deleted
-  Given instance "ACC_POS_003" of entity "Accounts" is deleted
-  Given instance "ACC_POS_004" of entity "Accounts" is deleted
-  Given instance "ACC_POS_005" of entity "Accounts" is deleted
-  Given instance "ACC_POS_006" of entity "Accounts" is deleted
-  Given instance "ACC_POS_007" of entity "Accounts" is deleted
-  Given instance "ACC_POS_008" of entity "Accounts" is deleted
+  Given instance "ACC_PS_001" of entity "Accounts" is deleted
+  Given instance "ACC_PS_002" of entity "Accounts" is deleted
+  Given instance "ACC_PS_003" of entity "Accounts" is deleted
+  Given instance "ACC_PS_004" of entity "Accounts" is deleted
+  Given instance "ACC_PS_005" of entity "Accounts" is deleted
+  Given instance "ACC_PS_006" of entity "Accounts" is deleted
+  Given instance "ACC_PS_007" of entity "Accounts" is deleted
+  Given instance "ACC_PS_008" of entity "Accounts" is deleted

@@ -24,6 +24,7 @@ Feature: Position Management
         When "Position_Updates" are submitted with following values
         | Instance ID      | symbol           |
         | TC_002_Ins1      | invalid_symbol   |
+
     Scenario: 2 Validating the position message
         Then "Position" messages are filtered by "level,participant,account,symbol" should be
         | Instance ID | participant | account   | level     | symbol       | shortPosition |
