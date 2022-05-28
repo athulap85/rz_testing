@@ -84,6 +84,15 @@ Feature: refdata add for position tests
        | Instance ID  | Symbol               | Size Multiplier|
        | TC_015_Inst  | POS_0001             |  2             |
 
+    When  instance "Bond_Test_1" of entity "Instruments" is copied with following values
+       | Instance ID  | Symbol               | Size Multiplier|
+       | TC_015_Inst1 | RZ_PT_Inst_Bond_001  |  1             |
+
+    When  instance "Bond_Test_1" of entity "Instruments" is copied with following values
+       | Instance ID  | Symbol               | Size Multiplier|
+       | TC_015_Inst2 | RZ_PT_Inst_Bond_002  |  1             |
+
+
 @delete
   Scenario: Deleting position Keys
   Given instance "RZ_PT_IT_01" of entity "Position Keys" is deleted
