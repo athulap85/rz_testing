@@ -96,8 +96,9 @@ class TransactionDataAdaptor(ITransactionDataInterface):
 
         else:
             assert False, "Value of the 'level' field should be one of the following. [SYSTEM | PARTICIPANT | ACCOUNT]"
+        url = url +"&userName=ranush"
 
-        status_code, response = self.http_client.get_request(url)
+        status_code, response = self.http_client.post_request(url,None)
         if status_code == 200:
             response_json = json.loads(response)
 
