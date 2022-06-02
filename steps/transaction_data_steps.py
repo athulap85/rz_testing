@@ -55,8 +55,17 @@ def step_impl(context, instance_id):
     compare(expected_msg, response_msg)
 
 
-@then(u'"{message_name}" messages are filtered by "{filters}" should be')
+@Given(u'"{message_name}" messages are filtered by "{filters}" should be')
 def step_impl(context, message_name, filters):
+    query_msg(context, message_name, filters)
+
+
+@Then(u'"{message_name}" messages are filtered by "{filters}" should be')
+def step_impl(context, message_name, filters):
+    query_msg(context, message_name, filters)
+
+
+def query_msg(context, message_name, filters):
     results_map = extract_queries_and_expected_messages(message_name, context.table, filters)
     for query, expecting_msg_array in results_map.items():
         query.set_expected_msg_count(len(expecting_msg_array))

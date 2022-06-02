@@ -42,6 +42,10 @@ class TransactionDataAdaptor(ITransactionDataInterface):
             return self.process_risk_factor_values_query(endpoint, query)
         elif entity == "Hedge Efficiency":
             return self.process_hedge_efficiency(endpoint, query)
+        elif entity == "Realtime Interest Curve Value":
+            return self.process_interest_curve(endpoint, query)
+        elif entity == "Stress Test Result":
+            return self.process_stress_test_results(endpoint, query)
         else:
             assert False, f"Unhandled query type: {query.entity} in src/transaction_data/transaction_data_adaptor.py"
 
@@ -53,10 +57,10 @@ class TransactionDataAdaptor(ITransactionDataInterface):
                 symbol = filter_item.value
 
         url = f"{endpoint}"
-        status_code, response = self.http_client.get_request(url)
+        status_code, response = self.http_client.get_request(f"{url}/{symbol}")
         if status_code == 200:
             response_json = json.loads(response)
-            msg_array = self.create_response_array(query, response_json["content"])
+            msg_array = self.create_response_array(query, response_json)
 
             return msg_array, None
         else:
@@ -96,9 +100,9 @@ class TransactionDataAdaptor(ITransactionDataInterface):
 
         else:
             assert False, "Value of the 'level' field should be one of the following. [SYSTEM | PARTICIPANT | ACCOUNT]"
-        url = url +"&userName=ranush"
 
-        status_code, response = self.http_client.post_request(url,None)
+        url = url + "&userName=ranush"
+        status_code, response = self.http_client.post_request(url, None)
         if status_code == 200:
             response_json = json.loads(response)
 
@@ -141,7 +145,14 @@ class TransactionDataAdaptor(ITransactionDataInterface):
         return output
 
     def create_request_msg(self, message):
-        return message.fieldValues
+        logging.debug(f"create_request_msg: Message : {message.definition}")
+        if message.definition == "Stress Test":
+            received_value = message.get_field_value("account")
+            assert received_value is not None, "Field [account] must to be present for Stress Test request"
+            values = received_value.split(",")
+            return values
+        else:
+            return message.fieldValues
 
     def create_response_msg(self, message_name, response):
         msg = Message(message_name)
@@ -172,4 +183,38 @@ class TransactionDataAdaptor(ITransactionDataInterface):
             output_array.append(msg)
 
         return output_array
+
+    def process_interest_curve(self, endpoint, query):
+        status_code, response = self.http_client.get_request(endpoint)
+        if status_code == 200:
+            response_json = json.loads(response)
+            updated_response = []
+            for item in response_json.values():
+                updated_response.extend(item)
+
+            msg_array = self.create_response_array(query, updated_response)
+            return msg_array, None
+        else:
+            return None, response
+
+    def process_stress_test_results(self, endpoint, query):
+        run_id = None
+        filters = query.get_filters()
+        for filter_item in filters:
+            if filter_item.field == "runId":
+                run_id = filter_item.value
+
+        assert run_id is not None, "Field [runId] must to be present as a filter criteria for stress test results query"
+
+        url = f"{endpoint}?runId={run_id}"
+        status_code, response = self.http_client.get_request(url)
+        if status_code == 200:
+            response_json = json.loads(response)
+            for results in response_json:
+                results["runId"] = run_id
+
+            msg_array = self.create_response_array(query, response_json)
+            return msg_array, None
+        else:
+            return None, response
 
