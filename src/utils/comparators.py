@@ -2,12 +2,12 @@ import logging
 
 
 def compare(expected_msg, received_msg, should_assert=True):
-    string_assert(expected_msg.definition, received_msg.definition)
+    string_assert("Message Def", expected_msg.definition, received_msg.definition)
 
     for field_name in expected_msg.get_fields_list():
         assert received_msg.get_field_value(field_name) is not None, "Field '" + field_name +\
                                                                      "' is not available in actual message"
-        if string_assert(expected_msg.get_field_value(field_name), received_msg.get_field_value(field_name),
+        if string_assert(field_name, expected_msg.get_field_value(field_name), received_msg.get_field_value(field_name),
                          should_assert) is False:
             return False
 
@@ -38,15 +38,15 @@ def print_msg_array(array):
     return str1
 
 
-def string_assert(expected, received, should_assert=True):
-    logging.debug(f"string_assert Expected:Received [{expected}]:[{received}]")
+def string_assert(field_name, expected, received, should_assert=True):
+    logging.debug(f"string_assert checking [{field_name}] Expected:Received [{expected}]:[{received}]")
     if should_assert:
-        assert string_equal(str(expected), str(received)), f"Expected:Received [{expected}]:[{received}]"
+        assert string_equal(str(expected), str(received)), f"Field [{field_name}], Expected:Received [{expected}]:[{received}]"
     else:
         if string_equal(str(expected), str(received)):
             return True
         else:
-            logging.info(f"Expected:Received [{expected}]:[{received}]")
+            logging.info(f"Field [{field_name}], Expected:Received [{expected}]:[{received}]")
             return False
 
 

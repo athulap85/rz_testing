@@ -6,8 +6,12 @@ from src.utils.messaging import Message
 from src.blueshift.reference_data_loader import DataLoader
 import logging
 import json
-from src.utils.messaging import DataQuery, Operator
+from src.blueshift.blueshift_refdata_config import entities_with_tables
 from os.path import exists
+import re
+from src.utils.instance_registry import InstanceRegistry
+from src.utils.common import camel_case
+
 
 REFDATA_ENDPOINT = "https://dev.blueshiftrp.xyz/v1/reference-data-api"
 REFDATA_CACHE_LOCATION = 'cache/blueshift/'
@@ -61,6 +65,7 @@ class RefDataAdaptor(IRefDataInterface):
         self.http_client = HTTPClient(REFDATA_ENDPOINT)
         self.entity_definitions = {}
         self.entity_name_to_display_name_map = {}
+        self.table_field_value_pattern = re.compile(r"\[TAB:(.+)]")
 
     def init(self):
         entity_cache_file = REFDATA_CACHE_LOCATION + "entities.json"
@@ -202,6 +207,7 @@ class RefDataAdaptor(IRefDataInterface):
 
     def create_request_msg(self, entity_definition, message):
         logging.debug(f"create_request_msg entity [{entity_definition.name}]")
+        dto_collection = {}
         request = {}
         for key, value in message.fieldValues.items():
             if key == "Id":
@@ -213,7 +219,18 @@ class RefDataAdaptor(IRefDataInterface):
 
             if value is not None:
                 if data_type in self.entity_name_to_display_name_map:
-                    value = self.enrich_linked_instance_details(self.entity_name_to_display_name_map[data_type],
+                    match = self.table_field_value_pattern.search(value)
+                    if match is not None:
+                        dto_collection[data_type] = []
+                        entity_def = self.entity_definitions.get(self.entity_name_to_display_name_map.get(data_type))
+                        table_name = match.group(1)
+                        tab_entry_list = InstanceRegistry().get_table(table_name)
+                        for entry in tab_entry_list:
+                            request_msg = self.create_request_msg(entity_def, entry)
+                            dto_collection[data_type].append(request_msg)
+                            logging.info(request_msg)
+
+                    value = self.enrich_linked_instance_details(self.entity_name_to_display_name_map[data_type], value,
                                                                 multiple)
                 elif data_type == "Enum":
                     value = value.replace(" ", "_").upper()
@@ -221,6 +238,16 @@ class RefDataAdaptor(IRefDataInterface):
             name = field_def.get_property("name")
             request[name] = value
 
+        if entity_definition.name in entities_with_tables:
+            #entity_class_nane = entity_definition.get_property("classname")
+            request = {"stressScenarioDTO": request}
+            for entity, dto in dto_collection.items():
+                tab_entries = []
+                for entry in dto:
+                    tab_entries.append(entry)
+                request[camel_case(entity) + "DTOS"] = tab_entries
+
+        logging.info(request)
         return request
 
     def copy_and_create_request_msg(self, entity_definition, original_instance_msg, changes_msg):
@@ -257,14 +284,26 @@ class RefDataAdaptor(IRefDataInterface):
 
             request[name] = value
 
+        logging.info(request)
         return request
 
     def enrich_linked_instance_details(self, related_entity_name, received_value, multi_value):
         logging.debug(f"enrich_linked_instance_details entity [{related_entity_name}] value [{received_value}]"
                       f" multiple [{multi_value}]")
+
         if multi_value:
-            values = received_value.split(",")
             item_list = []
+
+            match = self.table_field_value_pattern.search(received_value)
+            if match is not None:
+                table_name = match.group(1)
+                tab_entry_list = InstanceRegistry().get_table(table_name)
+                for entry in tab_entry_list:
+                    item_list.append({"id": None, "name": None})
+                return item_list
+
+            values = received_value.split(",")
+
             for value in values:
                 instance_id = self.get_instance_id(related_entity_name, value)
                 item_list.append({"id": instance_id, "name": value})
@@ -293,8 +332,3 @@ class RefDataAdaptor(IRefDataInterface):
             DataLoader().set_acc_instance_id(participant, instance_name, instance_id)
         else:
             DataLoader().set_instance_id(entity, instance_name, instance_id)
-
-
-
-
-
