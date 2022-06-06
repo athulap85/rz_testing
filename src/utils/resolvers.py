@@ -2,6 +2,8 @@ import logging
 import re
 from src.utils.instance_registry import InstanceRegistry
 from random import randint
+from datetime import datetime
+from dateutil.relativedelta import relativedelta
 
 class ResolverChain:
     instance = None
@@ -40,40 +42,96 @@ class Resolver:
 
 class InstanceResolver(Resolver):
 
+    def __init__(self, next_resolver):
+        self.next_resolver = next_resolver
+        self.instance_pattern = re.compile(r"\[(.+)\.(.+)\]")
+        self.table_pattern = re.compile(r"\[(.+)\\]")
+
     def process(self, value):
-        match = re.search("\\[(.+)\\]", value)
+        match = self.instance_pattern.search(str(value))
         if match is not None:
-            matched_value = match.group(1)
-            value_list = matched_value.split(".")
-            if len(value_list) == 2:
-                instance = InstanceRegistry().get_instance(value_list[0])
-                field_value = instance.get_field_value(value_list[1])
-                if field_value is not None:
-                    value = field_value
-                else:
-                    assert False, f"In {value}, field [{value_list[1]}] is unknown"
+            instance_key = match.group(1)
+            field_name = match.group(2)
+
+            instance = InstanceRegistry().get_instance(instance_key)
+            field_value = instance.get_field_value(field_name)
+            if field_value is not None:
+                value = field_value
+            else:
+                assert False, f"In {value}, field [{field_name}] is unknown"
+        elif match := self.table_pattern.search(value):
+            logging.debug("Table found.")
+            table_key = match.group(1)
+
+
+
 
         return value
 
 
 class DateTimeResolver(Resolver):
 
+    def __init__(self, next_resolver):
+        self.next_resolver = next_resolver
+        self.date_pattern = re.compile(r"date\(today(([+-]?)(\d+)([dmY]))?,(.+)\)")
+
     def process(self, value):
+        match = self.date_pattern.search(str(value))
+
+        if match is not None:
+            date = datetime.today()
+            date_format = match.group(5)
+            if match.group(1) is not None:
+                operator = match.group(2)
+                number = int(match.group(3))
+                delta_type = match.group(4)
+
+                if delta_type == 'd':
+                    delta = relativedelta(days=number)
+                elif delta_type == 'm':
+                    delta = relativedelta(months=number)
+                elif delta_type == 'Y':
+                    delta = relativedelta(years=number)
+
+                if operator == '+':
+                    date = date + delta
+                elif operator == '-':
+                    date = date - delta
+
+            value = date.strftime(date_format)
+
         return value
 
 
 class StringResolver(Resolver):
 
     def process(self, value):
-        match = re.search("random\\((.+)\\)", value)
+        match = re.search(r"random\((.+),(\d+)\)", str(value))
 
         if match is not None:
-            matched_value = match.group(1)
-            value_list = matched_value.split(",")
-            if len(value_list) == 2:
-                number_size = int(value_list[1])
-                random_num = str(randint(0, 10 ** number_size))
-                temp_number = random_num.zfill(number_size)
-                value = value_list[0] + str(temp_number)
+            prefix = match.group(1)
+            length = int(match.group(2))
+
+            random_num = str(randint(0, 10 ** length))
+            temp_number = random_num.zfill(length)
+            value = prefix + str(temp_number)
+
+        return value
+
+
+class QuantLibFunctionsResolver(Resolver):
+
+    def __init__(self, next_resolver):
+        self.next_resolver = next_resolver
+        self.clean_price_pattern = re.compile(r"get_clean_price\((.+)\)")
+
+    def process(self, value):
+        match = self.date_pattern.search(str(value))
+
+        if match is not None:
+            instance_key = match.group(1)
+            instrument_msg = InstanceRegistry().get_instance(instance_key)
+            assert instrument_msg.definition == "Instrument", "Argument of the get_clean_price" \
+                                                              " should be an Instrument instance"
 
         return value

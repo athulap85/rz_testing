@@ -304,6 +304,9 @@ class RefDataAdaptor(IRefDataInterface):
 
             values = received_value.split(",")
 
+            if len(values) == 1 and values[0] == "":
+                return item_list
+
             for value in values:
                 instance_id = self.get_instance_id(related_entity_name, value)
                 item_list.append({"id": instance_id, "name": value})

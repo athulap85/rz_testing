@@ -1,7 +1,7 @@
 import logging
 
 
-def compare(expected_msg, received_msg, should_assert=True):
+def compare(expected_msg, received_msg, should_assert, callback):
     string_assert("Message Def", expected_msg.definition, received_msg.definition)
 
     for field_name in expected_msg.get_fields_list():
@@ -11,10 +11,11 @@ def compare(expected_msg, received_msg, should_assert=True):
                          should_assert) is False:
             return False
 
+    callback(expected_msg.instanceId, received_msg)
     return True
 
 
-def compare_message_arrays(expected_array, response_array):
+def compare_message_arrays(expected_array, response_array, callback):
     assert len(expected_array) == len(response_array), f"Expected and received messages count mismatch." \
         f" expected count[{len(expected_array)}] received count[{len(response_array)}]" \
         f" \nExpected : {print_msg_array(expected_array)} \nReceived : {print_msg_array(response_array)}\n"
@@ -22,9 +23,10 @@ def compare_message_arrays(expected_array, response_array):
     for expecting_msg in expected_array:
         found = False
         for response_msg in response_array:
-            if compare(expecting_msg, response_msg, False):
+            if compare(expecting_msg, response_msg, False, callback):
                 found = True
                 break
+
         if found is False:
             assert False, f"Expected message not received.\n" \
                       f"Expected : {str(expecting_msg)} \nReceived messages : {print_msg_array(response_array)}\n"

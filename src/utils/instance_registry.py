@@ -9,7 +9,7 @@ class InstanceRegistry:
         return cls.instance
 
     def register_instance(self, instance_id, message):
-        assert instance_id not in self.message_register, f'Instance ID [{instance_id}] is already registered'
+        # assert instance_id not in self.message_register, f'Instance ID [{instance_id}] is already registered'
         self.message_register[instance_id] = message
 
     def get_instance(self, instance_key):
