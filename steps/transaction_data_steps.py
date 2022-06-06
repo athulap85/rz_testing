@@ -5,6 +5,7 @@ from src.transaction_data.interfaceManager import InterfaceManager
 from src.utils.messaging import pack_row_to_message, pack_row_to_query, Message, pack_row_to_new_message
 from src.utils.comparators import compare, compare_message_arrays
 import json
+from src.utils.instance_registry import InstanceRegistry
 
 response_messages = {}
 BLUESHIFT_API = "BLUESHIFT_API"
@@ -35,7 +36,7 @@ def process_request(context, entity, expect_response):
     message.set_fields_values(default_fields)
 
     for row in context.table:
-        msg = pack_row_to_message(message, context.table.headings, row)
+        msg = pack_row_to_message(message, context.table.headings, row, on_new_message)
         instance_id = row["Instance ID"]
         logging.info(f"Transaction Msg : {msg.to_string()}")
         response_msg, error_message = InterfaceManager().submit_request(BLUESHIFT_API, msg)
@@ -49,10 +50,11 @@ def step_impl(context, instance_id):
     response_msg = response_messages.get(instance_id)
     logging.info(response_messages)
     assert response_msg is not None, f"No response available for request [{instance_id}]"
-    expected_msg = pack_row_to_new_message(response_msg.definition, context.table.headings, context.table[0])
+    expected_msg = pack_row_to_new_message(response_msg.definition, context.table.headings, context.table[0],
+                                           on_new_message)
     logging.info(f"expecting msg {expected_msg.to_string()}")
     response_msg = response_messages.get(instance_id)
-    compare(expected_msg, response_msg)
+    compare(expected_msg, response_msg, True, on_new_message)
 
 
 @Given(u'"{message_name}" messages are filtered by "{filters}" should be')
@@ -71,7 +73,7 @@ def query_msg(context, message_name, filters):
         query.set_expected_msg_count(len(expecting_msg_array))
         responses, error_message = InterfaceManager().query_data(BLUESHIFT_API, query)
         assert error_message is None, f"Error occurred when querying the data. error: [{error_message}]"
-        compare_message_arrays(expecting_msg_array, responses)
+        compare_message_arrays(expecting_msg_array, responses, on_new_message)
 
 
 def extract_queries_and_expected_messages(message_name, table, filters):
@@ -86,7 +88,7 @@ def extract_queries_and_expected_messages(message_name, table, filters):
             key_str += value + ":"
         logging.debug(f"Key str : {key_str}")
 
-        expected_msg = pack_row_to_new_message(message_name, table.headings, row)
+        expected_msg = pack_row_to_new_message(message_name, table.headings, row, on_new_message)
 
         if key_str not in query_objects:
             query = pack_row_to_query(message_name, table.headings, row, filters)
@@ -97,3 +99,7 @@ def extract_queries_and_expected_messages(message_name, table, filters):
 
     logging.info(f"Output map {str(expected_msgs_by_query_obj)}")
     return expected_msgs_by_query_obj
+
+
+def on_new_message(instance_id, message):
+    InstanceRegistry().register_instance(instance_id, message)

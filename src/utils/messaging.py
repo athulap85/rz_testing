@@ -2,13 +2,13 @@ import json
 import logging
 from enum import Enum
 from src.utils.resolvers import ResolverChain
-from src.utils.instance_registry import InstanceRegistry
 
 
 class Message:
     def __init__(self, definition):
         self.fieldValues = {}
         self.definition = definition
+        self.instanceId = -1
 
     def get_field_value(self, field_name):
         return self.fieldValues.get(field_name)
@@ -45,24 +45,25 @@ class Message:
         return msg_str
 
 
-def pack_row_to_message(message, header, row):
+def pack_row_to_message(message, header, row, callback):
     logging.debug(f"pack_row_to_message")
     instance_id = None
     for field in header:
         if field == "Instance ID":
             instance_id = row[field]
+            message.instanceId = instance_id
             continue
         value = ResolverChain().resolve(row[field])
         message.set_field_value(field, value)
     assert instance_id is not None, 'Table should contain the "Instance ID" column'
-    InstanceRegistry().register_instance(instance_id, message)
+    callback(instance_id, message)
     return message;
 
 
-def pack_row_to_new_message(message_name, header, row):
+def pack_row_to_new_message(message_name, header, row, callback):
     logging.debug(f"pack_row_to_new_message - message_name[{message_name}]")
     msg = Message(message_name)
-    return pack_row_to_message(msg, header, row)
+    return pack_row_to_message(msg, header, row, callback)
 
 
 def pack_row_to_query(message_definition, header, row, filters):
@@ -75,11 +76,6 @@ def pack_row_to_query(message_definition, header, row, filters):
             query.add_filter(field, Operator.EQUAL, value)
     logging.debug(f"pack_row_to_query: Output : {str(query)}")
     return query;
-
-
-def pack_table_entry_to_table(table_key, table_entry_msg):
-    logging.debug(f"pack_table_entry_to_table - table_key[{table_key}]")
-    InstanceRegistry().register_table_entry(table_key, table_entry_msg.get_field_value("Instance ID"))
 
 
 class Operator(Enum):
