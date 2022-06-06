@@ -4,6 +4,7 @@ from interfaces.webservices import HTTPClient
 import json
 from os.path import exists
 
+
 REFDATA_ENDPOINT = "https://dev.blueshiftrp.xyz/v1/reference-data-api"
 REFDATA_CACHE_LOCATION = 'cache/blueshift/'
 
@@ -14,6 +15,7 @@ class DataLoader:
     entity_definitions = {}
     ref_data_instances = {}
     accounts_structure = {}
+    table_entitiy_details = {}
 
     def __new__(cls):
         if cls.instance is None:
@@ -28,7 +30,6 @@ class DataLoader:
             self.load(entity_def, endpoint)
 
     def load(self, entity_definition, entity_endpoint):
-
         entity_name = entity_definition.name
         cache_file = f"{REFDATA_CACHE_LOCATION}{entity_endpoint}.json"
         if exists(cache_file):
@@ -37,6 +38,9 @@ class DataLoader:
             f.close()
         else:
             status_code, response = self.http_client.post_request(f"/{entity_endpoint}-search?userName=ranush", {})
+            if status_code != 200:
+                print("Data loading failed for entity : " + entity_definition.name)
+                return
             response_json = json.loads(response)
             json_object = json.dumps(response_json, indent=4)
             f = open(cache_file, "w")

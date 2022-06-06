@@ -19,5 +19,7 @@ entity_key_filed_map = {
     'Allocation & Utilization Rules': 'Allocation & Utilization Rule Id',
     'Utilization Limits': 'Utilization Limit Id',
     'Stress Scenarios': 'Stress Scenario Id',
-    'Shifts': 'Id'
+    'Shifts': 'Id',
+    'Coupon Schedules': 'Id',
+    'Sink Schedule': 'Id'
 }

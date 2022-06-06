@@ -26,10 +26,9 @@ class InterfaceManager:
         logging.debug(f"query_data: interface_id : [{interface_id}]")
         interface = self.interfaces.get(interface_id)
         assert interface is not None, f"query_data:Interface {interface_id} is not registered in InterfaceManager"
-        msg_array, error = interface.query_data(query)
 
         msg_array = error = None
-        retry_count = 15
+        retry_count = 20
         for x in range(retry_count):
             logging.info(f"Querying for data[attempt {x + 1}/{retry_count}]")
             msg_array, error = interface.query_data(query)
