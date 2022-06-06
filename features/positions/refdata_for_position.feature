@@ -1,7 +1,7 @@
 Feature: refdata add for position tests
 
   @participant
-  Scenario: TC_001 Copy & create an new Participant
+  Scenario: TC_001 Copy & create new Participants for Position Testing
 
     Given instance "HSBC" of entity "Participants" is copied with following values
       | Instance ID | Participant Id | Name     | Type   |
@@ -12,7 +12,7 @@ Feature: refdata add for position tests
       | Part_002    | RZ-PT-02       | RZ-PT-02 | CLIENT |
 
   @positionkeys
-  Scenario: TC_002 Copy & create new Position Keys
+  Scenario: TC_002 Copy & create new Position Keys for Position Testing
 
     Given instance "Rule1" of entity "Position Keys" is copied with following values
       | Instance ID | Position Key Id | Priority | Asset Class | Instrument Type | Symbol | Market |
@@ -47,7 +47,7 @@ Feature: refdata add for position tests
       | Key_008     | RZ_PT_AC_4      | 1        | RATES       | FIXED_RATE_BOND | YES    | YES    | YES             |
 
   @account
-  Scenario: TC_003 Copy & create a new Account
+  Scenario: TC_003 Copy & create new Accounts for Position Testing
 
     Given instance "Home" of entity "Accounts" is copied with following values
       | Instance ID | Account Id    | Name               | Participant | Type   | Account Currency | Category | Position Key Ids        |
@@ -78,7 +78,7 @@ Feature: refdata add for position tests
       | Acc_007     | RZ-PT-Acc-AC-004 | RZ-PT-Acc-AC-004 | PS_001      | MARGIN | USD              | CLIENT   | RZ_PT_AC_001,RZ_PT_AC_004 |
 
   @instrument
-  Scenario: TC_004 Copy & create a new Instrument
+  Scenario: TC_004 Copy & create new Instruments for Position Testing
 
     Given  instance "Bond_Test_1" of entity "Instruments" is copied with following values
       | Instance ID | Symbol              | Size Multiplier |
@@ -96,8 +96,17 @@ Feature: refdata add for position tests
       | Instance ID | Symbol            | Size Multiplier | Instrument Type  |
       | Inst_004    | RZ_PT_Inst_Bond_4 | 2               | ZERO_COUPON_BOND |
 
+    And  instance "GOOG" of entity "Instruments" is copied with following values
+      | Instance ID | Symbol              | Size Multiplier | Instrument Type |
+      | Inst_005    | RZ_PT_Inst_Equity_1 | 2               | SPOT
+
+    And  instance "GOOG" of entity "Instruments" is copied with following values
+      | Instance ID | Symbol              | Size Multiplier | Instrument Type |
+      | Inst_005    | RZ_PT_Inst_Equity_1 | 1               | SPOT            |
+
+
   @deletekey
-  Scenario: Deleting position Keys
+  Scenario: Delete position Keys created for Position Testing
     Given instance "RZ_PT_IT_1" of entity "Position Keys" is deleted
     Given instance "RZ_PT_IT_2" of entity "Position Keys" is deleted
     Given instance "RZ_PT_IT_3" of entity "Position Keys" is deleted
@@ -108,7 +117,7 @@ Feature: refdata add for position tests
     Given instance "RZ_PT_AC_04" of entity "Position Keys" is deleted
 
   @delete
-  Scenario: Deleting Accounts
+  Scenario: Delete Accounts created for Position Testing
     Given instance "RZ-PT-Acc-001" of entity "Accounts" is deleted
     Given instance "RZ-PT-Acc-002" of entity "Accounts" is deleted
     Given instance "RZ-PT-Acc-003" of entity "Accounts" is deleted
@@ -117,3 +126,4 @@ Feature: refdata add for position tests
     Given instance "RZ-PT-Acc-006" of entity "Accounts" is deleted
     Given instance "RZ-PT-Acc-007" of entity "Accounts" is deleted
     Given instance "RZ-PT-Acc-008" of entity "Accounts" is deleted
+
