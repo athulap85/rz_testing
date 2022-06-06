@@ -1,6 +1,11 @@
 Feature: refdata add edit delete instances
 
-   Scenario: TC_003 Copy & create an new Participant
+  Scenario: TC_002 Copy & create an new currecny
+    Given instance "USD" of entity "Currencies" is copied with following values
+      | Instance ID | Currency Id | Description | Currency Precision |
+      | Cur01       | AED         | Dirham      | 0                  |
+
+  Scenario: TC_003 Copy & create an new Participant
     Given instance "HSBC" of entity "Participants" is copied with following values
       | Instance ID | Participant Id | Name                 | LEI Code | Type             |
       | Mem01       | MEM_001        | Participant Test 001 | LEI_TEST | CLEARING_MEMBER  |
@@ -46,19 +51,12 @@ Feature: refdata add edit delete instances
       | Instance ID | Market Id          | Description          |
       | Res01       | [Mark01.Market Id] | [Mark01.Description] |
 
-    @test
-      Scenario: TC_002 Copy & create an new Instrument
-    Given instance "test_SYM_GB_01" of entity "Instruments" is copied with following values
-      | Instance ID |Symbol          |
-      | INST_1      | SL_DEV_BOND         |
 
-@final
   Scenario: TC_011 Deleting instances
-  Given instance "HNK_Short" of entity "Accounts" is deleted
-  Given instance "HNK_Long" of entity "Accounts" is deleted
-  Given instance "HN_Long" of entity "Accounts" is deleted
-  Given instance "HN_Short" of entity "Accounts" is deleted
-  Given instance "H_Long" of entity "Accounts" is deleted
-  Given instance "H_Short" of entity "Accounts" is deleted
-  Given instance "Home_NKG1" of entity "Accounts" is deleted
-
+    Given instance "ACC_001" of entity "Accounts" is deleted
+    Given instance "AED" of entity "Currencies" is deleted
+    Given instance "MEM_001" of entity "Participants" is deleted
+    Given instance "TZ_001" of entity "Time Zones" is deleted
+    Given instance "RM_001" of entity "Risk Models" is deleted
+    Given instance "AED1" of entity "Currencies" is deleted
+    Given instance "BINANCE1" of entity "Markets" is deleted
