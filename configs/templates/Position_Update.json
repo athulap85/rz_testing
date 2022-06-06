@@ -2,7 +2,7 @@
     "messageName": "Position Update",
     "fields" :
     {
-      "symbol": "Bond_Test_1",
+      "symbol": "BTCUSD_FUT9",
       "participant": "HSBC",
       "account": "Home",
       "currency": "USD",
