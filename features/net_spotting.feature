@@ -1,13 +1,4 @@
-Feature: data setup for hedging
-
-  Scenario: TEST SETUP
-    Given instance "NP_ACC_002" of entity "Accounts" is deleted
-    Given instance "NP_ACC_003" of entity "Accounts" is deleted
-    Given instance "ACC924060" of entity "Accounts" is deleted
-    Given instance "ACC708577" of entity "Accounts" is deleted
-    Given instance "ACC835426" of entity "Accounts" is deleted
-    Given instance "ACC388049" of entity "Accounts" is deleted
-#Given instance "SYM_CB_01" of entity "Instruments" is deleted
+Feature: Net Spotting Functional testing
 
   Scenario: TC_001 Only Position get update for Corporate Ins & no update in Ideal Hedge & DV01 values & par value update
     Given instance "Home" of entity "Accounts" is copied with following values
