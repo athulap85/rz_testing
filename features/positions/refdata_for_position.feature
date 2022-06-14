@@ -47,7 +47,7 @@ Feature: refdata add for position tests
 
     Given instance "Home" of entity "Accounts" is copied with following values
       | Instance ID | Account Id    | Name               | Participant | Type   | Account Currency | Category | Position Key Ids          |
-      | Acc_001     | RZ-PT-ACC-001 | RZ-PT-ACC-001_TEST | PS_001      | MARGIN | USD              | CLIENT   | RZ_PT_PK_001,RZ_PT_PK_002 |
+      | Acc_001     | RZ-PT-ACC-1 | RZ-PT-ACC-001_TEST | PS_001      | MARGIN | USD              | CLIENT   | RZ_PT_PK_01,RZ_PT_PK_02 |
 
     And instance "Home" of entity "Accounts" is copied with following values
       | Instance ID | Account Id    | Name          | Participant | Type   | Account Currency | Category | Position Key Ids          |

@@ -1,101 +1,95 @@
 Feature: Position Management
 
 
-    @negative
-    Scenario: TC_001 Validating Symbol - Mandatory Field
+  @negative
+  Scenario: TC_PU_001 Validating Symbol - Mandatory Field
 
-        When "Position_Updates" are submitted with following values
-        | Instance ID | symbol  |
-        | TC_001_Ins1 | ""      |
-        When "Position Update" messages are submitted with following values
-        | Instance ID | account | value | price | side | participant |
-        | POU1        | Home1   | 1000  | 50.0  | SHORT|  CITI       |
+    When "Position Update" messages are submitted with following values
+      | Instance ID  | account | value | price | side  | participant | symbol | notional |
+      | PosUpdate_01 | Home    | 100   | 50.0  | SHORT | HSBC        | ""     | 500.0    |
 
-        Then response of the request "TC_001_Ins1" should be
-        | Instance ID       | status    | subStatus            |
-        | TC_001_Ins1_Res1  | REJECTED  | BUSINESS_VALIDATION  |
-        Then response of the request "POU1" should be
-        | Instance ID | status   |
-        | POU_Res1    | REJECTED |
+    Then response of the request "PosUpdate_01" should be
+      | Instance ID       | status   | subStatus           | value |
+      | PosUpdate_01_Res1 | REJECTED | BUSINESS_VALIDATION | 100.0 |
 
-    @negative
-    Scenario: TC_002 Validating Symbol - Invalid
+    When "Position Update" messages are submitted with following values
+      | Instance ID  | account | value | price | side  | participant | symbol | notional |
+      | PosUpdate_02 | Home    | 200   | 50.0  | SHORT | HSBC        |        | 10000.0  |
 
-        When "Position_Updates" are submitted with following values
-        | Instance ID      | symbol           |
-        | TC_002_Ins1      | invalid_symbol   |
+    Then response of the request "PosUpdate_02" should be
+      | Instance ID       | status   | subStatus           | value |
+      | PosUpdate_02_Res1 | REJECTED | BUSINESS_VALIDATION | 200.0 |
 
-    Scenario: 2 Validating the position message
-        Then "Position" messages are filtered by "level,participant,account,symbol" should be
-        | Instance ID | participant | account   | level     | symbol       | shortPosition |
-        | POU_Res1    | HSBC        | Home      | ACCOUNT   | BTCUSD_FUT9  | 0.0           |
+    When "Position Update" messages are submitted with following values
+      | Instance ID  | account | value | price | side  | participant | symbol    | notional |
+      | PosUpdate_03 | Home    | 300   | 50.0  | SHORT | HSBC        | PQRST1234 | 15000.0  |
 
-        Then response of the request "TC_002_Ins1" should be
-        | Instance ID       | status   | subStatus            |
-        | TC_002_Ins1_Res1  | REJECTED | BUSINESS_VALIDATION  |
-
-    @negative
-    Scenario: TC_003 Validating Firm - Mandatory
-
-        When "Position_Updates" are submitted with following values
-        | Instance ID        | participant  |
-        | TC_003_Ins1        |  ""          |
-
-        Then response of the request "TC_003_Ins1" should be
-        | Instance ID         | status   | subStatus            |
-        | TC_003_Ins1_Res1    | REJECTED | BUSINESS_VALIDATION  |
-
-    @negative
-    Scenario: TC_004 Validating Firm - Invalid
-
-        When "Position_Updates" are submitted with following values
-        | Instance ID        | participant    |
-        | TC_004_Ins1        | invalid-Firm   |
-
-        Then response of the request "TC_004_Ins1" should be
-        | Instance ID         | status   | subStatus            |
-        | TC_004_Ins1_Res1    | REJECTED | BUSINESS_VALIDATION  |
-
-        @hello
-    Scenario: TC_005 Validating Account - Margin Account Valid
-
-#        Given instance "Home_NK118" of entity "Accounts" is deleted
-
-#        Given instance "Home" of entity "Accounts" is copied with following values
-#        | Instance ID       | Account Id   | Name       | Participant    |
-#        | TC005Ins1         | Home_NK118    | Home_NK118  | HSBC           |
-
-        Given "Position_Updates" are submitted with following values
-        | Instance ID | account                      | quantity | price | side | participant             | type    |
-        | TC005Ins2   | Home_NN     | 1000     | 50.0  | SHORT| HSBC | MARGIN  |
-
-        Then response of the request "TC005Ins2" should be
-        | Instance ID         | status   | subStatus   |
-        | TC005Ins2_Res1      | POSTED   | PROCESSING  |
-
-        Then "Position" messages are filtered by "level,participant,account" should be
-        | Instance ID         | level  | participant                    | shortPosition   | account                     |  type   |
-        | TC005Ins2_Res2      | SYSTEM | [TC005Ins2.participant]        | 1000.0          | [TC005Ins2.account]      |  MARGIN |
+    Then response of the request "PosUpdate_03" should be
+      | Instance ID       | status   | subStatus           | value |
+      | PosUpdate_03_Res1 | REJECTED | BUSINESS_VALIDATION | 300.0 |
 
 
-#        Given instance "Home_NK12" of entity "Accounts" is deleted
+  @negative
+  Scenario: TC_PU_002 Validating Participant - Mandatory Field
 
-    Scenario: TC_006 Validating Account - Optional   ???
+    When "Position Update" messages are submitted with following values
+      | Instance ID  | account | value | price | side  | participant | symbol              | notional |
+      | PosUpdate_01 | Home    | 100   | 50.0  | SHORT |             | RZ_PT_Inst_Bond_003 | 5000.0   |
 
-#        Given instance "Home_NKG1" of entity "Accounts" is deleted
+    Then response of the request "PosUpdate_01" should be
+      | Instance ID       | status   | subStatus           | notional |
+      | PosUpdate_01_Res1 | REJECTED | BUSINESS_VALIDATION | 5000.0   |
 
-        Given instance "Home" of entity "Accounts" is copied with following values
-        | Instance ID       | Account Id   | Name       | Participant    |
-        | TC_006_Ins1       | null         | null       | HSBC           |
+    When "Position Update" messages are submitted with following values
+      | Instance ID  | account | value | price | side  | participant | symbol              | notional |
+      | PosUpdate_02 | Home    | 200   | 50.0  | SHORT | ABCDEFG     | RZ_PT_Inst_Bond_003 | 10000.0  |
 
-        When "Position_Updates" are submitted with following values
-        | Instance ID | account      | quantity | price | side  | participant | type    |
-        | TC_006_Ins2 | Home_NKG4    | 1000     | 50.0  | SHORT |  HSBC       | MARGIN  |
+    Then response of the request "PosUpdate_02" should be
+      | Instance ID       | status   | subStatus           | notional |
+      | PosUpdate_02_Res1 | REJECTED | BUSINESS_VALIDATION | 10000.0  |
 
-        Then response of the request "TC_006_Ins2" should be
-        | Instance ID         | status   | subStatus   |
-        | TC_006_Ins2_Res1    | POSTED   | PROCESSING  |
+    When "Position Update" messages are submitted with following values
+      | Instance ID  | account | value | price | side  | participant | symbol              | notional |
+      | PosUpdate_03 | Home    | 300   | 50.0  | SHORT | " "         | RZ_PT_Inst_Bond_003 | 15000.0  |
 
-        Then "Position" messages are filtered by "level,participant,account" should be
-        | Instance ID         | level  | participant   | shortPosition   | account       |  type   |
-        | TC_006_Ins2_Res2    | SYSTEM | HSBC          | 1000.0          | null          |  MARGIN |
+    Then response of the request "PosUpdate_03" should be
+      | Instance ID       | status   | subStatus           | notional |
+      | PosUpdate_01_Res3 | REJECTED | BUSINESS_VALIDATION | 15000.0  |
+
+  @negative
+  Scenario: TC_PU_003 Validating Account
+
+    When "Position Update" messages are submitted with following values
+      | Instance ID  | account | value | price | side  | participant | symbol              | notional |
+      | PosUpdate_01 |         | 100   | 50.0  | SHORT | HSBC        | RZ_PT_Inst_Bond_003 | 5000.0   |
+
+    Then response of the request "PosUpdate_01" should be
+      | Instance ID       | status   | subStatus           | notional |
+      | PosUpdate_01_Res1 | REJECTED | BUSINESS_VALIDATION | 5000.0   |
+
+    When "Position Update" messages are submitted with following values
+      | Instance ID  | account | value | price | side  | participant | symbol              | notional |
+      | PosUpdate_02 | CITI-H  | 200   | 50.0  | SHORT | HSBC        | RZ_PT_Inst_Bond_003 | 10000.0  |
+
+    Then response of the request "PosUpdate_02" should be
+      | Instance ID       | status   | subStatus           | notional |
+      | PosUpdate_02_Res1 | REJECTED | BUSINESS_VALIDATION | 10000.0  |
+
+  @negative1
+  Scenario: TC_PU_004 Validating Currency
+
+    When "Position Update" messages are submitted with following values
+      | Instance ID  | account | value | price  | side  | participant | symbol              | notional | currency |
+      | PosUpdate_01 | Home    | 100   | 60.000 | SHORT | HSBC        | RZ_PT_Inst_Bond_003 | 6000.0   | USD      |
+
+    Then response of the request "PosUpdate_01" should be
+      | Instance ID       | status   | subStatus  | notional |
+      | PosUpdate_01_Res1 | REJECTED | RISk_ERROR | 6000.0   |
+
+    When "Position Update" messages are submitted with following values
+      | Instance ID  | account | value | price | side  | participant | symbol              | notional |
+      | PosUpdate_02 | Home    | 200   | 50.0  | SHORT | HSBC        | RZ_PT_Inst_Bond_003 | 10000.0  |
+
+    Then response of the request "PosUpdate_02" should be
+      | Instance ID       | status   | subStatus  | notional |
+      | PosUpdate_02_Res1 | REJECTED | RISK_ERROR | 10000.0  |
