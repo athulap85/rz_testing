@@ -33,7 +33,13 @@ class InterfaceManager:
             logging.info(f"Querying for data[attempt {x + 1}/{retry_count}]")
             msg_array, error = interface.query_data(query)
 
-            if msg_array is None or len(msg_array) != query.get_expected_msg_count():
+            expected_count = query.get_expected_msg_count()
+            if msg_array is None:
+                logging.info("query_data:Empty results received.")
+                time.sleep(1)
+            elif expected_count != 0 and len(msg_array) != expected_count:
+                logging.info(f"query_data:Expected message count mismatch. Received:[{len(msg_array)}] "
+                             f"Expected:[{query.get_expected_msg_count()}]")
                 time.sleep(1)
             else:
                 break
