@@ -14,16 +14,16 @@ Feature: refdata add for position tests
   @positionkeys
   Scenario: TC_002 Copy & create new Position Keys for Position Testing
 
-    And instance "Rule1" of entity "Position Keys" is copied with following values
+    Given instance "Rule1" of entity "Position Keys" is copied with following values
       | Instance ID | Position Key Id | Priority | Asset Class | Instrument Type | Trade Type | Currency | Symbol | Expiry Date |
-      | Key_002     | RZ_PT_PK_02     | 2        | RATES       | FIXED_RATE_BOND | STANDARD   | YES      | YES    | YES        |
+      | Key_002     | RZ_PT_PK_02     | 2        | RATES       | FIXED_RATE_BOND | STANDARD   | YES      | YES    | YES         |
 
     And instance "Rule1" of entity "Position Keys" is copied with following values
       | Instance ID | Position Key Id | Priority | Asset Class | Instrument Type | Trade Type | Symbol | Currency | Settlement Date |
       | Key_003     | RZ_PT_PK_03     | 1        | RATES       |                 | STANDARD   | YES    | YES      | YES             |
 
     And instance "Rule1" of entity "Position Keys" is copied with following values
-      | Instance ID | Position Key Id | Priority | Asset Class | Instrument Type | Trade Type | Currency | Symbol | Expiry Date |
+      | Instance ID | Position Key Id | Priority | Asset Class | Instrument Type    | Trade Type | Currency | Symbol | Expiry Date |
       | Key_004     | RZ_PT_PK_04     | 1        | RATES       | FLOATING_RATE_BOND | STANDARD   | YES      | YES    | YES         |
 
     And instance "Rule1" of entity "Position Keys" is copied with following values
@@ -42,11 +42,15 @@ Feature: refdata add for position tests
       | Instance ID | Position Key Id | Priority | Asset Class | Instrument Type | Trade Type | Currency | Symbol | Market | Trade Date | Status   |
       | Key_008     | RZ_PT_PK_08     | 1        | RATES       | FIXED_RATE_BOND | STANDARD   | YES      | YES    | YES    | YES        | INACTIVE |
 
+    And instance "Rule1" of entity "Position Keys" is copied with following values
+      | Instance ID | Position Key Id | Priority | Asset Class | Instrument Type | Trade Type |   Market | Trade Date | Settlement Date | Expiry Date | Status |
+      | Key_009     | RZ_PT_PK_09     | 1        | RATES       | FIXED_RATE_BOND | STANDARD   | YES    | YES        | YES             | YES         | ACTIVE |
+
   @account
   Scenario: TC_003 Copy & create new Accounts for Position Testing
 
     Given instance "Home" of entity "Accounts" is copied with following values
-      | Instance ID | Account Id    | Name               | Participant | Type   | Account Currency | Category | Position Key Ids          |
+      | Instance ID | Account Id  | Name               | Participant | Type   | Account Currency | Category | Position Key Ids        |
       | Acc_001     | RZ-PT-ACC-1 | RZ-PT-ACC-001_TEST | PS_001      | MARGIN | USD              | CLIENT   | RZ_PT_PK_01,RZ_PT_PK_02 |
 
     And instance "Home" of entity "Accounts" is copied with following values
@@ -81,8 +85,8 @@ Feature: refdata add for position tests
       | Inst_001    | RZ_PT_Inst_Bond_003 | 2               |
 
     And  instance "Bond_Test_1" of entity "Instruments" is copied with following values
-      | Instance ID | Symbol              | Size Multiplier |
-      | Inst_002    | RZ_PT_Inst_Bond_001 | 1               |
+      | Instance ID | Symbol              | Size Multiplier |Expiry Date|
+      | Inst_002    | RZ_PT_Inst_Bond_001 | 1               |2024-06-07 |
 
     And  instance "Bond_Test_1" of entity "Instruments" is copied with following values
       | Instance ID | Symbol              | Size Multiplier |
