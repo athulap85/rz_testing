@@ -23,8 +23,11 @@ class TransactionDataAdaptor(ITransactionDataInterface):
 
         status_code, response = self.http_client.post_request(endpoint, request)
         if status_code == 200:
-            if response == "" or request_message.definition == "Realtime Risk Factor Update":
+            if response == "":
                 response = "{}"
+            elif request_message.definition == "Realtime Risk Factor Update":
+                response = f'{{"id": "{response}" }}'
+
             response_json = json.loads(response)
             return self.create_response_msg(request_message.definition, response_json), None
         else:
@@ -38,8 +41,12 @@ class TransactionDataAdaptor(ITransactionDataInterface):
                                      f"in the src/blueshift/transaction_data_config.py"
         if entity == "Position":
             return self.process_position_query(endpoint, query)
+        elif entity == "Position History":
+            return self.process_position_history_query(endpoint, query)
         elif entity == "Realtime Risk Factor Value":
             return self.process_risk_factor_values_query(endpoint, query)
+        elif entity == "Realtime Risk Factor Update":
+            return self.process_risk_factor_update_query(endpoint, query)
         elif entity == "Hedge Efficiency":
             return self.process_hedge_efficiency(endpoint, query)
         elif entity == "Realtime Interest Curve Value":
@@ -163,7 +170,6 @@ class TransactionDataAdaptor(ITransactionDataInterface):
         message_name = query.entity
         output_array = []
         for item in response_array:
-
             mismatch_found = False
             filters = query.get_filters()
             for filter_item in filters:
@@ -185,6 +191,17 @@ class TransactionDataAdaptor(ITransactionDataInterface):
         return output_array
 
     def process_interest_curve(self, endpoint, query):
+
+        curve_identifier = None
+        filters = query.get_filters()
+        for filter_item in filters:
+            if filter_item.field == "curveIdentifier":
+                curve_identifier = filter_item.value
+
+        assert curve_identifier is not None, "Field [curveIdentifier] must to be present as a filter criteria for" \
+                                             " Realtime Interest Curve Value query"
+
+        endpoint = f"{endpoint}?curveId={curve_identifier}"
         status_code, response = self.http_client.get_request(endpoint)
         if status_code == 200:
             response_json = json.loads(response)
@@ -218,3 +235,34 @@ class TransactionDataAdaptor(ITransactionDataInterface):
         else:
             return None, response
 
+    def process_risk_factor_update_query(self, endpoint, query):
+
+        url = f"{endpoint}"
+        status_code, response = self.http_client.get_request(url)
+        if status_code == 200:
+            response_json = json.loads(response)
+
+            msg_array = self.create_response_array(query, response_json["content"])
+            return msg_array, None
+        else:
+            return None, response
+
+    def process_position_history_query(self, endpoint, query):
+        pos_id = None
+        filters = query.get_filters()
+        for filter_item in filters:
+            if filter_item.field == "positionId":
+                pos_id = filter_item.value
+
+        assert pos_id is not None, "Field [positionId] must to be present as a filter criteria for position " \
+                                   "history query"
+
+        url = f"{endpoint}?id={pos_id}&userName=ranush"
+        status_code, response = self.http_client.post_request(url, None)
+        if status_code == 200:
+            response_json = json.loads(response)
+
+            msg_array = self.create_response_array(query, response_json["content"])
+            return msg_array, None
+        else:
+            return None, response
