@@ -16,5 +16,3 @@ Feature: Position Management
         Then "Position" messages are filtered by "level,participant,account,symbol" should be
         | Instance ID | participant | account   | level     | symbol       | shortPosition |
         | POU_Res1    | HSBC        | Home      | ACCOUNT   | BTCUSD_FUT9  | 0.0           |
-
-
