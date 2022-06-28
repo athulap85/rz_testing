@@ -41,6 +41,8 @@ class TransactionDataAdaptor(ITransactionDataInterface):
                                      f"in the src/blueshift/transaction_data_config.py"
         if entity == "Position":
             return self.process_position_query(endpoint, query)
+        elif entity == "Position History":
+            return self.process_position_history_query(endpoint, query)
         elif entity == "Realtime Risk Factor Value":
             return self.process_risk_factor_values_query(endpoint, query)
         elif entity == "Realtime Risk Factor Update":
@@ -237,6 +239,26 @@ class TransactionDataAdaptor(ITransactionDataInterface):
 
         url = f"{endpoint}"
         status_code, response = self.http_client.get_request(url)
+        if status_code == 200:
+            response_json = json.loads(response)
+
+            msg_array = self.create_response_array(query, response_json["content"])
+            return msg_array, None
+        else:
+            return None, response
+
+    def process_position_history_query(self, endpoint, query):
+        pos_id = None
+        filters = query.get_filters()
+        for filter_item in filters:
+            if filter_item.field == "positionId":
+                pos_id = filter_item.value
+
+        assert pos_id is not None, "Field [positionId] must to be present as a filter criteria for position " \
+                                   "history query"
+
+        url = f"{endpoint}?id={pos_id}&userName=ranush"
+        status_code, response = self.http_client.post_request(url, None)
         if status_code == 200:
             response_json = json.loads(response)
 
