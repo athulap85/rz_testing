@@ -53,6 +53,8 @@ class TransactionDataAdaptor(ITransactionDataInterface):
             return self.process_interest_curve(endpoint, query)
         elif entity == "Stress Test Result":
             return self.process_stress_test_results(endpoint, query)
+        elif entity == "Position Update Error":
+            return self.process_position_update_errors(endpoint, query)
         else:
             assert False, f"Unhandled query type: {query.entity} in src/transaction_data/transaction_data_adaptor.py"
 
@@ -97,7 +99,7 @@ class TransactionDataAdaptor(ITransactionDataInterface):
 
         elif level == "ACCOUNT":
             assert participant is not None and account is not None, "Fields [participant] and [account] need to be" \
-                " present as a filter criteria for Account level Position query"
+                                                                    " present as a filter criteria for Account level Position query"
 
             account_instance_id = DataLoader().get_acc_instance_id(participant, account)
             assert account_instance_id is not None, \
@@ -148,7 +150,7 @@ class TransactionDataAdaptor(ITransactionDataInterface):
         output = []
         for time, value in response.items():
             for symbol, hedge_value in value.items():
-                output.append({"time": time, "account": account, "symbol": symbol, "hedgeEfficiency": hedge_value })
+                output.append({"time": time, "account": account, "symbol": symbol, "hedgeEfficiency": hedge_value})
         return output
 
     def create_request_msg(self, message):
@@ -178,7 +180,7 @@ class TransactionDataAdaptor(ITransactionDataInterface):
                 if str(received_value) != str(filter_item.value):
                     mismatch_found = True
                     logging.info(f"Ignoring the message. Mismatched field [{filter_item.field}] :"
-                                  f" Expected[{filter_item.value}] Received[{item[filter_item.field]}]")
+                                 f" Expected[{filter_item.value}] Received[{item[filter_item.field]}]")
                     break
 
             if mismatch_found:
@@ -263,6 +265,26 @@ class TransactionDataAdaptor(ITransactionDataInterface):
             response_json = json.loads(response)
 
             msg_array = self.create_response_array(query, response_json["content"])
+            return msg_array, None
+        else:
+            return None, response
+
+    def process_position_update_errors(self, endpoint, query):
+        external_id = None
+        filters = query.get_filters()
+        for filter_item in filters:
+            if filter_item.field == "externalId":
+                external_id = filter_item.value
+
+        assert external_id is not None, "Field [externalId] must to be present as a filter criteria for " \
+                                        "position update errors query"
+
+        url = f"{endpoint}/{external_id}/errors"
+        status_code, response = self.http_client.get_request(url)
+        if status_code == 200:
+            response_json = json.loads(response)
+
+            msg_array = self.create_response_array(query, response_json)
             return msg_array, None
         else:
             return None, response

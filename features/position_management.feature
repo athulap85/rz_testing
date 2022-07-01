@@ -1,6 +1,6 @@
 Feature: Position Management
 
-
+    @wip
     Scenario: 1 Submitting a position update request
 
         When "Position Update" messages are submitted with following values
@@ -11,6 +11,10 @@ Feature: Position Management
         | Instance ID | status   |
         | POU_Res1    | REJECTED |
 
+        And "Position Update Error" messages are filtered by "externalId" should be
+        | Instance ID | externalId                  | code     | message                            |
+        | POU_error01 | [POU_Res1.positionUpdateId] | 20144    | Collateral Account is not linked   |
+        | POU_error02 | [POU_Res1.positionUpdateId] | 20113    | Account is not found in the system |
 
     Scenario: 2 Validating the position message
 
