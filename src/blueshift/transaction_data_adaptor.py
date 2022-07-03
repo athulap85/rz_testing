@@ -7,6 +7,7 @@ from src.utils.messaging import Message
 from src.blueshift.reference_data_loader import DataLoader
 
 BASE_URL = "https://dev.blueshiftrp.xyz/v1/"
+NO_OF_DECIMAL_PLACES = 2
 
 
 class TransactionDataAdaptor(ITransactionDataInterface):
@@ -187,6 +188,10 @@ class TransactionDataAdaptor(ITransactionDataInterface):
                 continue
 
             msg = Message(message_name)
+            for key, value in item.items():
+                if type(value) is float:
+                    item[key] = round(value, NO_OF_DECIMAL_PLACES)
+
             msg.set_fields_values(item)
             output_array.append(msg)
 
