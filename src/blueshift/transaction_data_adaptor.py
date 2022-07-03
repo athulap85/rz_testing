@@ -56,6 +56,8 @@ class TransactionDataAdaptor(ITransactionDataInterface):
             return self.process_stress_test_results(endpoint, query)
         elif entity == "Position Update Error":
             return self.process_position_update_errors(endpoint, query)
+        elif entity == "Realtime Risk Factor Update Error":
+            return self.process_realtime_risk_factor_update_errors(endpoint, query)
         else:
             assert False, f"Unhandled query type: {query.entity} in src/transaction_data/transaction_data_adaptor.py"
 
@@ -283,6 +285,26 @@ class TransactionDataAdaptor(ITransactionDataInterface):
 
         assert external_id is not None, "Field [externalId] must to be present as a filter criteria for " \
                                         "position update errors query"
+
+        url = f"{endpoint}/{external_id}/errors"
+        status_code, response = self.http_client.get_request(url)
+        if status_code == 200:
+            response_json = json.loads(response)
+
+            msg_array = self.create_response_array(query, response_json)
+            return msg_array, None
+        else:
+            return None, response
+
+    def process_realtime_risk_factor_update_errors(self, endpoint, query):
+        external_id = None
+        filters = query.get_filters()
+        for filter_item in filters:
+            if filter_item.field == "externalId":
+                external_id = filter_item.value
+
+        assert external_id is not None, "Field [externalId] must to be present as a filter criteria for " \
+                                        "realtime risk factor update errors query"
 
         url = f"{endpoint}/{external_id}/errors"
         status_code, response = self.http_client.get_request(url)
