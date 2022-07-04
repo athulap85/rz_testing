@@ -11,9 +11,10 @@ from os.path import exists
 import re
 from src.utils.instance_registry import InstanceRegistry
 from src.utils.common import camel_case
+from configs.global_config import system_config
 
 
-REFDATA_ENDPOINT = "https://dev.blueshiftrp.xyz/v1/reference-data-api"
+REFDATA_ENDPOINT = system_config.get("base_url") + "reference-data-api"
 REFDATA_CACHE_LOCATION = 'cache/blueshift/'
 
 

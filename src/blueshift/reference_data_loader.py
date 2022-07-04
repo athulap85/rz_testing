@@ -3,9 +3,9 @@ import logging
 from interfaces.webservices import HTTPClient
 import json
 from os.path import exists
+from configs.global_config import system_config
 
-
-REFDATA_ENDPOINT = "https://dev.blueshiftrp.xyz/v1/reference-data-api"
+REFDATA_ENDPOINT = system_config.get("base_url") + "reference-data-api"
 REFDATA_CACHE_LOCATION = 'cache/blueshift/'
 
 
@@ -31,6 +31,9 @@ class DataLoader:
 
     def load(self, entity_definition, entity_endpoint):
         entity_name = entity_definition.name
+        if entity_name == "Coupon Schedules" or entity_name == "Sink Schedule":
+            return
+
         cache_file = f"{REFDATA_CACHE_LOCATION}{entity_endpoint}.json"
         if exists(cache_file):
             f = open(cache_file, "r")

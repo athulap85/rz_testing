@@ -5,16 +5,14 @@ import json
 from src.transaction_data.transaction_data_config import message_to_endpoint_mapping
 from src.utils.messaging import Message
 from src.blueshift.reference_data_loader import DataLoader
-
-BASE_URL = "https://dev.blueshiftrp.xyz/v1/"
-NO_OF_DECIMAL_PLACES = 2
+from configs.global_config import system_config
 
 
 class TransactionDataAdaptor(ITransactionDataInterface):
 
     def __init__(self):
         logging.info("inti")
-        self.http_client = HTTPClient(BASE_URL)
+        self.http_client = HTTPClient(system_config.get("base_url"))
 
     def submit_request(self, request_message):
         endpoint = message_to_endpoint_mapping.get(request_message.definition)
@@ -192,7 +190,7 @@ class TransactionDataAdaptor(ITransactionDataInterface):
             msg = Message(message_name)
             for key, value in item.items():
                 if type(value) is float:
-                    item[key] = round(value, NO_OF_DECIMAL_PLACES)
+                    item[key] = round(value, system_config.get("no_of_decimal_places"))
 
             msg.set_fields_values(item)
             output_array.append(msg)
