@@ -199,12 +199,12 @@ Feature: Position Attributes
       | Acc_01      | random(RZ-PT-Acc-,4) | random(RZ-PT-Acn-,4) | RZ-PT-01    | RZ_PT_IT_01      |
 
     And "Realtime Risk Factor Update" messages are submitted with following values
-      | Instance ID | symbol           | type | value | venue |
-      | MD1         | [Inst_01.Symbol] | AI   | 15.0  | CME   |
+      | Instance ID | symbol           | type | value |
+      | MD1         | [Inst_01.Symbol] | AI   | 15.0  |
 
-    Then "Realtime Risk Factor Value" messages are filtered by "symbol,ai" should be
-      | Instance ID | symbol       | ai   |
-      | MD1_Res1    | [MD1.symbol] | 15.0 |
+#    Then "Realtime Risk Factor Value" messages are filtered by "symbol,ai" should be
+#      | Instance ID | symbol       | ai   |
+#      | MD1_Res1    | [MD1.symbol] | 15.0 |
 
     When "Position Update" messages are submitted with following values
       | Instance ID  | account             | symbol           | quantity | price | value | side  | participant          | notional | market |
@@ -215,8 +215,8 @@ Feature: Position Attributes
       | PosUpdate_01_Res2 | ACCOUNT | [PosUpdate_01.participant] | [PosUpdate_01.symbol] | 10.0          | 450.0      | -10.0       | -450.0   | 45.0     | [PosUpdate_01.account] | -150.0   | -600.0   |
 
     When "Realtime Risk Factor Update" messages are submitted with following values
-      | Instance ID | symbol           | type | value | market |
-      | MD2         | [Inst_01.Symbol] | LTP  | 75.0  | CME    |
+      | Instance ID | symbol           | type | value |
+      | MD2         | [Inst_01.Symbol] | LTP  | 75.0  |
 
     Then "Realtime Risk Factor Value" messages are filtered by "symbol,ltp" should be
       | Instance ID | symbol       | ltp  |
@@ -677,8 +677,8 @@ Feature: Position Attributes
       | PosUpdate_02 | [Acc_01.Account Id] | [MD1.symbol] | 15       | 90.0  | 1350.0 | LONG | RZ-PT-01    | 1350     | USD      | CME    |
 
     Then  "Position" messages are filtered by "level,participant,account,netPosition" should be
-      | Instance ID       | level   | participant                | symbol                | longPosition | longValue | netPosition | netValue | avgPrice | account                | mtmValue | realizedMtmValue | unrealizedMtmValue | unrealizedMtmPercentage | notional | accruedAmount | ai  | positionKey |
-      | PosUpdate_02_Res1 | ACCOUNT | [PosUpdate_02.participant] | [PosUpdate_02.symbol] | 15.0         | 1350.0    | 5.0         | 50.0     | 85.5     | [PosUpdate_02.account] | 850.0    | 0.0              | 422.5              | 98.83040935672514       | 450.0    | 22.5          | 5.0 | RZ_PT_PK_02 |
+      | Instance ID       | level   | participant                | symbol                | longPosition | longValue | netPosition | netValue | avgPrice | account                | mtmValue | realizedMtmValue | unrealizedMtmValue | unrealizedMtmPercentage | notional | accruedAmount | ai  | positionKey |market |
+      | PosUpdate_02_Res1 | ACCOUNT | [PosUpdate_02.participant] | [PosUpdate_02.symbol] | 15.0         | 1350.0    | 5.0         | 50.0     | 85.5     | [PosUpdate_02.account] | 850.0    | 0.0              | 422.5              | 98.83040935672514       | 450.0    | 22.5          | 5.0 | RZ_PT_PK_02 |       |
 
   @BRP-674 @key
   Scenario: TC_017 Validate Position Key Status Changes from INACTIVE to ACTIVE
@@ -714,8 +714,8 @@ Feature: Position Attributes
       | PosUpdate_01 | [Acc_01.Account Id] | [MD1.symbol] | 10       | 90.0  | 900.0 | SHORT | RZ-PT-01    | 900      | USD      | CCCAGG | 2022-02-22T00:00:00.000+00:00 |
 
     Then  "Position" messages are filtered by "level,participant,account,netPosition" should be
-      | Instance ID       | level   | participant                | symbol                | shortPosition | shortValue | netPosition | netValue | avgPrice | account                | mtmValue | realizedMtmValue | unrealizedMtmValue | unrealizedMtmPercentage | notional | currency | accruedInterest | ai  | settlementDate                |
-      | PosUpdate_01_Res1 | ACCOUNT | [PosUpdate_01.participant] | [PosUpdate_01.symbol] | 10.0          | 855.0      | -10.0       | -855.0   | 85.5     | [PosUpdate_01.account] | -1700.0  | 0.0              | -845.0             | -98.83040935672514      | -900.0   | USD      | -45.0           | 5.0 | [PosUpdate_01.settlementDate] |
+      | Instance ID       | level   | participant                | symbol                | shortPosition | shortValue | netPosition | netValue | avgPrice | account                | mtmValue | realizedMtmValue | unrealizedMtmValue | unrealizedMtmPercentage | notional | currency | accruedAmount | ai  | settlementDate                |
+      | PosUpdate_01_Res1 | ACCOUNT | [PosUpdate_01.participant] | [PosUpdate_01.symbol] | 10.0          | 855.0      | -10.0       | -855.0   | 85.5     | [PosUpdate_01.account] | -1700.0  | 0.0              | -845.0             | -98.83                  | -900.0   | USD      | -45.0         | 5.0 | [PosUpdate_01.settlementDate] |
 
     # Position update with Different Market-CME and Different Settlement Dates( Aggregated position should be created,RZ_PT_PK_02 applies)
     When "Position Update" messages are submitted with following values
@@ -723,8 +723,8 @@ Feature: Position Attributes
       | PosUpdate_02 | [Acc_01.Account Id] | [MD1.symbol] | 15       | 90.0  | 1350.0 | LONG | RZ-PT-01    | 1350     | USD      | CME    | 2022-03-22T00:00:00.000+00:00 |
 
     Then  "Position" messages are filtered by "level,participant,account,netPosition" should be
-      | Instance ID       | level   | participant                | symbol                | longPosition | longValue | netPosition | netValue | avgPrice | account                | mtmValue | realizedMtmValue | unrealizedMtmValue | unrealizedMtmPercentage | notional | accruedInterest | ai  | market |
-      | PosUpdate_02_Res1 | ACCOUNT | [PosUpdate_02.participant] | [PosUpdate_02.symbol] | 15.0         | 1350.0    | 5.0         | 50.0     | 85.5     | [PosUpdate_02.account] | 850.0    | 0.0              | 422.5              | 98.83040935672514       | 450.0    | 22.5            | 5.0 |        |
+      | Instance ID       | level   | participant                | symbol                | longPosition | longValue | netPosition | netValue | avgPrice | account                | mtmValue | realizedMtmValue | unrealizedMtmValue | unrealizedMtmPercentage | notional | accruedAmount | ai  | market |
+      | PosUpdate_02_Res1 | ACCOUNT | [PosUpdate_02.participant] | [PosUpdate_02.symbol] | 15.0         | 1350.0    | 5.0         | 50.0     | 85.5     | [PosUpdate_02.account] | 850.0    | 0.0              | 422.5              | 98.83                   | 450.0    | 22.5          | 5.0 |        |
 
     Given instance "RZ_PT_PK_07" of entity "Position Keys" is updated with following values
       | Instance ID | Status |
@@ -736,8 +736,8 @@ Feature: Position Attributes
       | PosUpdate_03 | [Acc_01.Account Id] | [MD1.symbol] | 10       | 90.0  | 900.0 | SHORT | RZ-PT-01    | 900      | USD      | CCCAGG | 2022-02-22T00:00:00.000+00:00 | 2022-02-25T00:00:00.000+00:00 |
 
     Then  "Position" messages are filtered by "level,participant,account,netPosition" should be
-      | Instance ID       | level   | participant                | symbol                | shortPosition | shortValue | netPosition | netValue | avgPrice | account                | mtmValue | realizedMtmValue | unrealizedMtmValue | unrealizedMtmPercentage | notional | currency | accruedInterest | ai  | settlementDate                |
-      | PosUpdate_03_Res1 | ACCOUNT | [PosUpdate_03.participant] | [PosUpdate_03.symbol] | 10.0          | 855.0      | -10.0       | -855.0   | 85.5     | [PosUpdate_03.account] | -1700.0  | 0.0              | -845.0             | -98.83040935672514      | -900.0   | USD      | -45.0           | 5.0 | [PosUpdate_03.settlementDate] |
+      | Instance ID       | level   | participant                | symbol                | shortPosition | shortValue | netPosition | netValue | avgPrice | account                | mtmValue | realizedMtmValue | unrealizedMtmValue | unrealizedMtmPercentage | notional | currency | accruedAmount | ai  | settlementDate                |
+      | PosUpdate_03_Res1 | ACCOUNT | [PosUpdate_03.participant] | [PosUpdate_03.symbol] | 10.0          | 855.0      | -10.0       | -855.0   | 85.5     | [PosUpdate_03.account] | -1700.0  | 0.0              | -845.0             | -98.83                  | -900.0   | USD      | -45.0         | 5.0 | [PosUpdate_03.settlementDate] |
 
     # Position update with Different Market-CME and Different Settlement Dates( New position should be created,RZ_PT_PK_07 applies)
     When "Position Update" messages are submitted with following values
@@ -745,8 +745,8 @@ Feature: Position Attributes
       | PosUpdate_04 | [Acc_01.Account Id] | [MD1.symbol] | 15       | 90.0  | 1350.0 | LONG | RZ-PT-01    | 1350     | USD      | CME    | 2022-03-22T00:00:00.000+00:00 | 2022-03-25T00:00:00.000+00:00 |
 
     Then  "Position" messages are filtered by "level,participant,account,netPosition" should be
-      | Instance ID       | level   | participant                | symbol                | longPosition | longValue | netPosition | netValue | avgPrice | account                | mtmValue | realizedMtmValue | unrealizedMtmValue | unrealizedMtmPercentage | notional | accruedInterest | ai  | market                | settlementDate                |
-      | PosUpdate_04_Res1 | ACCOUNT | [PosUpdate_04.participant] | [PosUpdate_04.symbol] | 15.0         | 1350.0    | 15.0        | 1350.0   | 85.5     | [PosUpdate_04.account] | 2550.0   | 0.0              | 1267.5             | 98.83040935672514       | 1350.0   | 67.5            | 5.0 | [PosUpdate_04.market] | [PosUpdate_04.settlementDate] |
+      | Instance ID       | level   | participant                | symbol                | longPosition | longValue | netPosition | netValue | avgPrice | account                | mtmValue | realizedMtmValue | unrealizedMtmValue | unrealizedMtmPercentage | notional | accruedAmount | ai  | market                | settlementDate                |
+      | PosUpdate_04_Res1 | ACCOUNT | [PosUpdate_04.participant] | [PosUpdate_04.symbol] | 15.0         | 1350.0    | 15.0        | 1350.0   | 85.5     | [PosUpdate_04.account] | 2550.0   | 0.0              | 1267.5             | 98.83                   | 1350.0   | 67.5          | 5.0 | [PosUpdate_04.market] | [PosUpdate_04.settlementDate] |
 
      # Position update with Different Expire Dates( Position should be aggregated,RZ_PT_PK_07 applies)
     When "Position Update" messages are submitted with following values
@@ -754,8 +754,8 @@ Feature: Position Attributes
       | PosUpdate_05 | [Acc_01.Account Id] | [MD1.symbol] | 15       | 90.0  | 1350.0 | LONG | RZ-PT-01    | 1350     | USD      | CME    | 2022-03-22T00:00:00.000+00:00 | 2022-04-25T00:00:00.000+00:00 |
 
     Then  "Position" messages are filtered by "level,participant,account,netPosition" should be
-      | Instance ID       | level   | participant                | symbol                | longPosition | longValue | netPosition | netValue | avgPrice | account                | mtmValue | realizedMtmValue | unrealizedMtmValue | unrealizedMtmPercentage | notional | accruedInterest | ai  | market                | settlementDate                | expiryDate |
-      | PosUpdate_05_Res1 | ACCOUNT | [PosUpdate_05.participant] | [PosUpdate_04.symbol] | 30.0         | 2850.0    | 30.0        | 2850.0   | 85.5     | [PosUpdate_05.account] | 6000.0   | 0.0              | 3435.0             | 133.9181287             | 2850.0   | 142.5           | 5.0 | [PosUpdate_05.market] | [PosUpdate_04.settlementDate] |            |
+      | Instance ID       | level   | participant                | symbol                | longPosition | longValue | netPosition | netValue | avgPrice | account                | mtmValue | realizedMtmValue | unrealizedMtmValue | unrealizedMtmPercentage | notional | accruedAmount | ai  | market                | settlementDate                | expiryDate |
+      | PosUpdate_05_Res1 | ACCOUNT | [PosUpdate_05.participant] | [PosUpdate_04.symbol] | 30.0         | 2850.0    | 30.0        | 2850.0   | 85.5     | [PosUpdate_05.account] | 6000.0   | 0.0              | 3435.0             | 133.92                  | 2850.0   | 142.5         | 5.0 | [PosUpdate_05.market] | [PosUpdate_04.settlementDate] |            |
 
     #reset the Position Key
     Given instance "RZ_PT_PK_07" of entity "Position Keys" is updated with following values
@@ -766,22 +766,35 @@ Feature: Position Attributes
   @done
   Scenario: TC_018 Validate Position Key with all applicable fields
 
+    Given instance "Bond_Test_1" of entity "Instruments" is copied with following values
+      | Instance ID | Symbol                     | Size Multiplier | Par Value |
+      | Inst_01     | random(RZ_PT_Inst_Bond_,4) | 2               | 100       |
+
+    And instance "Bond_Test_1" of entity "Instruments" is copied with following values
+      | Instance ID | Symbol                     | Size Multiplier | Par Value | Expiry Date |
+      | Inst_02     | random(RZ_PT_Inst_Bond_,4) | 1               | 100       | 2023-06-07  |
+
+    And instance "Home" of entity "Accounts" is copied with following values
+      | Instance ID | Account Id           | Name                 | Participant | Type   | Account Currency | Category | Position Key Ids |
+      | Acc_01      | random(RZ-PT-Acc-,4) | random(RZ-PT-Acc-,4) | RZ-PT-01    | MARGIN | USD              | CLIENT   | RZ_PT_PK_09      |
+
+    Then instance "[Acc_01.Account Id]" of entity "Accounts" should be
+      | Instance ID | Name          |
+      | Acc_01_Res1 | [Acc_01.Name] |
+
     Given "Realtime Risk Factor Update" messages are submitted with following values
-      | Instance ID | symbol                | type | value |
-      | MD1         | RZ_PT_Inst_Bond_00311 | LTP  | 95.0  |
-      | MD2         | RZ_PT_Inst_Bond_00311 | AI   | 5.0   |
+      | Instance ID | symbol           | type | value |
+      | MD1         | [Inst_01.Symbol] | LTP  | 95.0  |
+      | MD2         | [Inst_01.Symbol] | AI   | 5.0   |
 
     Then "Realtime Risk Factor Value" messages are filtered by "symbol,ltp" should be
       | Instance ID | symbol       | ltp  |
       | MD1_Res1    | [MD1.symbol] | 95.0 |
 
-    Then "Realtime Risk Factor Value" messages are filtered by "symbol,ai" should be
-      | Instance ID | symbol       | ai  |
-      | MD1_Res2    | [MD1.symbol] | 5.0 |
+#    Then "Realtime Risk Factor Value" messages are filtered by "symbol,ai" should be
+#      | Instance ID | symbol       | ai  |
+#      | MD1_Res2    | [MD1.symbol] | 5.0 |
 
-    Given instance "Home" of entity "Accounts" is copied with following values
-      | Instance ID | Account Id           | Name                 | Participant | Type   | Account Currency | Category | Position Key Ids |
-      | Acc_01      | random(RZ-PT-Acc-,4) | random(RZ-PT-Acc-,4) | RZ-PT-01    | MARGIN | USD              | CLIENT   | RZ_PT_PK_09      |
 
    #### added positions with  different markets (( Settlement Date,Trade Date, Expiry Date(Instrument ) are Same )
     When "Position Update" messages are submitted with following values
@@ -793,8 +806,8 @@ Feature: Position Attributes
       | PosUpdate_02 | [Acc_01.Account Id] | [MD1.symbol] | 10       | 90.0  | 855.0 | SHORT | RZ-PT-01    | 900      | USD      | CME    | 2022-02-22T00:00:00.000+00:00 | 2022-02-22T00:00:00.000+00:00 |
 
     Then  "Position" messages are filtered by "level,participant,account,netPosition,market" should be
-      | Instance ID       | level   | participant                | symbol                | shortPosition | shortValue | netPosition | netValue | avgPrice | account                | mtmValue | realizedMtmValue | unrealizedMtmValue | unrealizedMtmPercentage | notional | currency | accruedInterest | ai  | settlementDate                | market                | tradeDate                | positionKey |
-      | PosUpdate_02_Res1 | ACCOUNT | [PosUpdate_02.participant] | [PosUpdate_02.symbol] | 10.0          | 855.0      | -10.0       | -855.0   | 85.5     | [PosUpdate_02.account] | -2000.0  | 0.0              | -1145.0            | -133.91812865497076     | -900.0   | USD      | -45.0           | 5.0 | [PosUpdate_02.settlementDate] | [PosUpdate_02.market] | [PosUpdate_02.tradeDate] | RZ_PT_PK_09 |
+      | Instance ID       | level   | participant                | symbol                | shortPosition | shortValue | netPosition | netValue | avgPrice | account                | mtmValue | realizedMtmValue | unrealizedMtmValue | unrealizedMtmPercentage | notional | currency | accruedAmount | ai  | settlementDate                | market                | tradeDate                | positionKey |
+      | PosUpdate_02_Res1 | ACCOUNT | [PosUpdate_02.participant] | [PosUpdate_02.symbol] | 10.0          | 855.0      | -10.0       | -855.0   | 85.5     | [PosUpdate_02.account] | -2000.0  | 0.0              | -1145.0            | -133.92                 | -900.0   | USD      | -45.0         | 5.0 | [PosUpdate_02.settlementDate] | [PosUpdate_02.market] | [PosUpdate_02.tradeDate] | RZ_PT_PK_09 |
 
     #### added positions with  different Trade Dates (( Settlement Date,Market, Expiry Date(Instrument ) are Same )
 
@@ -803,8 +816,8 @@ Feature: Position Attributes
       | PosUpdate_03 | [Acc_01.Account Id] | [MD1.symbol] | 10       | 90.0  | 855.0 | SHORT | RZ-PT-01    | 900      | USD      | CCCAGG | 2022-02-22T00:00:00.000+00:00 | 2022-02-23T00:00:00.000+00:00 |
 
     Then  "Position" messages are filtered by "level,participant,account,netPosition,market,tradeDate" should be
-      | Instance ID       | level   | participant                | symbol                | shortPosition | shortValue | netPosition | netValue | avgPrice | account                | mtmValue | realizedMtmValue | unrealizedMtmValue | unrealizedMtmPercentage | notional | currency | accruedInterest | ai  | settlementDate                | market                | tradeDate                | positionKey |
-      | PosUpdate_03_Res1 | ACCOUNT | [PosUpdate_03.participant] | [PosUpdate_03.symbol] | 10.0          | 855.0      | -10.0       | -855.0   | 85.5     | [PosUpdate_03.account] | -2000.0  | 0.0              | -1145.0            | -133.91812865497076     | -900.0   | USD      | -45.0           | 5.0 | [PosUpdate_03.settlementDate] | [PosUpdate_03.market] | [PosUpdate_03.tradeDate] | RZ_PT_PK_09 |
+      | Instance ID       | level   | participant                | symbol                | shortPosition | shortValue | netPosition | netValue | avgPrice | account                | mtmValue | realizedMtmValue | unrealizedMtmValue | unrealizedMtmPercentage | notional | currency | accruedAmount | ai  | settlementDate                | market                | tradeDate                | positionKey |
+      | PosUpdate_03_Res1 | ACCOUNT | [PosUpdate_03.participant] | [PosUpdate_03.symbol] | 10.0          | 855.0      | -10.0       | -855.0   | 85.5     | [PosUpdate_03.account] | -2000.0  | 0.0              | -1145.0            | -133.92                 | -900.0   | USD      | -45.0         | 5.0 | [PosUpdate_03.settlementDate] | [PosUpdate_03.market] | [PosUpdate_03.tradeDate] | RZ_PT_PK_09 |
 
     #### added positions with  different Settlement Dates (( Trade Date,Market, Expiry Date(Instrument ) are Same )
 
@@ -813,21 +826,22 @@ Feature: Position Attributes
       | PosUpdate_04 | [Acc_01.Account Id] | [MD1.symbol] | 10       | 90.0  | 855.0 | SHORT | RZ-PT-01    | 900      | USD      | CCCAGG | 2022-02-23T00:00:00.000+00:00 | 2022-02-23T00:00:00.000+00:00 |
 
     Then  "Position" messages are filtered by "level,participant,account,netPosition,market,settlementDate" should be
-      | Instance ID       | level   | participant                | symbol                | shortPosition | shortValue | netPosition | netValue | avgPrice | account                | mtmValue | realizedMtmValue | unrealizedMtmValue | unrealizedMtmPercentage | notional | currency | accruedInterest | ai  | settlementDate                | market                | tradeDate                | positionKey |
-      | PosUpdate_04_Res1 | ACCOUNT | [PosUpdate_04.participant] | [PosUpdate_04.symbol] | 10.0          | 855.0      | -10.0       | -855.0   | 85.5     | [PosUpdate_04.account] | -2000.0  | 0.0              | -1145.0            | -133.91812865497076     | -900.0   | USD      | -45.0           | 5.0 | [PosUpdate_04.settlementDate] | [PosUpdate_04.market] | [PosUpdate_04.tradeDate] | RZ_PT_PK_09 |
+      | Instance ID       | level   | participant                | symbol                | shortPosition | shortValue | netPosition | netValue | avgPrice | account                | mtmValue | realizedMtmValue | unrealizedMtmValue | unrealizedMtmPercentage | notional | currency | accruedAmount | ai  | settlementDate                | market                | tradeDate                | positionKey |
+      | PosUpdate_04_Res1 | ACCOUNT | [PosUpdate_04.participant] | [PosUpdate_04.symbol] | 10.0          | 855.0      | -10.0       | -855.0   | 85.5     | [PosUpdate_04.account] | -2000.0  | 0.0              | -1145.0            | -133.92                 | -900.0   | USD      | -45.0         | 5.0 | [PosUpdate_04.settlementDate] | [PosUpdate_04.market] | [PosUpdate_04.tradeDate] | RZ_PT_PK_09 |
+
 
     Given "Realtime Risk Factor Update" messages are submitted with following values
-      | Instance ID | symbol              | type | value |
-      | MD3         | RZ_PT_Inst_Bond_001 | LTP  | 95.0  |
-      | MD4         | RZ_PT_Inst_Bond_001 | AI   | 5.0   |
+      | Instance ID | symbol           | type | value |
+      | MD3         | [Inst_02.Symbol] | LTP  | 95.0  |
+      | MD4         | [Inst_02.Symbol] | AI   | 5.0   |
 
     Then "Realtime Risk Factor Value" messages are filtered by "symbol,ltp" should be
       | Instance ID | symbol       | ltp  |
       | MD3_Res1    | [MD3.symbol] | 95.0 |
 
-    Then "Realtime Risk Factor Value" messages are filtered by "symbol,ai" should be
-      | Instance ID | symbol       | ai  |
-      | MD4_Res2    | [MD4.symbol] | 5.0 |
+#    Then "Realtime Risk Factor Value" messages are filtered by "symbol,ai" should be
+#      | Instance ID | symbol       | ai  |
+#      | MD4_Res2    | [MD4.symbol] | 5.0 |
 
     #### added positions with  different Expiry Dates(Instrument) ( Trade Date,Market, Settlement Dates are Same )
 
@@ -836,8 +850,8 @@ Feature: Position Attributes
       | PosUpdate_05 | [Acc_01.Account Id] | [MD3.symbol] | 10       | 90.0  | 855.0 | SHORT | RZ-PT-01    | 900      | USD      | CCCAGG | 2022-02-23T00:00:00.000+00:00 | 2022-02-23T00:00:00.000+00:00 |
 
     Then  "Position" messages are filtered by "level,participant,account,netPosition,symbol,market" should be
-      | Instance ID       | level   | participant                | symbol                | shortPosition | shortValue | netPosition | netValue | avgPrice | account                | mtmValue | realizedMtmValue | unrealizedMtmValue | unrealizedMtmPercentage | notional | currency | accruedInterest | ai  | settlementDate                | market                | tradeDate                | expiryDate                    | positionKey |
-      | PosUpdate_05_Res1 | ACCOUNT | [PosUpdate_05.participant] | [PosUpdate_05.symbol] | 10.0          | 855.0      | -10.0       | -855.0   | 85.5     | [PosUpdate_05.account] | -1000.0  | 0.0              | -145.0             | -16.95906432748538      | -900.0   | USD      | -45.0           | 5.0 | [PosUpdate_05.settlementDate] | [PosUpdate_05.market] | [PosUpdate_05.tradeDate] | 2023-06-07T00:00:00.000+00:00 | RZ_PT_PK_09 |
+      | Instance ID       | level   | participant                | symbol                | shortPosition | shortValue | netPosition | netValue | avgPrice | account                | mtmValue | realizedMtmValue | unrealizedMtmValue | unrealizedMtmPercentage | notional | currency | accruedAmount | ai  | settlementDate                | market                | tradeDate                | expiryDate                    | positionKey |
+      | PosUpdate_05_Res1 | ACCOUNT | [PosUpdate_05.participant] | [PosUpdate_05.symbol] | 10.0          | 855.0      | -10.0       | -855.0   | 85.5     | [PosUpdate_05.account] | -1000.0  | 0.0              | -145.0             | -16.96                  | -900.0   | USD      | -45.0         | 5.0 | [PosUpdate_05.settlementDate] | [PosUpdate_05.market] | [PosUpdate_05.tradeDate] | 2023-06-07T00:00:00.000+00:00 | RZ_PT_PK_09 |
 
       #### added positions with same properties ( Trade Date,Market, Settlement Dates , Expiry dates are Same )- position aggregates
 
@@ -846,51 +860,58 @@ Feature: Position Attributes
       | PosUpdate_06 | [Acc_01.Account Id] | [MD3.symbol] | 10       | 90.0  | 855.0 | SHORT | RZ-PT-01    | 900      | USD      | CCCAGG | 2022-02-23T00:00:00.000+00:00 | 2022-02-23T00:00:00.000+00:00 |
 
     Then  "Position" messages are filtered by "level,participant,account,netPosition,symbol,market" should be
-      | Instance ID       | level   | participant                | symbol                | shortPosition | shortValue | netPosition | netValue | avgPrice | account                | mtmValue | realizedMtmValue | unrealizedMtmValue | unrealizedMtmPercentage | notional | currency | accruedInterest | ai  | settlementDate                | market                | tradeDate                | expiryDate                    | positionKey |
-      | PosUpdate_06_Res1 | ACCOUNT | [PosUpdate_06.participant] | [PosUpdate_06.symbol] | 20.0          | 1710.0     | -20.0       | -1710.0  | 85.5     | [PosUpdate_06.account] | -2000.0  | 0.0              | -290.0             | -16.95906432748538      | -1800.0  | USD      | -90.0           | 5.0 | [PosUpdate_06.settlementDate] | [PosUpdate_06.market] | [PosUpdate_06.tradeDate] | 2023-06-07T00:00:00.000+00:00 | RZ_PT_PK_09 |
-
+      | Instance ID       | level   | participant                | symbol                | shortPosition | shortValue | netPosition | netValue | avgPrice | account                | mtmValue | realizedMtmValue | unrealizedMtmValue | unrealizedMtmPercentage | notional | currency | accruedAmount | ai  | settlementDate                | market                | tradeDate                | expiryDate                    | positionKey |
+      | PosUpdate_06_Res1 | ACCOUNT | [PosUpdate_06.participant] | [PosUpdate_06.symbol] | 20.0          | 1710.0     | -20.0       | -1710.0  | 85.5     | [PosUpdate_06.account] | -2000.0  | 0.0              | -290.0             | -16.96                  | -1800.0  | USD      | -90.0         | 5.0 | [PosUpdate_06.settlementDate] | [PosUpdate_06.market] | [PosUpdate_06.tradeDate] | 2023-06-07T00:00:00.000+00:00 | RZ_PT_PK_09 |
 
   @done
   Scenario: TC_019 Validate Last MD Update affected to Position Recalculation
 
-    Given instance "Home" of entity "Accounts" is copied with following values
+    Given instance "Bond_Test_1" of entity "Instruments" is copied with following values
+      | Instance ID | Symbol                     | Size Multiplier | Par Value |
+      | Inst_01     | random(RZ_PT_Inst_Bond_,4) | 2               | 100       |
+
+    And instance "Home" of entity "Accounts" is copied with following values
       | Instance ID | Account Id           | Name                 | Participant | Position Key Ids |
       | Acc_01      | random(RZ-PT-Acc-,4) | random(RZ-PT-Acn-,4) | RZ-PT-01    | RZ_PT_IT_01      |
 
+    Then instance "[Acc_01.Account Id]" of entity "Accounts" should be
+      | Instance ID | Name          |
+      | Acc_01_Res1 | [Acc_01.Name] |
+
     When "Realtime Risk Factor Update" messages are submitted with following values
-      | Instance ID | symbol               | type | value | currency | venue  |
-      | MD1         | RZ_PT_Inst_Bond_0031 | AI   | 2.0   | USD      | CCCAGG |
-      | MD2         | RZ_PT_Inst_Bond_0031 | LTP  | 45.0  | USD      | CCCAGG |
+      | Instance ID | symbol           | type | value | currency |
+      | MD1         | [Inst_01.Symbol] | AI   | 2.0   | USD      |
+      | MD2         | [Inst_01.Symbol] | LTP  | 45.0  | USD      |
 
     Then "Realtime Risk Factor Value" messages are filtered by "symbol,ltp" should be
-      | Instance ID | symbol       | ai  | ltp  |
-      | MD2_Res1    | [MD2.symbol] | 2.0 | 45.0 |
+      | Instance ID | symbol       | ltp  |
+      | MD2_Res1    | [MD2.symbol] | 45.0 |
 
     When "Position Update" messages are submitted with following values
       | Instance ID  | account             | symbol       | quantity | price | value  | side  | participant          | notional | market |
       | PosUpdate_01 | [Acc_01.Account Id] | [MD1.symbol] | 60       | 50.0  | 1560.0 | SHORT | [Acc_01.Participant] | 3000     | CCCAGG |
 
     Then "Position" messages are filtered by "level,participant,account,shortPosition" should be
-      | Instance ID       | level   | participant                | symbol                | shortPosition | shortValue | netPosition | netValue | avgPrice | account                | notional | mtmValue | realizedMtmValue | unrealizedMtmValue | unrealizedMtmPercentage | accruedInterest | ai  |
-      | PosUpdate_01_Res1 | ACCOUNT | [PosUpdate_01.participant] | [PosUpdate_01.symbol] | 60.0          | 1560.0     | -60.0       | -1560.0  | 26.0     | [PosUpdate_01.account] | -3000.0  | -5640.0  | 0.0              | -4080.0            | -261.53846153846155     | -60.0           | 2.0 |
+      | Instance ID       | level   | participant                | symbol                | shortPosition | shortValue | netPosition | netValue | avgPrice | account                | notional | mtmValue | realizedMtmValue | unrealizedMtmValue | unrealizedMtmPercentage | accruedAmount | ai  |
+      | PosUpdate_01_Res1 | ACCOUNT | [PosUpdate_01.participant] | [PosUpdate_01.symbol] | 60.0          | 1560.0     | -60.0       | -1560.0  | 26.0     | [PosUpdate_01.account] | -3000.0  | -5640.0  | 0.0              | -4080.0            | -261.54                 | -60.0         | 2.0 |
 
     When "Position Update" messages are submitted with following values
       | Instance ID  | account             | symbol       | quantity | price | value  | side  | participant          | notional | market |
       | PosUpdate_02 | [Acc_01.Account Id] | [MD1.symbol] | 100      | 51.0  | 2703.0 | SHORT | [Acc_01.Participant] | 5100     | CCCAGG |
 
     Then "Position" messages are filtered by "level,participant,account,shortPosition" should be
-      | Instance ID       | level   | participant                | symbol                | shortPosition | shortValue | netPosition | netValue | avgPrice | account                | notional | mtmValue | realizedMtmValue | unrealizedMtmValue | unrealizedMtmPercentage | accruedInterest | ai  |
-      | PosUpdate_02_Res1 | ACCOUNT | [PosUpdate_02.participant] | [PosUpdate_02.symbol] | 160.0         | 4263.0     | -160.0      | -4263.0  | 26.64375 | [PosUpdate_02.account] | -8100.0  | -15040.0 | 0.0              | -10777.0           | -252.80319024161392     | -162.0          | 2.0 |
+      | Instance ID       | level   | participant                | symbol                | shortPosition | shortValue | netPosition | netValue | avgPrice | account                | notional | mtmValue | realizedMtmValue | unrealizedMtmValue | unrealizedMtmPercentage | accruedAmount | ai  |
+      | PosUpdate_02_Res1 | ACCOUNT | [PosUpdate_02.participant] | [PosUpdate_02.symbol] | 160.0         | 4263.0     | -160.0      | -4263.0  | 26.64    | [PosUpdate_02.account] | -8100.0  | -15040.0 | 0.0              | -10777.0           | -252.8                  | -162.0        | 2.0 |
 
     # multiple LTP updates
     When "Realtime Risk Factor Update" messages are submitted with following values
-      | Instance ID | symbol       | type | value | currency | venue  |
-      | MD3         | [MD1.symbol] | LTP  | 46.0  | USD      | CCCAGG |
-      | MD4         | [MD1.symbol] | LTP  | 47.0  | USD      | CCCAGG |
-      | MD5         | [MD1.symbol] | LTP  | 48.0  | USD      | CCCAGG |
-      | MD6         | [MD1.symbol] | LTP  | 49.0  | USD      | CCCAGG |
-      | MD7         | [MD1.symbol] | LTP  | 50.0  | USD      | CCCAGG |
-      | MD8         | [MD1.symbol] | LTP  | 51.0  | USD      | CCCAGG |
+      | Instance ID | symbol       | type | value | currency |
+      | MD3         | [MD1.symbol] | LTP  | 46.0  | USD      |
+      | MD4         | [MD1.symbol] | LTP  | 47.0  | USD      |
+      | MD5         | [MD1.symbol] | LTP  | 48.0  | USD      |
+      | MD6         | [MD1.symbol] | LTP  | 49.0  | USD      |
+      | MD7         | [MD1.symbol] | LTP  | 50.0  | USD      |
+      | MD8         | [MD1.symbol] | LTP  | 51.0  | USD      |
 
     Then "Realtime Risk Factor Value" messages are filtered by "symbol,ltp" should be
       | Instance ID | symbol       | ltp  |
@@ -898,46 +919,58 @@ Feature: Position Attributes
 
     # Position should be recalculated for the last LTP Update
     Then   "Position" messages are filtered by "level,participant,account,shortPosition,mtmValue" should be
-      | Instance ID       | level   | participant                | symbol                | shortPosition | shortValue | netPosition | netValue | avgPrice | account                | notional | mtmValue | realizedMtmValue | unrealizedMtmValue | unrealizedMtmPercentage | accruedInterest | ai  |
-      | PosUpdate_02_Res2 | ACCOUNT | [PosUpdate_02.participant] | [PosUpdate_02.symbol] | 160.0         | 4263.0     | -160.0      | -4263.0  | 26.64375 | [PosUpdate_02.account] | -8100.0  | -16960.0 | 0.0              | -12697.0           | -297.8418953788412      | -162.0          | 2.0 |
+      | Instance ID       | level   | participant                | symbol                | shortPosition | shortValue | netPosition | netValue | avgPrice | account                | notional | mtmValue | realizedMtmValue | unrealizedMtmValue | unrealizedMtmPercentage | accruedAmount | ai  |
+      | PosUpdate_02_Res2 | ACCOUNT | [PosUpdate_02.participant] | [PosUpdate_02.symbol] | 160.0         | 4263.0     | -160.0      | -4263.0  | 26.64    | [PosUpdate_02.account] | -8100.0  | -16960.0 | 0.0              | -12697.0           | -297.84                 | -162.0        | 2.0 |
+
+    And "Position History" messages are filtered by "positionId,shortPosition" should be
+      | Instance ID   | participant          | account             | positionId                     | shortPosition | shortValue | netPosition | netValue | avgPrice | notional | mtmValue | realizedMtmValue | unrealizedMtmValue | unrealizedMtmPercentage | accruedAmount | ai  |
+      | POS_History01 | [Acc_01.Participant] | [Acc_01.Account Id] | [PosUpdate_02_Res2.positionId] | 60.0          | 1560.0     | -60.0       | -1560.0  | 26.0     | -3000.0  | -5640.0  | 0.0              | -4080.0            | -261.54                 | -60.0         | 2.0 |
 
   @done
   Scenario: TC_020 Validate position will be calculated by market data from all venues regardless of the position venue
 
-    Given instance "Home" of entity "Accounts" is copied with following values
+    Given instance "Bond_Test_1" of entity "Instruments" is copied with following values
+      | Instance ID | Symbol                     | Size Multiplier | Par Value |
+      | Inst_01     | random(RZ_PT_Inst_Bond_,4) | 2               | 100       |
+
+    And instance "Home" of entity "Accounts" is copied with following values
       | Instance ID | Account Id           | Name                 | Participant | Position Key Ids |
       | Acc_01      | random(RZ-PT-Acc-,4) | random(RZ-PT-Acn-,4) | RZ-PT-01    | RZ_PT_IT_01      |
 
+    Then instance "[Acc_01.Account Id]" of entity "Accounts" should be
+      | Instance ID | Name          |
+      | Acc_01_Res1 | [Acc_01.Name] |
+
     When "Realtime Risk Factor Update" messages are submitted with following values
-      | Instance ID | symbol               | type | value | currency | venue  |
-      | MD1         | RZ_PT_Inst_Bond_0031 | AI   | 2.0   | USD      | CCCAGG |
-      | MD2         | RZ_PT_Inst_Bond_0031 | LTP  | 45.0  | USD      | CCCAGG |
+      | Instance ID | symbol           | type | value | currency | venue  |
+      | MD1         | [Inst_01.Symbol] | AI   | 2.0   | USD      | CCCAGG |
+      | MD2         | [Inst_01.Symbol] | LTP  | 45.0  | USD      | CCCAGG |
 
     Then "Realtime Risk Factor Value" messages are filtered by "symbol,ltp" should be
-      | Instance ID | symbol       | ai  | ltp  |
-      | MD2_Res1    | [MD2.symbol] | 2.0 | 45.0 |
+      | Instance ID | symbol       | ltp  |
+      | MD2_Res1    | [MD2.symbol] | 45.0 |
 
     When "Position Update" messages are submitted with following values
       | Instance ID  | account             | symbol       | quantity | price | value  | side  | participant          | notional | market |
       | PosUpdate_01 | [Acc_01.Account Id] | [MD1.symbol] | 60       | 50.0  | 1560.0 | SHORT | [Acc_01.Participant] | 3000     | CCCAGG |
 
     Then "Position" messages are filtered by "level,participant,account,shortPosition" should be
-      | Instance ID       | level   | participant                | symbol                | shortPosition | shortValue | netPosition | netValue | avgPrice | account                | notional | mtmValue | realizedMtmValue | unrealizedMtmValue | unrealizedMtmPercentage | accruedInterest | ai  |
-      | PosUpdate_01_Res1 | ACCOUNT | [PosUpdate_01.participant] | [PosUpdate_01.symbol] | 60.0          | 1560.0     | -60.0       | -1560.0  | 26.0     | [PosUpdate_01.account] | -3000.0  | -5640.0  | 0.0              | -4080.0            | -261.53846153846155     | -60.0           | 2.0 |
+      | Instance ID       | level   | participant                | symbol                | shortPosition | shortValue | netPosition | netValue | avgPrice | account                | notional | mtmValue | realizedMtmValue | unrealizedMtmValue | unrealizedMtmPercentage | accruedAmount | ai  |
+      | PosUpdate_01_Res1 | ACCOUNT | [PosUpdate_01.participant] | [PosUpdate_01.symbol] | 60.0          | 1560.0     | -60.0       | -1560.0  | 26.0     | [PosUpdate_01.account] | -3000.0  | -5640.0  | 0.0              | -4080.0            | -261.54                 | -60.0         | 2.0 |
 
     #submit market data update for CME venue
     When "Realtime Risk Factor Update" messages are submitted with following values
-      | Instance ID | symbol               | type | value | currency | venue |
-      | MD3         | RZ_PT_Inst_Bond_0031 | LTP  | 55.0  | USD      | CME   |
+      | Instance ID | symbol           | type | value | currency | venue |
+      | MD3         | [Inst_01.Symbol] | LTP  | 55.0  | USD      | CME   |
 
     Then "Realtime Risk Factor Value" messages are filtered by "symbol,ltp" should be
       | Instance ID | symbol       | ltp  |
       | MD3_Res1    | [MD2.symbol] | 55.0 |
 
     # position should be recalculated even if the market is different
-    Then "Position" messages are filtered by "level,participant,account,shortPosition,accruedInterest,mtmValue" should be
-      | Instance ID       | level   | participant                | symbol                | shortPosition | shortValue | netPosition | netValue | avgPrice | account                | notional | mtmValue | realizedMtmValue | unrealizedMtmValue | unrealizedMtmPercentage | accruedInterest | ai  |
-      | PosUpdate_01_Res2 | ACCOUNT | [PosUpdate_01.participant] | [PosUpdate_01.symbol] | 60.0          | 1560.0     | -60.0       | -1560.0  | 26.0     | [PosUpdate_01.account] | -3000.0  | -6840.0  | 0.0              | -5280.0            | -338.46153846153845     | -60.0           | 2.0 |
+    Then "Position" messages are filtered by "level,participant,account,shortPosition,accruedAmount,mtmValue" should be
+      | Instance ID       | level   | participant                | symbol                | shortPosition | shortValue | netPosition | netValue | avgPrice | account                | notional | mtmValue | realizedMtmValue | unrealizedMtmValue | unrealizedMtmPercentage | accruedAmount | ai  |
+      | PosUpdate_01_Res2 | ACCOUNT | [PosUpdate_01.participant] | [PosUpdate_01.symbol] | 60.0          | 1560.0     | -60.0       | -1560.0  | 26.0     | [PosUpdate_01.account] | -3000.0  | -6840.0  | 0.0              | -5280.0            | -338.46                 | -60.0         | 2.0 |
 
   @done
   Scenario: TC_021 Validate position calculation when instrument par value updated
@@ -973,7 +1006,7 @@ Feature: Position Attributes
 
     Then "Position" messages are filtered by "level,participant,account,shortPosition" should be
       | Instance ID       | level   | participant                | symbol                | shortPosition | shortValue | netPosition | netValue | avgPrice | account                | notional | mtmValue | realizedMtmValue | unrealizedMtmValue | unrealizedMtmPercentage | accruedAmount | ai  |
-      | PosUpdate_01_Res1 | ACCOUNT | [PosUpdate_01.participant] | [PosUpdate_01.symbol] | 60.0          | 1560.0     | -60.0       | -1560.0  | 26.0     | [PosUpdate_01.account] | -3000.0  | -5640.0  | 0.0              | -4080.0            | -261.53846153846155     | -60.0         | 2.0 |
+      | PosUpdate_01_Res1 | ACCOUNT | [PosUpdate_01.participant] | [PosUpdate_01.symbol] | 60.0          | 1560.0     | -60.0       | -1560.0  | 26.0     | [PosUpdate_01.account] | -3000.0  | -5640.0  | 0.0              | -4080.0            | -261.54                 | -60.0         | 2.0 |
 
     When "Position Update" messages are submitted with following values
       | Instance ID  | account             | symbol       | quantity | price | value  | side  | participant          | notional | market |
@@ -981,7 +1014,7 @@ Feature: Position Attributes
 
     Then "Position" messages are filtered by "level,participant,account,shortPosition" should be
       | Instance ID       | level   | participant                | symbol                | shortPosition | shortValue | netPosition | netValue | avgPrice | account                | notional | mtmValue | realizedMtmValue | unrealizedMtmValue | unrealizedMtmPercentage | accruedAmount | ai  |
-      | PosUpdate_02_Res1 | ACCOUNT | [PosUpdate_02.participant] | [PosUpdate_02.symbol] | 160.0         | 4263.0     | -160.0      | -4263.0  | 26.64375 | [PosUpdate_02.account] | -8100.0  | -15040.0 | 0.0              | -10777.0           | -252.80319024161392     | -162.0        | 2.0 |
+      | PosUpdate_02_Res1 | ACCOUNT | [PosUpdate_02.participant] | [PosUpdate_02.symbol] | 160.0         | 4263.0     | -160.0      | -4263.0  | 26.64375 | [PosUpdate_02.account] | -8100.0  | -15040.0 | 0.0              | -10777.0           | -252.81                 | -162.0        | 2.0 |
 
     When instance "[Inst_01.Symbol]" of entity "Instruments" is updated with following values
       | Instance ID | Par Value |
@@ -994,7 +1027,7 @@ Feature: Position Attributes
     # Position should be recalculated for the PAR value update of the Instrument ( New PAR value is not applicable for already calculated Considerations )
     Then   "Position" messages are filtered by "level,participant,account,shortPosition,accruedAmount" should be
       | Instance ID       | level   | participant                | symbol                | shortPosition | shortValue | netPosition | netValue | avgPrice | account                | notional | mtmValue | realizedMtmValue | unrealizedMtmValue | unrealizedMtmPercentage | accruedAmount | ai  |
-      | PosUpdate_02_Res2 | ACCOUNT | [PosUpdate_02.participant] | [PosUpdate_02.symbol] | 160.0         | 4263.0     | -160.0      | -4263.0  | 26.64375 | [PosUpdate_02.account] | -8100.0  | -15040.0 | 0.0              | -10777.0           | -252.80319024161392     | -81.0         | 2.0 |
+      | PosUpdate_02_Res2 | ACCOUNT | [PosUpdate_02.participant] | [PosUpdate_02.symbol] | 160.0         | 4263.0     | -160.0      | -4263.0  | 26.64375 | [PosUpdate_02.account] | -8100.0  | -15040.0 | 0.0              | -10777.0           | -252.81                 | -81.0         | 2.0 |
 
     #Add another Position (New PAR value should be used for the Calculation)
     When "Position Update" messages are submitted with following values
@@ -1003,15 +1036,15 @@ Feature: Position Attributes
 
     Then "Position" messages are filtered by "level,participant,account,shortPosition" should be
       | Instance ID       | level   | participant                | symbol                | shortPosition | shortValue | netPosition | netValue | avgPrice          | account                | notional | mtmValue | realizedMtmValue | unrealizedMtmValue | unrealizedMtmPercentage | accruedAmount | ai  |
-      | PosUpdate_03_Res1 | ACCOUNT | [PosUpdate_03.participant] | [PosUpdate_03.symbol] | 260.0         | 5614.5     | -260.0      | -5614.5  | 21.59423076923077 | [PosUpdate_03.account] | -13200.0 | -24440.0 | 0.0              | -18825.5           | -335.3014515985395      | -132.0        | 2.0 |
+      | PosUpdate_03_Res1 | ACCOUNT | [PosUpdate_03.participant] | [PosUpdate_03.symbol] | 260.0         | 5614.5     | -260.0      | -5614.5  | 21.59423076923077 | [PosUpdate_03.account] | -13200.0 | -24440.0 | 0.0              | -18825.5           | -335.31                 | -132.0        | 2.0 |
 
     And "Position History" messages are filtered by "positionId,shortPosition" should be
       | Instance ID   | participant          | account             | positionId                     | shortPosition | shortValue | netPosition | netValue | avgPrice | notional | mtmValue | realizedMtmValue | unrealizedMtmValue | unrealizedMtmPercentage | accruedAmount | ai  |
-      | POS_History01 | [Acc_01.Participant] | [Acc_01.Account Id] | [PosUpdate_03_Res1.positionId] | 60.0          | 1560.0     | -60.0       | -1560.0  | 26.0     | -3000.0  | -5640.0  | 0.0              | -4080.0            | -261.53846153846155     | -60.0         | 2.0 |
+      | POS_History01 | [Acc_01.Participant] | [Acc_01.Account Id] | [PosUpdate_03_Res1.positionId] | 60.0          | 1560.0     | -60.0       | -1560.0  | 26.0     | -3000.0  | -5640.0  | 0.0              | -4080.0            | -261.54                 | -60.0         | 2.0 |
 
     And "Position History" messages are filtered by "positionId,shortPosition" should be
       | Instance ID   | participant          | account             | positionId                     | shortPosition | shortValue | netPosition | netValue | avgPrice | notional | mtmValue | realizedMtmValue | unrealizedMtmValue | unrealizedMtmPercentage | accruedAmount | ai  |
-      | POS_History02 | [Acc_01.Participant] | [Acc_01.Account Id] | [PosUpdate_03_Res1.positionId] |160.0         | 4263.0     | -160.0      | -4263.0  | 26.64375 |  -8100.0  | -15040.0 | 0.0              | -10777.0           | -252.80319024161392     | -81.0        | 2.0 |
+      | POS_History02 | [Acc_01.Participant] | [Acc_01.Account Id] | [PosUpdate_03_Res1.positionId] | 160.0         | 4263.0     | -160.0      | -4263.0  | 26.64375 | -8100.0  | -15040.0 | 0.0              | -10777.0           | -252.81                 | -81.0         | 2.0 |
 
   @InstrumentEdit
   Scenario: TC_022 Instrument Edit

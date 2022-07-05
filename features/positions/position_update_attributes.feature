@@ -56,7 +56,7 @@ Feature: Position Management
       | PosUpdate_01_Res1 | REJECTED | BUSINESS_VALIDATION |
 
     And "Position Update Error" messages are filtered by "externalId" should be
-      | Instance ID          | externalId                           | code  | message                            |
+      | Instance ID          | externalId                           | code  | message                                |
       | PosUpdate_01_error01 | [PosUpdate_01_Res1.positionUpdateId] | 20101 | Participant is not found in the system |
 
     ## Validate Position Update submitted with INVALID Participant
@@ -69,20 +69,20 @@ Feature: Position Management
       | PosUpdate_02_Res1 | REJECTED | BUSINESS_VALIDATION |
 
     And "Position Update Error" messages are filtered by "externalId,message" should be
-      | Instance ID          | externalId                           | code  | message                            |
+      | Instance ID          | externalId                           | code  | message                                |
       | PosUpdate_02_error01 | [PosUpdate_02_Res1.positionUpdateId] | 20101 | Participant is not found in the system |
 
     ## Validate Position Update submitted with EMPTY Participant
     When "Position Update" messages are submitted with following values
-      | Instance ID  | account | value | price | side  | participant | symbol              | notional |
-      | PosUpdate_03 |RZ-PT-AC-1 | 100   | 50.0  | SHORT | ""         | RZ_PT_Inst_Bond_001 | 15000.0  |
+      | Instance ID  | account    | value | price | side  | participant | symbol              | notional |
+      | PosUpdate_03 | RZ-PT-AC-1 | 100   | 50.0  | SHORT | ""          | RZ_PT_Inst_Bond_001 | 15000.0  |
 
     Then response of the request "PosUpdate_03" should be
       | Instance ID       | status   | subStatus           |
       | PosUpdate_03_Res1 | REJECTED | BUSINESS_VALIDATION |
 
     And "Position Update Error" messages are filtered by "externalId,message" should be
-      | Instance ID          | externalId                           | code  | message                            |
+      | Instance ID          | externalId                           | code  | message                                |
       | PosUpdate_03_error01 | [PosUpdate_03_Res1.positionUpdateId] | 20101 | Participant is not found in the system |
 
   @negative
@@ -90,19 +90,27 @@ Feature: Position Management
 
     When "Position Update" messages are submitted with following values
       | Instance ID  | account | value | price | side  | participant | symbol              | notional |
-      | PosUpdate_01 |         | 100   | 50.0  | SHORT | RZ-PT-01        | RZ_PT_Inst_Bond_001 | 5000.0   |
+      | PosUpdate_01 |         | 100   | 50.0  | SHORT | RZ-PT-01    | RZ_PT_Inst_Bond_001 | 5000.0   |
 
     Then response of the request "PosUpdate_01" should be
       | Instance ID       | status   | subStatus           | notional |
       | PosUpdate_01_Res1 | REJECTED | BUSINESS_VALIDATION | 5000.0   |
 
+    And "Position Update Error" messages are filtered by "externalId,message" should be
+      | Instance ID          | externalId                           | code  | message                                |
+      | PosUpdate_01_error01 | [PosUpdate_01_Res1.positionUpdateId] | 20101 | Participant is not found in the system |
+
     When "Position Update" messages are submitted with following values
       | Instance ID  | account | value | price | side  | participant | symbol              | notional |
-      | PosUpdate_02 | CITI-H  | 200   | 50.0  | SHORT | RZ-PT-01        | RZ_PT_Inst_Bond_003 | 10000.0  |
+      | PosUpdate_02 | CITI-H  | 200   | 50.0  | SHORT | RZ-PT-01    | RZ_PT_Inst_Bond_003 | 10000.0  |
 
     Then response of the request "PosUpdate_02" should be
       | Instance ID       | status   | subStatus           | notional |
       | PosUpdate_02_Res1 | REJECTED | BUSINESS_VALIDATION | 10000.0  |
+
+    And "Position Update Error" messages are filtered by "externalId,message" should be
+      | Instance ID          | externalId                           | code  | message                                |
+      | PosUpdate_02_error01 | [PosUpdate_02_Res1.positionUpdateId] | 20101 | Participant is not found in the system |
 
   @negative1
   Scenario: TC_PU_004 Validating Currency
