@@ -23,8 +23,8 @@ Feature: refdata add for position tests
       | Key_003     | RZ_PT_PK_03     | 1        | RATES       |                 | STANDARD   | YES    | YES      | YES             |
 
     And instance "Rule1" of entity "Position Keys" is copied with following values
-      | Instance ID | Position Key Id | Priority | Asset Class | Instrument Type    | Trade Type | Currency | Symbol | Expiry Date |
-      | Key_004     | RZ_PT_PK_04     | 1        | RATES       | FLOATING_RATE_BOND | STANDARD   | YES      | YES    | YES         |
+      | Instance ID | Position Key Id | Priority | Asset Class | Instrument Type    | Trade Type | Currency | Symbol | Expiry Date | Settlement Date |
+      | Key_004     | RZ_PT_PK_04     | 1        | RATES       | FLOATING_RATE_BOND | STANDARD   | YES      | YES    | YES         | YES             |
 
     And instance "Rule1" of entity "Position Keys" is copied with following values
       | Instance ID | Position Key Id | Priority | Asset Class | Instrument Type | Trade Type | Currency | Symbol | Expiry Date |
@@ -50,31 +50,31 @@ Feature: refdata add for position tests
   Scenario: TC_003 Copy & create new Accounts for Position Testing
 
     Given instance "Home" of entity "Accounts" is copied with following values
-      | Instance ID | Account Id  | Name        | Participant | Type   | Account Currency | Category | Position Key Ids        |
+      | Instance ID | Account Id | Name       | Participant | Type   | Account Currency | Category | Position Key Ids        |
       | Acc_001     | RZ-PT-AC-1 | RZ-PT-AC-1 | RZ-PT-01    | MARGIN | USD              | CLIENT   | RZ_PT_PK_01,RZ_PT_PK_02 |
 
     And instance "Home" of entity "Accounts" is copied with following values
-      | Instance ID | Account Id  | Name        | Participant | Type   | Account Currency | Category | Position Key Ids        |
+      | Instance ID | Account Id | Name       | Participant | Type   | Account Currency | Category | Position Key Ids        |
       | Acc_002     | RZ-PT-AC-2 | RZ-PT-AC-2 | RZ-PT-02    | MARGIN | USD              | CLIENT   | RZ_PT_PK_03,RZ_PT_PK_02 |
 
     And instance "Home" of entity "Accounts" is copied with following values
-      | Instance ID | Account Id  | Name        | Participant | Type   | Account Currency | Category | Position Key Ids        |
+      | Instance ID | Account Id | Name       | Participant | Type   | Account Currency | Category | Position Key Ids        |
       | Acc_003     | RZ-PT-AC-3 | RZ-PT-AC-3 | RZ-PT-01    | MARGIN | USD              | CLIENT   | RZ_PT_PK_01,RZ_PT_PK_04 |
 
     And instance "Home" of entity "Accounts" is copied with following values
-      | Instance ID | Account Id  | Name        | Participant | Type   | Account Currency | Category | Position Key Ids        |
+      | Instance ID | Account Id | Name       | Participant | Type   | Account Currency | Category | Position Key Ids        |
       | Acc_004     | RZ-PT-AC-4 | RZ-PT-AC-4 | RZ-PT-02    | MARGIN | USD              | CLIENT   | RZ_PT_PK_01,RZ_PT_PK_02 |
 
     And instance "Home" of entity "Accounts" is copied with following values
-      | Instance ID | Account Id  | Name        | Participant | Type   | Account Currency | Category | Position Key Ids        |
+      | Instance ID | Account Id | Name       | Participant | Type   | Account Currency | Category | Position Key Ids        |
       | Acc_005     | RZ-PT-AC-5 | RZ-PT-AC-5 | RZ-PT-01    | MARGIN | USD              | CLIENT   | RZ_PT_PK_01,RZ_PT_PK_03 |
 
     And instance "Home" of entity "Accounts" is copied with following values
-      | Instance ID | Account Id  | Name        | Participant | Type   | Account Currency | Category | Position Key Ids        |
+      | Instance ID | Account Id | Name       | Participant | Type   | Account Currency | Category | Position Key Ids        |
       | Acc_006     | RZ-PT-AC-6 | RZ-PT-AC-6 | RZ-PT-02    | MARGIN | USD              | CLIENT   | RZ_PT_PK_04,RZ_PT_PK_03 |
 
     And instance "Home" of entity "Accounts" is copied with following values
-      | Instance ID | Account Id  | Name        | Participant | Type   | Account Currency | Category | Position Key Ids        |
+      | Instance ID | Account Id | Name       | Participant | Type   | Account Currency | Category | Position Key Ids        |
       | Acc_007     | RZ-PT-AC-7 | RZ-PT-AC-7 | RZ-PT-01    | MARGIN | USD              | CLIENT   | RZ_PT_PK_01,RZ_PT_PK_04 |
 
   @instrument
