@@ -2,6 +2,7 @@ from src.transaction_data.ITransactionDataInterface import ITransactionDataInter
 from interfaces.webservices import HTTPClient
 import logging
 import json
+import re
 from src.transaction_data.transaction_data_config import message_to_endpoint_mapping
 from src.utils.messaging import Message
 from src.blueshift.reference_data_loader import DataLoader
@@ -13,6 +14,7 @@ class TransactionDataAdaptor(ITransactionDataInterface):
     def __init__(self):
         logging.info("inti")
         self.http_client = HTTPClient(system_config.get("base_url"))
+        self.float_pattern = re.compile(r"^([+-]?[0-9]+.[0-9]+)$")
 
     def submit_request(self, request_message):
         endpoint = message_to_endpoint_mapping.get(request_message.definition)
@@ -189,8 +191,10 @@ class TransactionDataAdaptor(ITransactionDataInterface):
 
             msg = Message(message_name)
             for key, value in item.items():
-                if type(value) is float:
-                    item[key] = round(value, system_config.get("no_of_decimal_places"))
+                match = self.float_pattern.search(str(value))
+                if match is not None:
+                    float_number = float(match.group(1))
+                    item[key] = round(float_number, system_config.get("no_of_decimal_places"))
 
             msg.set_fields_values(item)
             output_array.append(msg)
