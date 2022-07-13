@@ -28,7 +28,7 @@ def before_scenario(context, scenario):
 
 def after_scenario(context, scenario):
     InstanceRegistry().clear_register()
-    f.write(f"Exec Time : [{round(time.time() - scenario_start_time, 2)}],\t Scenario : {scenario}\n")
+    f.write(f"Exec Time : [{round(time.time() - scenario_start_time, 2)} s],\t Scenario : {scenario}\n")
 
 
 def before_step(context, step):
@@ -37,7 +37,7 @@ def before_step(context, step):
 
 
 def after_step(context, step):
-    f.write(f"Exec Time : [{ round(time.time() - step_start_time, 2)}],\t Step : {step}\n")
+    f.write(f"Exec Time : [{ round(time.time() - step_start_time, 2)} s],\t Step : {step}\n")
 
 
 def before_feature(context, feature):

@@ -1,5 +1,7 @@
 import logging
 import time
+from configs.global_config import system_config
+
 
 class InterfaceManager:
     instance = None
@@ -28,7 +30,7 @@ class InterfaceManager:
         assert interface is not None, f"query_data:Interface {interface_id} is not registered in InterfaceManager"
 
         msg_array = error = None
-        retry_count = 20
+        retry_count = system_config.get("retry_count")
         for x in range(retry_count):
             logging.info(f"Querying for data[attempt {x + 1}/{retry_count}]")
             msg_array, error = interface.query_data(query)
