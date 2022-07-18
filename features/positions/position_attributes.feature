@@ -282,7 +282,7 @@ Feature: Position Attributes
 
     Then "Position" messages are filtered by "level,participant,account,shortPosition,mtmValue" should be
       | Instance ID       | level   | participant                | symbol                | shortPosition | shortValue | netPosition | netValue | avgPrice | account                | mtmValue | notional | accruedAmount |
-      | PosUpdate_01_Res3 | ACCOUNT | [PosUpdate_01.participant] | [PosUpdate_01.symbol] | 15.0          | 540.0      | -15.0       | -540.0   | 36.0     | [PosUpdate_01.account] | -825.0   | -900.0   | 27.0          |
+      | PosUpdate_01_Res3 | ACCOUNT | [PosUpdate_01.participant] | [PosUpdate_01.symbol] | 15.0          | 540.0      | -15.0       | -540.0   | 36.0     | [PosUpdate_01.account] | -825.0   | -900.0   | -27.0          |
 
     Given instance "[Acc_01.Account Id] " of entity "Accounts" is deleted
 #    Given instance "[Inst_01.Symbol]" of entity "Instruments" is deleted
