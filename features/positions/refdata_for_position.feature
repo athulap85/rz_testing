@@ -43,8 +43,16 @@ Feature: refdata add for position tests
       | Key_008     | RZ_PT_PK_08     | 1        | RATES       | FIXED_RATE_BOND | STANDARD   | YES      | YES    | YES    | YES        | INACTIVE |
 
     And instance "Rule1" of entity "Position Keys" is copied with following values
-      | Instance ID | Position Key Id | Priority | Asset Class | Instrument Type | Trade Type | Market | Trade Date | Settlement Date | Expiry Date | Status |
-      | Key_009     | RZ_PT_PK_09     | 1        | RATES       | FIXED_RATE_BOND | STANDARD   | YES    | YES        | YES             | YES         | ACTIVE |
+      | Instance ID | Position Key Id | Priority | Asset Class | Instrument Type | Trade Type | Currency | Symbol | Market | Trade Date | Settlement Date | Expiry Date | Status   |
+      | Key_009     | RZ_PT_PK_09     | 1        | RATES       | FIXED_RATE_BOND | STANDARD   | YES      | YES    | YES    | YES        | YES             | YES         | INACTIVE |
+
+    And instance "Rule1" of entity "Position Keys" is copied with following values
+      | Instance ID | Position Key Id | Priority | Asset Class | Instrument Type     | Trade Type | Trade Date | Status |
+      | Key_010     | RZ_PT_PK_10     | 1        | RATES       | STEPPED_COUPON_BOND | STANDARD   | YES        | ACTIVE |
+
+    And instance "Rule1" of entity "Position Keys" is copied with following values
+      | Instance ID | Position Key Id | Priority | Asset Class | Instrument Type  | Trade Type | Settlement Date | Status |
+      | Key_011     | RZ_PT_PK_11     | 1        | RATES       | ZERO_COUPON_BOND | STANDARD   | YES             | ACTIVE |
 
   @account
   Scenario: TC_003 Copy & create new Accounts for Position Testing

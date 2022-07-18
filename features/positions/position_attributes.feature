@@ -206,7 +206,11 @@ Feature: Position Attributes
       | Instance ID | Account Id           | Name                 | Participant | Position Key Ids |
       | Acc_01      | random(RZ-PT-Acc-,4) | random(RZ-PT-Acn-,4) | RZ-PT-01    | RZ_PT_PK_01      |
 
-    And "Realtime Risk Factor Update" messages are submitted with following values
+    Then instance "[Acc_01.Account Id]" of entity "Accounts" should be
+      | Instance ID | Name          |
+      | Acc_01_Res1 | [Acc_01.Name] |
+
+    When "Realtime Risk Factor Update" messages are submitted with following values
       | Instance ID | symbol           | type | value |
       | MD1         | [Inst_01.Symbol] | AI   | 15.0  |
 
@@ -265,8 +269,8 @@ Feature: Position Attributes
       | PosUpdate_01 | [Acc_01.Account Id] | [Inst_01.Symbol] | 15       | 60.0  | 540.0 | SHORT | [Acc_01.Participant] | 900      | CME    |
 
     Then "Position" messages are filtered by "level,participant,account,avgPrice,mtmValue" should be
-      | Instance ID       | level   | participant                | symbol                | shortPosition | shortValue | netPosition | netValue | avgPrice | account                | mtmValue | notional |
-      | PosUpdate_01_Res2 | ACCOUNT | [PosUpdate_01.participant] | [PosUpdate_01.symbol] | 15.0          | 540.0      | -15.0       | -540.0   | 36.0     | [PosUpdate_01.account] | -825.0   | -900.0   |
+      | Instance ID       | level   | participant                | symbol                | shortPosition | shortValue | netPosition | netValue | avgPrice | account                | mtmValue | notional | accruedAmount |
+      | PosUpdate_01_Res2 | ACCOUNT | [PosUpdate_01.participant] | [PosUpdate_01.symbol] | 15.0          | 540.0      | -15.0       | -540.0   | 36.0     | [PosUpdate_01.account] | -825.0   | -900.0   | 0.0           |
 
     When "Realtime Risk Factor Update" messages are submitted with following values
       | Instance ID | symbol           | type | value |
@@ -277,8 +281,8 @@ Feature: Position Attributes
 #      | MD1_Res1    | [MD1.symbol] | 3.0 |
 
     Then "Position" messages are filtered by "level,participant,account,shortPosition,mtmValue" should be
-      | Instance ID       | level   | participant                | symbol                | shortPosition | shortValue | netPosition | netValue | avgPrice | account                | mtmValue | notional |
-      | PosUpdate_01_Res3 | ACCOUNT | [PosUpdate_01.participant] | [PosUpdate_01.symbol] | 15.0          | 567.0      | -15.0       | -567.0   | 37.8     | [PosUpdate_01.account] | -870.0   | -900.0   |
+      | Instance ID       | level   | participant                | symbol                | shortPosition | shortValue | netPosition | netValue | avgPrice | account                | mtmValue | notional | accruedAmount |
+      | PosUpdate_01_Res3 | ACCOUNT | [PosUpdate_01.participant] | [PosUpdate_01.symbol] | 15.0          | 540.0      | -15.0       | -540.0   | 36.0     | [PosUpdate_01.account] | -825.0   | -900.0   | 27.0          |
 
     Given instance "[Acc_01.Account Id] " of entity "Accounts" is deleted
 #    Given instance "[Inst_01.Symbol]" of entity "Instruments" is deleted
@@ -979,7 +983,7 @@ Feature: Position Attributes
       | Instance ID   | participant          | account             | positionId                     | shortPosition | shortValue | netPosition | netValue | avgPrice | notional | mtmValue | realizedMtmValue | unrealizedMtmValue | unrealizedMtmPercentage | accruedAmount | ai  |
       | POS_History01 | [Acc_01.Participant] | [Acc_01.Account Id] | [PosUpdate_02_Res2.positionId] | 60.0          | 1560.0     | -60.0       | -1560.0  | 26.0     | -3000.0  | -5640.0  | 0.0              | -4080.0            | -261.54                 | -60.0         | 2.0 |
 
-  @done
+  @done20
   Scenario: TC_020 Validate position will be calculated by market data from all venues regardless of the position venue
 
     Given instance "Bond_Test_1" of entity "Instruments" is copied with following values
@@ -1150,11 +1154,11 @@ Feature: Position Attributes
       | POS_History02 | [Acc_01.Participant] | [Acc_01.Account Id] | [PosUpdate_02_Res1.positionId] | 60.0          | 1560.0     | -60.0       | -1560.0  | 26.0     | [PosUpdate_01.settlementStatus] |
 
   @done @BRP-412
-  Scenario: TC_023 -BRP-412 Submit Position updates to make settled position for Short and Long positions for an account has Settlement Date in Position Key
+  Scenario: TC_023 -BRP-412 Submit Position updates to make settled position for Short and Long positions for an account has Settlement Date in Position Key( Zero coupon Bond)
 
-    Given instance "Bond_Test_1" of entity "Instruments" is copied with following values
-      | Instance ID | Symbol                     | Size Multiplier | Par Value |
-      | Inst_01     | random(RZ_PT_Inst_Bond_,4) | 2               | 100       |
+    Given instance "ZCBond1" of entity "Instruments" is copied with following values
+      | Instance ID | Symbol                     | Size Multiplier | Par Value | ISIN          |
+      | Inst_01     | random(RZ_PT_Inst_Bond_,4) | 2               | 100       | random(001,4) |
 
     And instance "Home" of entity "Accounts" is copied with following values
       | Instance ID | Account Id           | Name                 | Participant | Position Key Ids |
@@ -1201,7 +1205,7 @@ Feature: Position Attributes
       | PosUpdate_03_Res1 | ACCOUNT | [PosUpdate_03.participant] | [PosUpdate_03.symbol] | 0.0         | 0.0      | [PosUpdate_03.account] | [PosUpdate_03.type] | [PosUpdate_03.settlementDate] | [PosUpdate_03.settlementStatus] |
 
   @done @BRP-412
-  Scenario: TC_024 -BRP-412 Submit Position updates to make settled position for Short and Long positions for an account has not included the Settlement Date in Position Key
+  Scenario: TC_024 -BRP-412 Submit Position updates to make settled position for Short and Long positions for an account which has not included the Settlement Date in Position Key
 
     Given instance "Bond_Test_1" of entity "Instruments" is copied with following values
       | Instance ID | Symbol                     | Size Multiplier | Par Value |
@@ -1244,9 +1248,126 @@ Feature: Position Attributes
 
     And "Position History" messages are filtered by "positionId,shortPosition" should be
       | Instance ID   | participant          | account             | positionId                     | shortPosition | shortValue | netPosition | netValue | avgPrice | settlementDate                | settlementStatus                |
-      | POS_History02 | [Acc_01.Participant] | [Acc_01.Account Id] | [PosUpdate_02_Res1.positionId] | 60.0          | 1560.0     | -60.0       | -1560.0   | 26.0    | [PosUpdate_01.settlementDate] | [PosUpdate_01.settlementStatus] |
+      | POS_History02 | [Acc_01.Participant] | [Acc_01.Account Id] | [PosUpdate_02_Res1.positionId] | 60.0          | 1560.0     | -60.0       | -1560.0  | 26.0     | [PosUpdate_01.settlementDate] | [PosUpdate_01.settlementStatus] |
 
+  @wip @BRP-636
+  Scenario: TC_025 - BRP-636 Submit Position updates for different types of bond instruments where account has position keys for the specific bond types
 
+     # Create Fixed Rate Bond
+    Given instance "Bond_Test_1" of entity "Instruments" is copied with following values
+      | Instance ID | Symbol                     | Size Multiplier | Par Value |
+      | Inst_01     | random(RZ_PT_Inst_Bond_,4) | 2               | 200       |
+
+    Then instance "[Inst_01.Symbol]" of entity "Instruments" should be
+      | Instance ID  | Symbol           |
+      | Inst_01.Res1 | [Inst_01.Symbol] |
+
+    # Create Floating Rate Bond
+    Given instance "FLR_BOND" of entity "Instruments" is copied with following values
+      | Instance ID | Symbol                     | Size Multiplier | Par Value | Coupon Benchmark |
+      | Inst_02     | random(RZ_PT_Inst_Bond_,4) | 2               | 200       | AJ-USD           |
+
+    Then instance "[Inst_02.Symbol]" of entity "Instruments" should be
+      | Instance ID  | Symbol           |
+      | Inst_02.Res1 | [Inst_02.Symbol] |
+
+    # Create Zero Coupon Bond
+    Given instance "ZCBond-Test" of entity "Instruments" is copied with following values
+      | Instance ID | Symbol                     | Size Multiplier | Par Value |
+      | Inst_03     | random(RZ_PT_Inst_Bond_,4) | 2               | 200       |
+
+    Then instance "[Inst_03.Symbol]" of entity "Instruments" should be
+      | Instance ID  | Symbol           |
+      | Inst_03.Res1 | [Inst_03.Symbol] |
+
+#    # Create STEPPED_COUPON_BOND
+#    And instance "SteppedBond1" of entity "Instruments" is copied with following values
+#      | Instance ID | Symbol                     | Size Multiplier | Par Value |
+#      | Inst_04     | random(RZ_PT_Inst_Bond_,4) | 2               | 200       |
+
+    When instance "Home" of entity "Accounts" is copied with following values
+      | Instance ID | Account Id           | Name                 | Participant | Position Key Ids                                |
+      | Acc_01      | random(RZ-PT-Acc-,4) | random(RZ-PT-Acn-,4) | RZ-PT-01    | RZ_PT_PK_01,RZ_PT_PK_04,RZ_PT_PK_10,RZ_PT_PK_11 |
+
+    Then instance "[Acc_01.Account Id]" of entity "Accounts" should be
+      | Instance ID | Name          |
+      | Acc_01_Res1 | [Acc_01.Name] |
+
+    When "Realtime Risk Factor Update" messages are submitted with following values
+      | Instance ID | symbol               | type | value | currency |
+      | MD1         | [Inst_01.Symbol]     | AI   | 3.0   | USD      |
+      | MD2         | FLR_BONDHNK2         | AI   | 3.0   | USD      |
+      | MD3         | RZ_PT_Inst_Bond_0043 | AI   | 3.0   | USD      |
+      | MD4         | Stepped-Bond-hnk       | AI   | 3.0   | USD      |
+      | MD5         | [Inst_01.Symbol]     | LTP  | 90.0  | USD      |
+      | MD6         | FLR_BONDHNK2         | LTP  | 90.0  | USD      |
+      | MD7         | RZ_PT_Inst_Bond_0043 | LTP  | 90.0  | USD      |
+      | MD8         | Stepped-Bond-hnk       | LTP  | 90.0  | USD      |
+      | MD9         | [Inst_01.Symbol]     | DV01 | 10.0  | USD      |
+      | MD10        | FLR_BONDHNK2         | DV01 | 10.0  | USD      |
+      | MD11        | RZ_PT_Inst_Bond_0043 | DV01 | 10.0  | USD      |
+      | MD12        | Stepped-Bond-hnk       | DV01 | 10.0  | USD      |
+
+    Then "Realtime Risk Factor Value" messages are filtered by "symbol,ltp" should be
+      | Instance ID | symbol       | ltp  |
+      | MD1_Res1    | [MD1.symbol] | 90.0 |
+
+    And "Realtime Risk Factor Value" messages are filtered by "symbol,ltp" should be
+      | Instance ID | symbol       | ltp  |
+      | MD2_Res1    | [MD2.symbol] | 90.0 |
+
+    And "Realtime Risk Factor Value" messages are filtered by "symbol,ltp" should be
+      | Instance ID | symbol       | ltp  |
+      | MD3_Res1    | [MD3.symbol] | 90.0 |
+
+    ##Create Positions for Floating Rate Bond. RZ_PT_PK_04 applied
+    When "Position Update" messages are submitted with following values
+      | Instance ID  | account             | symbol       | quantity | price | value  | side  | participant          | notional | market | type   | settlementDate                |
+      | PosUpdate_01 | [Acc_01.Account Id] | FLR_BONDHNK2 | 60       | 80.0  | 3984.0 | SHORT | [Acc_01.Participant] | 4800     | CCCAGG | MARGIN | 2022-07-24T00:00:00.000+00:00 |
+
+    When "Position Update" messages are submitted with following values
+      | Instance ID  | account             | symbol       | quantity | price | value | side  | participant          | notional | market | type   | settlementDate                |
+      | PosUpdate_02 | [Acc_01.Account Id] | FLR_BONDHNK2 | 10       | 80.0  | 332.0 | SHORT | [Acc_01.Participant] | 800      | CCCAGG | MARGIN | 2022-08-24T00:00:00.000+00:00 |
+
+    Then "Position" messages are filtered by "level,participant,account,netPosition" should be
+      | Instance ID       | level   | participant                | symbol                | netPosition | netValue | account                | type                | settlementDate                | positionKey |
+      | PosUpdate_02_Res1 | ACCOUNT | [PosUpdate_02.participant] | [PosUpdate_02.symbol] | -10.0       | -332.0   | [PosUpdate_02.account] | [PosUpdate_02.type] | [PosUpdate_02.settlementDate] | RZ_PT_PK_04 |
+
+    When "Position Update" messages are submitted with following values
+      | Instance ID  | account             | symbol       | quantity | price | value | side  | participant          | notional | market | type   | settlementDate                |
+      | PosUpdate_03 | [Acc_01.Account Id] | FLR_BONDHNK2 | 10       | 80.0  | 332.0 | SHORT | [Acc_01.Participant] | 800      | CME    | MARGIN | 2022-08-24T00:00:00.000+00:00 |
+
+    Then "Position" messages are filtered by "level,participant,account,symbol,netPosition" should be
+      | Instance ID       | level   | participant                | symbol                | netPosition | netValue | account                | positionKey |
+      | PosUpdate_03_Res1 | ACCOUNT | [PosUpdate_03.participant] | [PosUpdate_03.symbol] | -20.0       | -664.0   | [PosUpdate_03.account] | RZ_PT_PK_04 |
+
+      ##Create Positions for Zero Coupon Bond. RZ_PT_PK_11 applied
+
+    When "Position Update" messages are submitted with following values
+      | Instance ID  | account             | symbol               | quantity | price | value  | side  | participant          | notional | market | type       | settlementDate                |
+      | PosUpdate_04 | [Acc_01.Account Id] | RZ_PT_Inst_Bond_0043 | 60       | 80.0  | 3984.0 | SHORT | [Acc_01.Participant] | 4800     | CCCAGG | SETTLEMENT | 2022-07-24T00:00:00.000+00:00 |
+
+    When "Position Update" messages are submitted with following values
+      | Instance ID  | account             | symbol               | quantity | price | value | side  | participant          | notional | market | type       | settlementDate                |
+      | PosUpdate_05 | [Acc_01.Account Id] | RZ_PT_Inst_Bond_0043 | 10       | 80.0  | 332.0 | SHORT | [Acc_01.Participant] | 800      | CCCAGG | SETTLEMENT | 2022-08-24T00:00:00.000+00:00 |
+
+    Then "Position" messages are filtered by "level,participant,account,symbol,netPosition" should be
+      | Instance ID       | level   | participant                | symbol                | netPosition | netValue | account                | type                | settlementDate                | positionKey |
+      | PosUpdate_05_Res1 | ACCOUNT | [PosUpdate_05.participant] | [PosUpdate_05.symbol] | -10.0       | -332.0   | [PosUpdate_05.account] | [PosUpdate_05.type] | [PosUpdate_05.settlementDate] | RZ_PT_PK_11 |
+
+       ##Create Positions for Stepped Bond. RZ_PT_PK_10 applied
+
+    When "Position Update" messages are submitted with following values
+      | Instance ID  | account             | symbol         | quantity | price | value  | side  | participant          | notional | market | type       | settlementDate                |
+      | PosUpdate_06 | [Acc_01.Account Id] | Stepped-Bond-hnk | 60       | 80.0  | 3984.0 | SHORT | [Acc_01.Participant] | 4800     | CCCAGG | SETTLEMENT | 2022-07-24T00:00:00.000+00:00 |
+
+    When "Position Update" messages are submitted with following values
+      | Instance ID  | account             | symbol         | quantity | price | value | side  | participant          | notional | market | type       | settlementDate                |
+      | PosUpdate_07 | [Acc_01.Account Id] | Stepped-Bond-hnk | 10       | 80.0  | 332.0 | SHORT | [Acc_01.Participant] | 800      | CCCAGG | SETTLEMENT | 2022-08-24T00:00:00.000+00:00 |
+
+    Then "Position" messages are filtered by "level,participant,account,symbol,netPosition" should be
+      | Instance ID       | level   | participant                | symbol                | netPosition | netValue | account                | type                | positionKey |
+      | PosUpdate_07_Res1 | ACCOUNT | [PosUpdate_07.participant] | [PosUpdate_07.symbol] | -70.0       | -2324.0  | [PosUpdate_07.account] | [PosUpdate_07.type] | RZ_PT_PK_10 |
 
   @InstrumentEdit
   Scenario: TC_022 Instrument Edit
@@ -1268,19 +1389,19 @@ Feature: Position Attributes
   @MD
   Scenario: AI update
 
-    Given  instance "Bond_Test_1" of entity "Instruments" is copied with following values
-      | Instance ID | Symbol                     |
-      | Inst_01     | random(RZ_PT_Inst_Bond_,4) |
-
-    #this step is just added to give some time just after the instrument creation before update Market Data
-    Then instance "[Inst_01.Symbol]" of entity "Instruments" should be
-      | Instance ID  | Symbol           |
-      | Inst_01_Res1 | [Inst_01.Symbol] |
+#    Given  instance "Bond_Test_1" of entity "Instruments" is copied with following values
+#      | Instance ID | Symbol                     |
+#      | Inst_01     | random(RZ_PT_Inst_Bond_,4) |
+#
+#    #this step is just added to give some time just after the instrument creation before update Market Data
+#    Then instance "[Inst_01.Symbol]" of entity "Instruments" should be
+#      | Instance ID  | Symbol           |
+#      | Inst_01_Res1 | [Inst_01.Symbol] |
 
     When "Realtime Risk Factor Update" messages are submitted with following values
-      | Instance ID | symbol           | type | value |
-      | MD1         | [Inst_01.Symbol] | LTP  | 15.0  |
-      | MD1         | [Inst_01.Symbol] | AI   | 5.0   |
+      | Instance ID | symbol               | type | value |
+      | MD1         | RZ_PT_Inst_Bond_0975 | LTP  | 15.0  |
+      | MD1         | RZ_PT_Inst_Bond_0975 | AI   | 5.0   |
 
     Then "Realtime Risk Factor Value" messages are filtered by "symbol,ltp" should be
       | Instance ID | symbol       | ltp  | ai  |
