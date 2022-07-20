@@ -72,10 +72,13 @@ def step_impl(context, entity, instance_key):
 @Then(u'instance "{instance_key}" of entity "{entity}" should be')
 def step_impl(context, instance_key, entity):
     instance_key = ResolverChain().resolve(instance_key)
-    response_msg, error_msg = RefDataManager().get_instance(entity, instance_key)
-    assert error_msg is None, f"Unable to find the instance [{instance_key}] of entity [{entity}]. Error [{error_msg}]"
-    expected_msg = pack_row_to_new_message(entity, context.table.headings, context.table[0], on_new_message)
-    compare(expected_msg, response_msg, True, on_new_message)
+    instance_key_list = instance_key.split(",")
+    assert len(instance_key_list) == len(context.table.rows), "Expected row count mismatch."
+    for index, key in enumerate(instance_key_list):
+        response_msg, error_msg = RefDataManager().get_instance(entity, key)
+        assert error_msg is None, f"Unable to find the instance [{key}] of entity [{entity}]. Error [{error_msg}]"
+        expected_msg = pack_row_to_new_message(entity, context.table.headings, context.table[index], on_new_message)
+        compare(expected_msg, response_msg, True, on_new_message)
     # assert False
 
 

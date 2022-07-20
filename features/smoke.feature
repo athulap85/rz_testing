@@ -1,6 +1,5 @@
 Feature: testing
 
-  @wip
   Scenario: RefData smoke
 
     Given instance "USD" of entity "Currencies" is copied with following values
@@ -22,34 +21,27 @@ Feature: testing
     Given instance "AED" of entity "Currencies" is deleted
     Given instance "AED1" of entity "Currencies" is deleted
 
-
+  @wip
   Scenario: Position smoke
 
-    Given instance "HSBC" of entity "Participants" is copied with following values
-    | Instance ID| Participant Id    |
-    | Part01     | TEST_HSBC        |
-
-    And instance "Home" of entity "Accounts" is copied with following values
-    | Instance ID | Participant  | Account Id | Name       |
-    | Acc01       | TEST_HSBC    | TestAcc    | TestAcc    |
+    Given instance "Home" of entity "Accounts" is copied with following values
+    | Instance ID | Participant  | Account Id           | Name                  |
+    | Acc01       | HSBC         | random(RZ_SMK_ACC,5) | random(RZ_SMK_ACC,5)  |
 
     When "Position Update" messages are submitted with following values
-    | Instance ID | account    | quantity | price | participant  |
-    | POU1        | TestAcc    | 1000     | 50.0  | TEST_HSBC    |
+    | Instance ID | account             | quantity | value  | participant   |
+    | POU1        | [Acc01.Account Id]  | 1000     | 50.2345  | HSBC          |
 
     Then response of the request "POU1" should be
     | Instance ID | status      |
     | POU_Res1    | POSTED      |
 
     Then "Position" messages are filtered by "level,participant,account" should be
-    | Instance ID | participant | account   | level     | symbol       |
-    | POS_Res1    | TEST_HSBC   | TestAcc   | ACCOUNT   | BTCUSD_FUT9  |
+    | Instance ID | participant | account            | level     | symbol       | netValue |
+    | POS_Res1    | HSBC        | [Acc01.Account Id] | ACCOUNT   | BTCUSD_FUT9  | 50.23    |
 
 
-    Given instance "TestAcc" of entity "Accounts" is deleted
-    Given instance "TEST_HSBC" of entity "Participants" is deleted
-
-
+    Given instance "[Acc01.Account Id]" of entity "Accounts" is deleted
 
 
   Scenario: Market data smoke
@@ -58,3 +50,7 @@ Feature: testing
     | RFU01       | TST_INS1 | BB     | 1.0   |
     | RFU02       | TST_INS1 | BO     | 2.0   |
     | RFU03       | TST_INS1 | LTP    | 3.0   |
+
+    Then "Realtime Risk Factor Value" messages are filtered by "symbol,bb,bo,ltp" should be
+    | Instance ID | symbol    | bb  | bo  | ltp |
+    | RFU_Res1    | TST_INS1  | 1.0 | 2.0 | 3.0 |

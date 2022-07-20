@@ -2,6 +2,7 @@ from src.transaction_data.ITransactionDataInterface import ITransactionDataInter
 from interfaces.webservices import HTTPClient
 import logging
 import json
+import re
 from src.transaction_data.transaction_data_config import message_to_endpoint_mapping
 from src.utils.messaging import Message
 from src.blueshift.reference_data_loader import DataLoader
@@ -13,8 +14,10 @@ class TransactionDataAdaptor(ITransactionDataInterface):
     def __init__(self):
         logging.info("inti")
         self.http_client = HTTPClient(system_config.get("base_url"))
+        self.float_pattern = re.compile(r"^([+-]?[0-9]+.[0-9]+)$")
 
     def submit_request(self, request_message):
+        logging.debug(f"submit_request")
         endpoint = message_to_endpoint_mapping.get(request_message.definition)
         assert endpoint is not None, f"No mappings found for message [{request_message.definition}] " \
                                      f"in 'src/transaction_data/transaction_data.config.py'"
@@ -60,6 +63,7 @@ class TransactionDataAdaptor(ITransactionDataInterface):
             assert False, f"Unhandled query type: {query.entity} in src/transaction_data/transaction_data_adaptor.py"
 
     def process_risk_factor_values_query(self, endpoint, query):
+        logging.debug(f"process_risk_factor_values_query")
         symbol = None
         filters = query.get_filters()
         for filter_item in filters:
@@ -77,6 +81,7 @@ class TransactionDataAdaptor(ITransactionDataInterface):
             return None, response
 
     def process_position_query(self, endpoint, query):
+        logging.debug(f"process_position_query")
         filters = query.get_filters()
         level = participant = account = None
         for filter in filters:
@@ -126,6 +131,7 @@ class TransactionDataAdaptor(ITransactionDataInterface):
             return None, response
 
     def process_hedge_efficiency(self, endpoint, query):
+        logging.debug(f"process_hedge_efficiency")
         account = symbol = None
         filters = query.get_filters()
         for filter_item in filters:
@@ -148,6 +154,7 @@ class TransactionDataAdaptor(ITransactionDataInterface):
             return None, response
 
     def reformat_hedge_efficiency_response(self, account, response):
+        logging.debug(f"reformat_hedge_efficiency_response")
         output = []
         for time, value in response.items():
             for symbol, hedge_value in value.items():
@@ -165,14 +172,23 @@ class TransactionDataAdaptor(ITransactionDataInterface):
             return message.fieldValues
 
     def create_response_msg(self, message_name, response):
+        logging.debug(f"create_response_msg")
         msg = Message(message_name)
         msg.set_fields_values(response)
         return msg
 
     def create_response_array(self, query, response_array):
+        logging.debug(f"create_response_array")
         message_name = query.entity
         output_array = []
         for item in response_array:
+
+            for key, value in item.items():
+                match = self.float_pattern.search(str(value))
+                if match is not None:
+                    float_number = float(match.group(1))
+                    item[key] = round(float_number, system_config.get("no_of_decimal_places"))
+
             mismatch_found = False
             filters = query.get_filters()
             for filter_item in filters:
@@ -188,9 +204,6 @@ class TransactionDataAdaptor(ITransactionDataInterface):
                 continue
 
             msg = Message(message_name)
-            for key, value in item.items():
-                if type(value) is float:
-                    item[key] = round(value, system_config.get("no_of_decimal_places"))
 
             msg.set_fields_values(item)
             output_array.append(msg)
@@ -198,7 +211,7 @@ class TransactionDataAdaptor(ITransactionDataInterface):
         return output_array
 
     def process_interest_curve(self, endpoint, query):
-
+        logging.debug(f"process_interest_curve")
         curve_identifier = None
         filters = query.get_filters()
         for filter_item in filters:
@@ -222,6 +235,7 @@ class TransactionDataAdaptor(ITransactionDataInterface):
             return None, response
 
     def process_stress_test_results(self, endpoint, query):
+        logging.debug(f"process_stress_test_results")
         run_id = None
         filters = query.get_filters()
         for filter_item in filters:
@@ -243,7 +257,7 @@ class TransactionDataAdaptor(ITransactionDataInterface):
             return None, response
 
     def process_risk_factor_update_query(self, endpoint, query):
-
+        logging.debug(f"process_risk_factor_update_query")
         url = f"{endpoint}"
         status_code, response = self.http_client.get_request(url)
         if status_code == 200:
@@ -255,6 +269,7 @@ class TransactionDataAdaptor(ITransactionDataInterface):
             return None, response
 
     def process_position_history_query(self, endpoint, query):
+        logging.debug(f"process_position_history_query")
         pos_id = None
         filters = query.get_filters()
         for filter_item in filters:
@@ -275,6 +290,7 @@ class TransactionDataAdaptor(ITransactionDataInterface):
             return None, response
 
     def process_position_update_errors(self, endpoint, query):
+        logging.debug(f"process_position_update_errors")
         external_id = None
         filters = query.get_filters()
         for filter_item in filters:
@@ -295,6 +311,7 @@ class TransactionDataAdaptor(ITransactionDataInterface):
             return None, response
 
     def process_realtime_risk_factor_update_errors(self, endpoint, query):
+        logging.debug(f"process_realtime_risk_factor_update_errors")
         external_id = None
         filters = query.get_filters()
         for filter_item in filters:
