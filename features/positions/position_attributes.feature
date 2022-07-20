@@ -920,7 +920,7 @@ Feature: Position Attributes
       | Instance ID       | level   | participant                | symbol                | shortPosition | shortValue | netPosition | netValue | avgPrice | account                | mtmValue | realizedMtmValue | unrealizedMtmValue | unrealizedMtmPercentage | notional | currency | accruedAmount | ai  | settlementDate                | market                | tradeDate                | expiryDate                    | positionKey |
       | PosUpdate_06_Res1 | ACCOUNT | [PosUpdate_06.participant] | [PosUpdate_06.symbol] | 20.0          | 1710.0     | -20.0       | -1710.0  | 85.5     | [PosUpdate_06.account] | -2000.0  | 0.0              | -290.0             | -16.96                  | -1800.0  | USD      | -90.0         | 5.0 | [PosUpdate_06.settlementDate] | [PosUpdate_06.market] | [PosUpdate_06.tradeDate] | 2023-06-07T00:00:00.000+00:00 | RZ_PT_PK_09 |
 
-  @done
+  @done19
   Scenario: TC_019 Validate Last MD Update affected to Position Recalculation
 
     Given instance "Bond_Test_1" of entity "Instruments" is copied with following values
@@ -1351,9 +1351,9 @@ Feature: Position Attributes
       | Instance ID  | account             | symbol               | quantity | price | value | side  | participant          | notional | market | type       | settlementDate                |
       | PosUpdate_05 | [Acc_01.Account Id] | RZ_PT_Inst_Bond_0043 | 10       | 80.0  | 332.0 | SHORT | [Acc_01.Participant] | 800      | CCCAGG | SETTLEMENT | 2022-08-24T00:00:00.000+00:00 |
 
-    Then "Position" messages are filtered by "level,participant,account,symbol,netPosition" should be
-      | Instance ID       | level   | participant                | symbol                | netPosition | netValue | account                | type                | settlementDate                | positionKey |
-      | PosUpdate_05_Res1 | ACCOUNT | [PosUpdate_05.participant] | [PosUpdate_05.symbol] | -10.0       | -332.0   | [PosUpdate_05.account] | [PosUpdate_05.type] | [PosUpdate_05.settlementDate] | RZ_PT_PK_11 |
+#    Then "Position" messages are filtered by "level,participant,account,symbol,netPosition" should be
+#      | Instance ID       | level   | participant                | symbol                | netPosition | netValue | account                | type                | settlementDate                | positionKey |
+#      | PosUpdate_05_Res1 | ACCOUNT | [PosUpdate_05.participant] | [PosUpdate_05.symbol] | -10.0       | -332.0   | [PosUpdate_05.account] | [PosUpdate_05.type] | [PosUpdate_05.settlementDate] | RZ_PT_PK_11 |
 
        ##Create Positions for Stepped Bond. RZ_PT_PK_10 applied
 
