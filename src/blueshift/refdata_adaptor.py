@@ -62,19 +62,22 @@ class FieldDefinition:
 class RefDataAdaptor(IRefDataInterface):
 
     def __init__(self):
-        logging.info("inti")
+        self.loader_logger = logging.getLogger('loader')
         self.http_client = HTTPClient(REFDATA_ENDPOINT)
         self.entity_definitions = {}
         self.entity_name_to_display_name_map = {}
         self.table_field_value_pattern = re.compile(r"\[TAB:(.+)]")
 
     def init(self):
+        self.loader_logger.info('RefDataAdaptor - Init')
         entity_cache_file = REFDATA_CACHE_LOCATION + "entities.json"
         if exists(entity_cache_file):
+            self.loader_logger.info('RefDataAdaptor::init - Cache file found')
             f = open(entity_cache_file, "r")
             response = json.loads(f.read())
             f.close()
         else:
+            self.loader_logger.info('RefDataAdaptor::init - Cache file not found')
             status_code, response_text = self.http_client.get_request("/entities")
             if status_code == 200:
                 response = json.loads(response_text)
@@ -87,6 +90,7 @@ class RefDataAdaptor(IRefDataInterface):
 
         for entity in response["entities"]:
             display_name = entity["displayName"]
+            self.loader_logger.info(f'RefDataAdaptor::init - Entity : [{display_name}]')
             name = entity["classname"]
             key_field = self.get_key_field(display_name)
             self.entity_name_to_display_name_map[name] = display_name

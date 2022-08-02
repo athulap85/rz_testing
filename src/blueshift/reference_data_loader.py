@@ -21,29 +21,35 @@ class DataLoader:
         if cls.instance is None:
             cls.instance = super(DataLoader, cls).__new__(cls)
             cls.http_client = HTTPClient(REFDATA_ENDPOINT)
+            cls.loader_logger = logging.getLogger('loader')
         return cls.instance
 
     def load_instances(self, entity_definitions):
         self.entity_definitions = entity_definitions
         for entity_def in self.entity_definitions.values():
             endpoint = entity_def.get_property("endpoint")
+            self.loader_logger.info(f'DataLoader::load_instances - endpoint : ===== {endpoint} ======')
             self.load(entity_def, endpoint)
 
     def load(self, entity_definition, entity_endpoint):
         entity_name = entity_definition.name
         if entity_name == "Coupon Schedules" or entity_name == "Sink Schedule":
+            self.loader_logger.info(f'DataLoader::load Ignoring the entity')
             return
 
         cache_file = f"{REFDATA_CACHE_LOCATION}{entity_endpoint}.json"
         if exists(cache_file):
+            self.loader_logger.info(f'DataLoader::load - Using cache')
             f = open(cache_file, "r")
             response_json = json.loads(f.read())
             f.close()
         else:
+            self.loader_logger.info(f'DataLoader::load - No cache available')
             status_code, response = self.http_client.post_request(f"/{entity_endpoint}-search?userName=ranush", {})
             if status_code != 200:
                 print("Data loading failed for entity : " + entity_definition.name)
                 return
+            self.loader_logger.info(f'DataLoader::load - API Response : \n {response}')
             response_json = json.loads(response)
             json_object = json.dumps(response_json, indent=4)
             f = open(cache_file, "w")
@@ -56,6 +62,7 @@ class DataLoader:
             field_def = entity_definition.find_field_def_by_display_name(entity_definition.key_field)
             key_name = field_def.get_property("name")
             key_value = instance[key_name]
+            self.loader_logger.info(f'DataLoader::load - instance_id : [{instance_id}],  key : [{key_value}]')
             instance_id_map[key_value] = instance_id
             if entity_name == "Accounts":
                 participant_name = instance["participant"]["name"]
