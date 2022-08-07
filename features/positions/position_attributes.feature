@@ -86,7 +86,7 @@ Feature: Position Attributes
 
     Given instance "[Acc_01.Account Id]" of entity "Accounts" is deleted
 
-  @done-removable
+  @done @removable
   Scenario: TC_005 Validating Markets ( Position Updates added with different Markets)
 
     Given instance "Home" of entity "Accounts" is copied with following values
@@ -111,7 +111,7 @@ Feature: Position Attributes
 
     Given instance "[Acc_01.Account Id]" of entity "Accounts" is deleted
 
-  @done-removable
+  @done @removable
   Scenario: TC_006 Validate Values in Long position ( longPosition,longValue, notional, average Price )
 
     Given instance "Home" of entity "Accounts" is copied with following values
@@ -144,7 +144,7 @@ Feature: Position Attributes
 
     Given instance "[Acc_01.Account Id]" of entity "Accounts" is deleted
 
-  @done-removable
+  @done @removable
   Scenario: TC_007 Validate values in Short Position (shortPosition, shortValue, Average price, notional )
 
     Given  instance "Bond_Test_1" of entity "Instruments" is copied with following values
@@ -190,7 +190,7 @@ Feature: Position Attributes
 
     Given instance "[Acc_01.Account Id]" of entity "Accounts" is deleted
 
-  @fail8
+  @BRP-749
   Scenario: TC_008 Validate MTM Value when LTP is empty and updated before the next position update
 
     Given  instance "Bond_Test_1" of entity "Instruments" is copied with following values
@@ -245,7 +245,7 @@ Feature: Position Attributes
     Given instance "[Acc_01.Account Id] " of entity "Accounts" is deleted
 #    Given instance "[Inst_01.Symbol]" of entity "Instruments" is deleted
 
-  @fail9
+  @BRP-749
   Scenario: TC_009 Validate MTM Value when AI is empty and updated
 
     Given  instance "Bond_Test_1" of entity "Instruments" is copied with following values
@@ -303,7 +303,7 @@ Feature: Position Attributes
     Given instance "[Acc_01.Account Id] " of entity "Accounts" is deleted
 #    Given instance "[Inst_01.Symbol]" of entity "Instruments" is deleted
 
-  @fail10
+  @BRP-749
   Scenario: TC_010 Validate MTM Value when LTP is empty and updated
 
     Given  instance "Bond_Test_1" of entity "Instruments" is copied with following values
@@ -397,7 +397,7 @@ Feature: Position Attributes
       | Instance ID       | level   | participant                | symbol                | shortPosition | shortValue | longPosition | longValue | netPosition | netValue | avgPrice | account                | mtmValue | realizedMtmValue | unrealizedMtmValue | notional | unrealizedMtmPercentage |
       | PosUpdate_04_Res1 | ACCOUNT | [PosUpdate_04.participant] | [PosUpdate_04.symbol] | 15.0          | 972.0      | 10.0         | 819.0     | -5.0        | -153.0   | 30.6     | [PosUpdate_04.account] | -1010.0  | 171.0            | -857.0             | -300.0   | -560.13                 |
 
-  @BRP-675
+  @done12
   Scenario: TC_012 Validate Priority of the Position Key applies ( For the accounts with multiple Keys -If specific key is available, then it applies. If not default Key applies)
 
     Given instance "Bond_Test_1" of entity "Instruments" is copied with following values
@@ -484,8 +484,13 @@ Feature: Position Attributes
       | PosUpdate_05 | [Acc_01.Account Id] | [MD3.symbol] | 20       | 90.0  | 1638.0 | LONG | [Acc_01.Participant] | 1800     | GBP      | CCCAGG |
 
     Then  "Position" messages are filtered by "level,participant,account,symbol,netPosition" should be
-      | Instance ID       | level   | participant                | symbol                | longPosition | longValue | netPosition | netValue | avgPrice | account                | mtmValue | realizedMtmValue | unrealizedMtmValue | unrealizedMtmPercentage | notional | accruedAmount | market | positionKey |
-      | PosUpdate_05_Res1 | ACCOUNT | [PosUpdate_05.participant] | [PosUpdate_05.symbol] | 30.0         | 2457.0    | 30.0        | 2457.0   | 81.9     | [PosUpdate_05.account] | 5460.0   | 0.0              | 3003.0             | 122.22                  | 2700.0   | 27.0          |        | DEFAULT     |
+      | Instance ID       | level   | participant                | symbol                | longPosition | longValue | netPosition | netValue | avgPrice | account                | mtmValue | realizedMtmValue | unrealizedMtmValue | unrealizedMtmPercentage | notional | accruedAmount | positionKey |
+      | PosUpdate_05_Res1 | ACCOUNT | [PosUpdate_05.participant] | [PosUpdate_05.symbol] | 30.0         | 2457.0    | 30.0        | 2457.0   | 81.9     | [PosUpdate_05.account] | 5460.0   | 0.0              | 3003.0             | 122.22                  | 2700.0   | 27.0          |  DEFAULT     |
+
+    ## Below 'market' field should be added into above step once BRP-675 is fixed
+
+    # market |
+    #        |
 
   @done @key
   Scenario: TC_013 Validate Priority of the Position Key applies ( For the accounts with multiple Keys -If multiples keys eligible,priority will consider.)
@@ -529,7 +534,7 @@ Feature: Position Attributes
       | Instance ID       | level   | participant                | symbol                | longPosition | longValue | netPosition | netValue | avgPrice | account                | mtmValue | realizedMtmValue | unrealizedMtmValue | unrealizedMtmPercentage | notional | accruedAmount | ai  | settlementDate                | positionKey |
       | PosUpdate_02_Res1 | ACCOUNT | [PosUpdate_02.participant] | [PosUpdate_02.symbol] | 25.0         | 2137.5    | 25.0        | 2137.5   | 85.5     | [PosUpdate_02.account] | 5250.0   | 0.0              | 3112.5             | 145.61                  | 2250.0   | 112.5         | 5.0 | [PosUpdate_02.settlementDate] | RZ_PT_PK_03 |
 
-  @done14 @key
+  @done @key
   Scenario: TC_014 Validate default Key applies if there is no eligible keys attached to the Account
 
     Given instance "Bond_Test_1" of entity "Instruments" is copied with following values
@@ -575,9 +580,14 @@ Feature: Position Attributes
       | Instance ID  | account             | symbol       | quantity | price | value  | side | participant | notional | currency | market |
       | PosUpdate_02 | [Acc_01.Account Id] | [MD1.symbol] | 15       | 90.0  | 1282.5 | LONG | RZ-PT-01    | 1350     | USD      | CME    |
 
-#    Then  "Position" messages are filtered by "level,participant,account,netPosition" should be
-#      | Instance ID       | level   | participant                | symbol                | longPosition | longValue | netPosition | netValue | avgPrice | account                | mtmValue | realizedMtmValue | unrealizedMtmValue | unrealizedMtmPercentage | notional | accruedAmount | ai  | market |
-#      | PosUpdate_02_Res1 | ACCOUNT | [PosUpdate_02.participant] | [PosUpdate_02.symbol] | 25.0         | 2137.5    | 25.0        | 2137.5   | 85.5     | [PosUpdate_02.account] | 4250.0   | 0.0              | 2112.5             | 98.83                   | 2250.0   | 112.5           | 5.0 |        |
+    Then  "Position" messages are filtered by "level,participant,account,netPosition" should be
+      | Instance ID       | level   | participant                | symbol                | longPosition | longValue | netPosition | netValue | avgPrice | account                | mtmValue | realizedMtmValue | unrealizedMtmValue | unrealizedMtmPercentage | notional | accruedAmount | ai  |
+      | PosUpdate_02_Res1 | ACCOUNT | [PosUpdate_02.participant] | [PosUpdate_02.symbol] | 25.0         | 2137.5    | 25.0        | 2137.5   | 85.5     | [PosUpdate_02.account] | 4250.0   | 0.0              | 2112.5             | 98.83                   | 2250.0   | 112.5           | 5.0 |
+
+  ## Below 'market' field should be added into above step once BRP-675 is fixed
+
+    # market |
+    #        |
 
     When "Realtime Risk Factor Update" messages are submitted with following values
       | Instance ID | symbol           | type | value |
@@ -936,7 +946,7 @@ Feature: Position Attributes
       | Instance ID       | level   | participant                | symbol                | shortPosition | shortValue | netPosition | netValue | avgPrice | account                | mtmValue | realizedMtmValue | unrealizedMtmValue | unrealizedMtmPercentage | notional | currency | accruedAmount | ai  | settlementDate                | market                | tradeDate                | expiryDate                    | positionKey |
       | PosUpdate_06_Res1 | ACCOUNT | [PosUpdate_06.participant] | [PosUpdate_06.symbol] | 20.0          | 1710.0     | -20.0       | -1710.0  | 85.5     | [PosUpdate_06.account] | -2000.0  | 0.0              | -290.0             | -16.96                  | -1800.0  | USD      | -90.0         | 5.0 | [PosUpdate_06.settlementDate] | [PosUpdate_06.market] | [PosUpdate_06.tradeDate] | 2023-06-07T00:00:00.000+00:00 | RZ_PT_PK_09 |
 
-  @done19
+  @done
   Scenario: TC_019 Validate Last MD Update affected to Position Recalculation
 
     Given instance "Bond_Test_1" of entity "Instruments" is copied with following values
@@ -998,8 +1008,7 @@ Feature: Position Attributes
     And "Position History" messages are filtered by "positionId,shortPosition" should be
       | Instance ID   | participant          | account             | positionId                     | shortPosition | shortValue | netPosition | netValue | avgPrice | notional | mtmValue | realizedMtmValue | unrealizedMtmValue | unrealizedMtmPercentage | accruedAmount | ai  |
       | POS_History01 | [Acc_01.Participant] | [Acc_01.Account Id] | [PosUpdate_02_Res2.positionId] | 60.0          | 1560.0     | -60.0       | -1560.0  | 26.0     | -3000.0  | -5640.0  | 0.0              | -4080.0            | -261.54                 | -60.0         | 2.0 |
-
-  @done20
+  @done
   Scenario: TC_020 Validate position will be calculated by market data from all venues regardless of the position venue
 
     Given instance "Bond_Test_1" of entity "Instruments" is copied with following values
@@ -1440,11 +1449,11 @@ Feature: Position Attributes
 
     When "Realtime Risk Factor Update" messages are submitted with following values
       | Instance ID | symbol               | type | value |
-      | MD1         | RZ_PT_Inst_Bond_0975 | DV01 | 15.0  |
+      | MD1         | RZ_PT_Inst_Bond_0975 | LTP | 15.0  |
 #      | MD1         | RZ_PT_Inst_Bond_0975 | AI   | 5.0   |
 
-    Then "Realtime Risk Factor Value" messages are filtered by "symbol,dv01" should be
-      | Instance ID | symbol       | dv01 |
+    Then "Realtime Risk Factor Value" messages are filtered by "symbol,ltp" should be
+      | Instance ID | symbol       | ltp |
       | MD1_Res1    | [MD1.symbol] | 15.0 |
 
   @history
