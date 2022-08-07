@@ -40,24 +40,38 @@ class DataLoader:
         cache_file = f"{REFDATA_CACHE_LOCATION}{entity_endpoint}.json"
         if exists(cache_file):
             self.loader_logger.info(f'DataLoader::load - Using cache')
-            f = open(cache_file, "r")
-            response_json = json.loads(f.read())
-            f.close()
         else:
             self.loader_logger.info(f'DataLoader::load - No cache available')
-            status_code, response = self.http_client.post_request(f"/{entity_endpoint}-search?userName=ranush", {})
-            if status_code != 200:
-                print("Data loading failed for entity : " + entity_definition.name)
-                return
-            self.loader_logger.info(f'DataLoader::load - API Response : \n {response}')
-            response_json = json.loads(response)
-            json_object = json.dumps(response_json, indent=4)
+
+            page = 0
+            instance_list = []
+            while True:
+                url = f"/{entity_endpoint}-search?page={page}&userName=ranush"
+                status_code, response = self.http_client.post_request(url, {})
+                if status_code != 200:
+                    print("Data loading failed for entity : " + entity_definition.name)
+                    return
+                self.loader_logger.info(f"URL : {url}")
+                # self.loader_logger.info(f'DataLoader::load - API Response : \n {response}')
+                response_json = json.loads(response)
+
+                if len(response_json["content"]) == 0:
+                    break
+                else:
+                    instance_list.extend(response_json["content"])
+                page = page + 1
+
+            json_object = json.dumps(instance_list, indent=4)
             f = open(cache_file, "w")
             f.write(json_object)
             f.close()
 
+        f = open(cache_file, "r")
+        json_output = json.loads(f.read())
+        f.close()
+
         instance_id_map = {}
-        for instance in response_json["content"]:
+        for instance in json_output:
             instance_id = instance["id"]
             field_def = entity_definition.find_field_def_by_display_name(entity_definition.key_field)
             key_name = field_def.get_property("name")
@@ -92,8 +106,8 @@ class DataLoader:
         return instance_id
 
     def set_acc_instance_id(self, participant_name, account, instance_id):
-        logging.debug(f"set_acc_instance_id: participant_name[{participant_name}], account[{account}],"
-                      f" instance_id[{instance_id}]")
+        self.loader_logger.debug(f"set_acc_instance_id: participant_name[{participant_name}], "
+                                         f"account[{account}], instance_id[{instance_id}]")
         if self.accounts_structure.get(participant_name) is None:
             self.accounts_structure[participant_name] = {account: instance_id}
         else:

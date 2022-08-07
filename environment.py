@@ -44,6 +44,7 @@ def after_scenario(context, scenario):
 
 
 def before_step(context, step):
+    logging.info(f'EXECUTING STEP: {step}')
     global step_start_time
     step_start_time = time.time()
 

@@ -1,14 +1,16 @@
+import logging
+
 import QuantLib as ql
 from src.utils.quantlib.data_classes import Instrument
-
-
-import datetime
-from enum import Enum
 
 date_format = '%Y-%m-%d'
 
 
 def get_clean_price(todays_date: str, bond: Instrument, spot_rates: dict):
+    logging.info("====  get_clean_price ====")
+    logging.info(f"Input : Bond Instrument : {bond.to_string()}")
+    logging.info(f"Input : Spot Rates : \n{str(spot_rates)}\n")
+
     todaysDate = ql.Date(todays_date, date_format)
     calendar = ql.UnitedStates(ql.UnitedStates.Settlement)
 
