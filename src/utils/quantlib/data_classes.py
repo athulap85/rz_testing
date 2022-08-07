@@ -1,5 +1,6 @@
 import QuantLib as ql
 import datetime
+import logging
 from enum import Enum
 
 date_format = '%Y-%m-%d'
@@ -43,6 +44,20 @@ class Instrument:
         self._coupon_rate = None
         self._face_value = None
         self._day_count_convention = None
+
+    def to_string(self):
+        msg_str = "{\n"
+        msg_str += "\tissue_date : " + self._issue_date + "\n"
+        msg_str += "\tmaturity_date : " + self._maturity_date + "\n"
+        msg_str += "\tfirst_coupon_date : " + self._first_coupon_date + "\n"
+        msg_str += "\tnext_to_last_date : " + self._next_to_last_date + "\n"
+        msg_str += "\tcoupon_frequency : " + str(self._coupon_frequency) + "\n"
+        msg_str += "\tbusiness_day_convention : " + str(self._business_day_convention) + "\n"
+        msg_str += "\tcoupon_rate : " + str(self._coupon_rate) + "\n"
+        msg_str += "\tface_value : " + str(self._face_value) + "\n"
+        msg_str += "\tday_count_convention : " + str(self._day_count_convention) + "\n"
+        msg_str += "}"
+        return msg_str
 
     @property
     def issue_date(self):

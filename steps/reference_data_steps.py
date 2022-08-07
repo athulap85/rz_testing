@@ -3,7 +3,7 @@ import logging
 from src.utils.messaging import pack_row_to_new_message
 from src.utils.comparators import compare
 from src.refdata.refdata_manager import RefDataManager
-from src.utils.resolvers import ResolverChain
+from src.utils.resolvers.resolver_chain import ResolverChain
 from src.utils.instance_registry import InstanceRegistry
 
 

@@ -1,6 +1,6 @@
 import json
 import logging
-from src.utils.resolvers import ResolverChain
+from src.utils.resolvers.resolver_chain import ResolverChain
 from src.utils.data_query import DataQuery, Operator
 
 
