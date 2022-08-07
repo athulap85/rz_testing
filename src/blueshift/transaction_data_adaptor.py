@@ -14,7 +14,7 @@ class TransactionDataAdaptor(ITransactionDataInterface):
     def __init__(self):
         logging.info("inti")
         self.http_client = HTTPClient(system_config.get("base_url"))
-        self.float_pattern = re.compile(r"^([+-]?[0-9]+.[0-9]+)$")
+        self.float_pattern = re.compile(r"^([+-]?[0-9]+\.[0-9]+)$")
 
     def submit_request(self, request_message):
         logging.debug(f"submit_request")
@@ -182,7 +182,6 @@ class TransactionDataAdaptor(ITransactionDataInterface):
         message_name = query.entity
         output_array = []
         for item in response_array:
-
             for key, value in item.items():
                 match = self.float_pattern.search(str(value))
                 if match is not None:
@@ -192,12 +191,12 @@ class TransactionDataAdaptor(ITransactionDataInterface):
             mismatch_found = False
             filters = query.get_filters()
             for filter_item in filters:
-                received_value = item.get(filter_item.field)
+                received_value = str(item.get(filter_item.field))
                 assert received_value is not None, f"Field [{filter_item.field}] is not available in the response message"
-                if str(received_value) != str(filter_item.value):
+                if received_value != str(filter_item.value):
                     mismatch_found = True
                     logging.info(f"Ignoring the message. Mismatched field [{filter_item.field}] :"
-                                 f" Expected[{filter_item.value}] Received[{item[filter_item.field]}]")
+                                 f" Expected[{filter_item.value}] Received[{received_value}]")
                     break
 
             if mismatch_found:
