@@ -15,7 +15,7 @@ bond.coupon_rate = 0.75
 
 
 spot_rates = {
-            "0":    0.0030,
+            "1D":   0.0083,
             "1M":   0.0083,
             "3M":   0.0106,
             "6M":   0.0158,
@@ -24,11 +24,11 @@ spot_rates = {
             "3Y":   0.0288,
             "5Y":   0.0290,
             "7Y":   0.0295,
-            "10Y":  0.0307,
-            "20Y":  0.0327,
+            "10Y":  0.0305,
+            "20Y":  0.0325,
             "30Y":  0.0335
             }
 
 
-clean_price = get_clean_price("2022-06-04", bond, spot_rates)
+clean_price = get_clean_price("2022-08-07", bond, spot_rates)
 print(f"Clean Price : {clean_price}")
