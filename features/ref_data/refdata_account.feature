@@ -5,7 +5,7 @@ Scenario: TC_001 Copy & create an new Account
       | Acc01       | ACC_001    | Account Test 001 | MEM_002        | RM-1        |
 
 #participant and Risk model changed to exisitng values.
-  Scenario: TC_011 Deleting instances
+Scenario: TC_011 Deleting instances
     Given instance "ACC_001" of entity "Accounts" is deleted
 
 Scenario: TC_002 create an account without Account ID
@@ -15,7 +15,7 @@ Scenario: TC_002 create an account without Account ID
 
     Then the request should be rejected with the error "Account Id is missing."
 
-#<<<<<<< Updated upstream
+
 Scenario: TC_003 create an account without Account Name
     When instance of entity "Accounts" is created with following values
      | Instance ID | Account Id | Name             | Participant    | Type        |Account Currency|Category|Informational|Status    |Position Mode| Risk Model  |Position Key Ids|
@@ -141,5 +141,4 @@ Scenario: TC_020 create an account without Position Key Id's
      | Acc02       | ACC_002    | Account Test 002 | MEM_001        | Collateral |  CAD            | Client | ISA          | Yes         |Suspended | Net         |                |
 
     Then the request should be rejected with the error "Position Key Ids missing."
-#=======
-#>>>>>>> Stashed changes
+

@@ -1,9 +1,9 @@
 import logging
 import re
-import functools
 
 from datetime import datetime
 
+from configs.global_config import system_config
 from src.utils.resolvers.resolver import Resolver
 from src.refdata.refdata_manager import RefDataManager
 from src.transaction_data.interfaceManager import InterfaceManager
@@ -88,7 +88,7 @@ class QuantLibFunctionsResolver(Resolver):
             stressed_value = stressed_value + self.calculate_value(position, scenario_id)
 
         logging.info(f"Stressed value Results: [{stressed_value}]")
-        return stressed_value
+        return round(stressed_value, system_config.get("no_of_decimal_places"))
 
     def calculate_current_value(self, positions):
         current_value = 0.0
@@ -96,7 +96,7 @@ class QuantLibFunctionsResolver(Resolver):
             current_value = current_value + self.calculate_value(position)
 
         logging.debug(f"Current Value Results : [{current_value}]")
-        return current_value
+        return round(current_value, system_config.get("no_of_decimal_places"))
 
     @staticmethod
     def tenor_comparator(tenor):

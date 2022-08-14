@@ -19,14 +19,14 @@ def get_clean_price(todays_date: str, bond: Instrument, spot_rates: dict):
     spotRates = []
     spotDates = []
 
+    spotDates.append(todaysDate)
+    spotRates.append(list(spot_rates.values())[0])
+
     for tenor, spot_rate in spot_rates.items():
-        if tenor == "0":
-            spotDates.append(todaysDate)
-        else:
-            spotDates.append(calendar.advance(todaysDate, ql.Period(tenor), ql.Unadjusted))
+        spotDates.append(calendar.advance(todaysDate, ql.Period(tenor), ql.Unadjusted))
         spotRates.append(spot_rate)
 
-    print('spotdates:',spotDates)
+    print('spotdates:', spotDates)
 
     dayCount = ql.ActualActual(ql.ActualActual.ISDA)
     interpolation = ql.Linear()

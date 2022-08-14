@@ -20,7 +20,7 @@ class InstanceResolver(Resolver):
             instance = InstanceRegistry().get_instance(instance_key)
             field_value = instance.get_field_value(field_name)
             if field_value is not None:
-                value = self.instance_pattern.sub(field_value, value)
+                value = self.instance_pattern.sub(str(field_value), str(value))
                 # value = field_value
             else:
                 assert False, f"In {value}, field [{field_name}] is unknown"
