@@ -41,6 +41,11 @@ def before_scenario(context, scenario):
 
 def after_scenario(context, scenario):
     InstanceRegistry().clear_register()
+    if "no_refdata_reversal" in scenario.tags:
+        RefDataManager().set_refdata_reversal(False)
+    else:
+        RefDataManager().set_refdata_reversal(True)
+
     RefDataManager().on_scenario_complete()
     exec_time_file.write(f"Exec Time : [{round(time.time() - scenario_start_time, 2)} s],\t Scenario : {scenario}\n")
 

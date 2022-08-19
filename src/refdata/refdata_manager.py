@@ -4,6 +4,7 @@ import logging
 class RefDataManager:
     instance = None
     interface = None
+    reversal_on = True
     reversal_msgs = []
 
     def __new__(cls):
@@ -61,10 +62,12 @@ class RefDataManager:
 
     def on_scenario_complete(self):
         logging.debug("On scenario complete")
-        for msg in self.reversal_msgs:
-            logging.debug(msg.to_string())
-            response_msg, error_msg = self.interface.update_instance(msg, msg)
-            assert error_msg is None, f"Refdata reversal failed"
+        if self.reversal_on:
+            for msg in self.reversal_msgs:
+                logging.debug(msg.to_string())
+                response_msg, error_msg = self.interface.update_instance(msg, msg)
+                assert error_msg is None, f"Refdata reversal failed"
+
         self.reversal_msgs.clear()
 
     def validate_change_request(self, original_msg, changes_msg):
@@ -73,6 +76,9 @@ class RefDataManager:
         for field_name in requesting_field_list:
             assert field_name in actual_field_list, f"Expected field [{field_name}] is not" \
                                                     f" available in entity [{original_msg.definition}]"
+
+    def set_refdata_reversal(self, value: bool):
+        self.reversal_on = value
 
 
 
