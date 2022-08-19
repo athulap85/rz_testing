@@ -36,10 +36,12 @@ def after_all(context):
 def before_scenario(context, scenario):
     global scenario_start_time
     scenario_start_time = time.time()
+    # RefDataManager().on_scenario_start()
 
 
 def after_scenario(context, scenario):
     InstanceRegistry().clear_register()
+    RefDataManager().on_scenario_complete()
     exec_time_file.write(f"Exec Time : [{round(time.time() - scenario_start_time, 2)} s],\t Scenario : {scenario}\n")
 
 
