@@ -4,7 +4,8 @@ import logging
 class RefDataManager:
     instance = None
     interface = None
-    reversal_msgs = {}
+    reversal_on = True
+    reversal_msgs = []
 
     def __new__(cls):
         if cls.instance is None:
@@ -34,6 +35,7 @@ class RefDataManager:
         logging.debug("Update instance")
         fetched_instance, error_msg = self.get_instance(entity, instance_key)
         self.validate_change_request(fetched_instance, msg)
+        self.reversal_msgs.append(fetched_instance)
         response_msg, error_msg = self.interface.update_instance(fetched_instance, msg)
         return response_msg, error_msg
 
@@ -53,8 +55,19 @@ class RefDataManager:
         logging.debug("On feature start")
 
     def on_feature_complete(self):
-        for key, value in self.reversal_msgs.items():
-            logging.debug(key + '->' + value)
+        logging.debug("On feature complete")
+
+    def on_scenario_start(self):
+        logging.debug("On scenario start")
+
+    def on_scenario_complete(self):
+        logging.debug("On scenario complete")
+        if self.reversal_on:
+            for msg in self.reversal_msgs:
+                logging.debug(msg.to_string())
+                response_msg, error_msg = self.interface.update_instance(msg, msg)
+                assert error_msg is None, f"Refdata reversal failed"
+
         self.reversal_msgs.clear()
 
     def validate_change_request(self, original_msg, changes_msg):
@@ -63,6 +76,9 @@ class RefDataManager:
         for field_name in requesting_field_list:
             assert field_name in actual_field_list, f"Expected field [{field_name}] is not" \
                                                     f" available in entity [{original_msg.definition}]"
+
+    def set_refdata_reversal(self, value: bool):
+        self.reversal_on = value
 
 
 
