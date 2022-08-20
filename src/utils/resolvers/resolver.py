@@ -18,3 +18,15 @@ class Resolver:
 
     def process(self, value):
         return value
+
+    @staticmethod
+    def find_and_replace_matches(pattern, value, resolver_func):
+        while True:
+            match = pattern.search(value)
+            if match is not None:
+                result = resolver_func(match)
+            else:
+                break
+            value = pattern.sub(str(result), value, 1)
+
+        return value

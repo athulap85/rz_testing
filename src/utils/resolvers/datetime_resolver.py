@@ -11,8 +11,10 @@ class DateTimeResolver(Resolver):
         self.date_pattern = re.compile(r"date\(today(([+-]?)(\d+)([dmY]))?,(.+)\)")
 
     def process(self, value):
-        match = self.date_pattern.search(str(value))
+        return self.find_and_replace_matches(self.date_pattern, value, self.date_time_resolver)
 
+    @staticmethod
+    def date_time_resolver(match):
         if match is not None:
             date = datetime.today()
             date_format = match.group(5)
