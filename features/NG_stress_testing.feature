@@ -248,8 +248,8 @@ Feature: Stress testing
       | Instance ID | runId     | accountId          | scenarioId          | currentValue                               | stressedValue                                                   |
       | Result1     | [Run1.id] | [Acc01.Account Id] | NG_RZ_ST_Scenario05 | current_value(RZ_ST_01,[Acc01.Account Id]) | stressed_value(RZ_ST_01,[Acc01.Account Id],NG_RZ_ST_Scenario05) |
 
-  @stressScenario @updates
-  Scenario: TC_005 - Add new shifts for a Stress Scenario intraday
+  @stressScenario @fail
+  Scenario: TC_005 - Change shifts of a Stress Scenario intraday
 
       # Create Stress Scenario
     Given table "tab1" is created with following values
@@ -289,20 +289,50 @@ Feature: Stress testing
       | Instance ID | runId     | accountId          | scenarioId               | currentValue                               | stressedValue                                                         |
       | Result1     | [Run1.id] | [Acc01.Account Id] | [SS1.Stress Scenario Id] | current_value(RZ_ST_01,[Acc01.Account Id]) | stressed_value(RZ_ST_01,[Acc01.Account Id],[SS1.Stress Scenario Id]) |
 
-      # Update the StressScenario by adding another Shift
-    Given instance "[SS1.Stress Scenario Id]" of entity "Stress Scenarios" is updated with adding following Shifts
-      | Instance ID | Currency Precision |
-      | Curr02      | 5                  |
-
+      # Update the Stress Scenario by adding another Shift
     Given table "tab2" is created with following values
       | Instance ID | Risk Factor Type | Symbol          | Shift Type | Shift Percentage |
       | te2         | INTEREST_RATE    | NG_RZ_ST_Rate2Y | RELATIVE   | 0.5              |
       | te3         | INTEREST_RATE    | NG_RZ_ST_Rate5Y | RELATIVE   | 1.5              |
 
-    And instance of entity "Stress Scenarios" is created with following values
-      | Instance ID | Shift      |
+     Given instance "SS1" of entity "Stress Scenarios" is updated with adding following Shifts
+    | Instance ID | Shift      |
       | SS1         | [TAB:tab2] |
 
+     # Run Stress Test again after the Stress Scenario update
+   When "Stress Test" messages are submitted with following values
+      | Instance ID | account            |
+      | STT02       | [Acc01.Account Id] |
+
+    Then response of the request "STT01" should be
+      | Instance ID |
+      | Run2        |
+
+    And "Stress Test Result" messages are filtered by "runId,accountId,scenarioId" should be
+      | Instance ID | runId     | accountId          | scenarioId               | currentValue                               | stressedValue                                                         |
+      | Result2     | [Run2.id] | [Acc01.Account Id] | [SS1.Stress Scenario Id] | current_value(RZ_ST_01,[Acc01.Account Id]) | stressed_value(RZ_ST_01,[Acc01.Account Id],[SS1.Stress Scenario Id]) |
+
+     # Update the Stress Scenario by removing a Shift
+    Given table "tab3" is created with following values
+      | Instance ID | Risk Factor Type | Symbol          | Shift Type | Shift Percentage |
+       | te4         | INTEREST_RATE    | NG_RZ_ST_Rate5Y | RELATIVE   | 1.5              |
+
+     Given instance "SS1" of entity "Stress Scenarios" is updated with adding following Shifts
+    | Instance ID | Shift      |
+      | SS1         | [TAB:tab3] |
+
+     # Run Stress Test again after the Stress Scenario update
+   When "Stress Test" messages are submitted with following values
+      | Instance ID | account            |
+      | STT03       | [Acc01.Account Id] |
+
+    Then response of the request "STT01" should be
+      | Instance ID |
+      | Run3        |
+
+    And "Stress Test Result" messages are filtered by "runId,accountId,scenarioId" should be
+      | Instance ID | runId     | accountId          | scenarioId               | currentValue                               | stressedValue                                                         |
+      | Result3     | [Run3.id] | [Acc01.Account Id] | [SS1.Stress Scenario Id] | current_value(RZ_ST_01,[Acc01.Account Id]) | stressed_value(RZ_ST_01,[Acc01.Account Id],[SS1.Stress Scenario Id]) |
 
   @sampleforupdates
   Scenario: Update Stress Scenario intraday
@@ -327,7 +357,7 @@ Feature: Stress testing
 
     Given instance "[SS1.Stress Scenario Id]" of entity "Stress Scenarios" is updated with adding following Shifts
       | Instance ID | Shift      |
-      | SS2         | [TAB:tab2] |
+      | SS1         | [TAB:tab2] |
 
 
 #
@@ -364,17 +394,23 @@ Feature: Stress testing
 #    Given instance "RiskModel1" of entity "Risk Models" is copied with following values
 #      | Instance ID | Risk Model Id    | Stress Testing  Methodology |
 #      | RM04        | NG_RZ_ST_Model04 | NG_RZ_ST_Scenario03         |
-    Given instance "Bond_Test_1" of entity "Instruments" is copied with following values
-      | Instance ID | Symbol                   | Size Multiplier | Par Value |
-      | Inst_01     | random(NG_RZ_ST_Bond_,4) | 2               | 200       |
+#    Given instance "Bond_Test_1" of entity "Instruments" is copied with following values
+#      | Instance ID | Symbol                   | Size Multiplier | Par Value |
+#      | Inst_01     | random(NG_RZ_ST_Bond_,4) | 2               | 200       |
+#
+#    Given table "tab5" is created with following values
+#      | Instance ID | Risk Factor Type | Symbol           | Shift Type | Shift Percentage |
+#      | te13        | INTEREST_RATE    | [Inst_01.Symbol] | RELATIVE   | 0.5              |
+#
+#    Given instance of entity "Stress Scenarios" is created with following values++
+#      | Instance ID | Stress Scenario Id  | Stress Scenario Name | Shift      |
+#      | SS5         | NG_RZ_ST_Scenario05 | NG_RZ_ST_Scenario05  | [TAB:tab5] |
+#
+#    Given instance "RiskModel1" of entity "Risk Models" is copied with following values
+#      | Instance ID | Risk Model Id    | Stress Testing  Methodology |
+#      | RM06        | NG_RZ_ST_Model06 | NG_RZ_ST_Scenario05         |
+#
 
-    Given table "tab5" is created with following values
-      | Instance ID | Risk Factor Type | Symbol           | Shift Type | Shift Percentage |
-      | te13        | INTEREST_RATE    | [Inst_01.Symbol] | RELATIVE   | 0.5              |
-
-    Given instance of entity "Stress Scenarios" is created with following values++
-      | Instance ID | Stress Scenario Id  | Stress Scenario Name | Shift      |
-      | SS5         | NG_RZ_ST_Scenario05 | NG_RZ_ST_Scenario05  | [TAB:tab5] |
-    Given instance "RiskModel1" of entity "Risk Models" is copied with following values
-      | Instance ID | Risk Model Id    | Stress Testing  Methodology |
-      | RM06        | NG_RZ_ST_Model06 | NG_RZ_ST_Scenario05         |
+        Given "Position Update" messages are submitted with following values
+      | Instance ID  | account             | symbol       | quantity | price | side  | participant          | notional |
+      | PosUpdate_01 | NG_RZ_ST_ACC64261 |testSYM_CB_6 | 60       | 90.0  | SHORT | RZ_ST_01 | 4500     |
