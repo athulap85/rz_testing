@@ -1417,73 +1417,72 @@ Feature: Position Attributes
     Then "Position" messages are filtered by "level,participant,account,symbol,netPosition" should be
       | Instance ID       | level   | participant                | symbol                | netPosition | netValue | account                | type                | positionKey |
       | PosUpdate_07_Res1 | ACCOUNT | [PosUpdate_07.participant] | [PosUpdate_07.symbol] | -70.0       | -2324.0  | [PosUpdate_07.account] | [PosUpdate_07.type] | RZ_PT_PK_10 |
-
-  @InstrumentEdit
-  Scenario: TC_022 Instrument Edit
-
-    Given instance "Bond_Test_1" of entity "Instruments" is copied with following values
-      | Instance ID | Symbol                     | Size Multiplier |
-      | Inst_01     | random(RZ_PT_Inst_Bond_,4) | 2               |
-
-    When "Realtime Risk Factor Update" messages are submitted with following values
-      | Instance ID | symbol           | type | value | currency | venue  |
-      | MD1         | [Inst_01.Symbol] | AI   | 2.0   | USD      | CCCAGG |
-      | MD2         | [Inst_01.Symbol] | LTP  | 45.0  | USD      | CCCAGG |
-
-    And instance "[Inst_01.Symbol]" of entity "Instruments" is updated with following values
-      | Instance ID    | Size Multiplier |
-      | Inst_Update_01 | 8               |
-
-
-  @MD
-  Scenario: AI update
-
-#    Given  instance "Bond_Test_1" of entity "Instruments" is copied with following values
+#
+#  @InstrumentEdit
+#  Scenario: TC_022 Instrument Edit
+#
+#    Given instance "Bond_Test_1" of entity "Instruments" is copied with following values
+#      | Instance ID | Symbol                     | Size Multiplier |
+#      | Inst_01     | random(RZ_PT_Inst_Bond_,4) | 2               |
+#
+#    When "Realtime Risk Factor Update" messages are submitted with following values
+#      | Instance ID | symbol           | type | value | currency | venue  |
+#      | MD1         | [Inst_01.Symbol] | AI   | 2.0   | USD      | CCCAGG |
+#      | MD2         | [Inst_01.Symbol] | LTP  | 45.0  | USD      | CCCAGG |
+#
+#    And instance "[Inst_01.Symbol]" of entity "Instruments" is updated with following values
+#      | Instance ID    | Size Multiplier |
+#      | Inst_Update_01 | 8               |
+#
+#  @MD
+#  Scenario: AI update
+#
+##    Given  instance "Bond_Test_1" of entity "Instruments" is copied with following values
+##      | Instance ID | Symbol                     |
+##      | Inst_01     | random(RZ_PT_Inst_Bond_,4) |
+##
+##    #this step is just added to give some time just after the instrument creation before update Market Data
+##    Then instance "[Inst_01.Symbol]" of entity "Instruments" should be
+##      | Instance ID  | Symbol           |
+##      | Inst_01_Res1 | [Inst_01.Symbol] |
+#
+#    When "Realtime Risk Factor Update" messages are submitted with following values
+#      | Instance ID | symbol               | type | value |
+#      | MD1         | RZ_PT_Inst_Bond_0975 | LTP | 15.0  |
+##      | MD1         | RZ_PT_Inst_Bond_0975 | AI   | 5.0   |
+#
+#    Then "Realtime Risk Factor Value" messages are filtered by "symbol,ltp" should be
+#      | Instance ID | symbol       | ltp |
+#      | MD1_Res1    | [MD1.symbol] | 15.0 |
+#
+#  @history
+#  Scenario:  History
+#
+#    Given instance "Home" of entity "Accounts" is copied with following values
+#      | Instance ID | Account Id           | Name                 | Participant | Position Key Ids |
+#      | Acc_01      | random(RZ-PT-Acc-,4) | random(RZ-PT-Acn-,4) | RZ-PT-01    | RZ_PT_PK_05      |
+#
+#    And  instance "Bond_Test_1" of entity "Instruments" is copied with following values
 #      | Instance ID | Symbol                     |
 #      | Inst_01     | random(RZ_PT_Inst_Bond_,4) |
 #
-#    #this step is just added to give some time just after the instrument creation before update Market Data
-#    Then instance "[Inst_01.Symbol]" of entity "Instruments" should be
-#      | Instance ID  | Symbol           |
-#      | Inst_01_Res1 | [Inst_01.Symbol] |
-
-    When "Realtime Risk Factor Update" messages are submitted with following values
-      | Instance ID | symbol               | type | value |
-      | MD1         | RZ_PT_Inst_Bond_0975 | LTP | 15.0  |
-#      | MD1         | RZ_PT_Inst_Bond_0975 | AI   | 5.0   |
-
-    Then "Realtime Risk Factor Value" messages are filtered by "symbol,ltp" should be
-      | Instance ID | symbol       | ltp |
-      | MD1_Res1    | [MD1.symbol] | 15.0 |
-
-  @history
-  Scenario:  History
-
-    Given instance "Home" of entity "Accounts" is copied with following values
-      | Instance ID | Account Id           | Name                 | Participant | Position Key Ids |
-      | Acc_01      | random(RZ-PT-Acc-,4) | random(RZ-PT-Acn-,4) | RZ-PT-01    | RZ_PT_PK_05      |
-
-    And  instance "Bond_Test_1" of entity "Instruments" is copied with following values
-      | Instance ID | Symbol                     |
-      | Inst_01     | random(RZ_PT_Inst_Bond_,4) |
-
-    When "Position Update" messages are submitted with following values
-      | Instance ID  | account             | symbol           | quantity | price | value  | side  | participant          | notional | market | settlementDate                |
-      | PosUpdate_01 | [Acc_01.Account Id] | Stepped-Bond-hnk | 60       | 50.0  | 1500.0 | SHORT | [Acc_01.Participant] | 3000     | CCCAGG | 2022-02-22T00:00:00.000+00:00 |
-
-    And "Position Update" messages are submitted with following values
-      | Instance ID  | account             | symbol           | quantity | price | value  | side  | participant          | notional | market | settlementDate                |
-      | PosUpdate_02 | [Acc_01.Account Id] | Stepped-Bond-hnk | 60       | 50.0  | 1500.0 | SHORT | [Acc_01.Participant] | 3000     | CCCAGG | 2023-02-22T00:00:00.000+00:00 |
-
-    Then "Position" messages are filtered by "level,participant,account,shortPosition" should be
-      | Instance ID       | level   | participant                | symbol                | shortPosition | shortValue | netPosition | netValue | avgPrice | account                | notional | mtmValue | realizedMtmValue | unrealizedMtmValue | unrealizedMtmPercentage | accruedAmount | ai  | positionId |
-      | PosUpdate_02_Res1 | ACCOUNT | [PosUpdate_02.participant] | [PosUpdate_02.symbol] | 120.0         | 3000.0     | -120.0      | -3000.0  | 25.0     | [PosUpdate_02.account] | -6000.0  | 0.0      | 0.0              | 3000.0             | 100.0                   | 0.0           | 0.0 | NOT_EMPTY  |
-
-    And "Position History" messages are filtered by "positionId,notional" should be
-      | Instance ID   | participant          | account             | positionId                     | shortPosition | shortValue | longPosition | longValue | netPosition | netValue | avgPrice | notional |
-      | POS_History01 | [Acc_01.Participant] | [Acc_01.Account Id] | [PosUpdate_02_Res1.positionId] | 60.0          | 1500.0     | 60.0         | 1500.0    | 0.0         | 0.0      | 25.0     | -3000.0  |
-
-  @Upload
-  Scenario: AI update
-
-    When "Position Update" messages are submitted with following values
+#    When "Position Update" messages are submitted with following values
+#      | Instance ID  | account             | symbol           | quantity | price | value  | side  | participant          | notional | market | settlementDate                |
+#      | PosUpdate_01 | [Acc_01.Account Id] | Stepped-Bond-hnk | 60       | 50.0  | 1500.0 | SHORT | [Acc_01.Participant] | 3000     | CCCAGG | 2022-02-22T00:00:00.000+00:00 |
+#
+#    And "Position Update" messages are submitted with following values
+#      | Instance ID  | account             | symbol           | quantity | price | value  | side  | participant          | notional | market | settlementDate                |
+#      | PosUpdate_02 | [Acc_01.Account Id] | Stepped-Bond-hnk | 60       | 50.0  | 1500.0 | SHORT | [Acc_01.Participant] | 3000     | CCCAGG | 2023-02-22T00:00:00.000+00:00 |
+#
+#    Then "Position" messages are filtered by "level,participant,account,shortPosition" should be
+#      | Instance ID       | level   | participant                | symbol                | shortPosition | shortValue | netPosition | netValue | avgPrice | account                | notional | mtmValue | realizedMtmValue | unrealizedMtmValue | unrealizedMtmPercentage | accruedAmount | ai  | positionId |
+#      | PosUpdate_02_Res1 | ACCOUNT | [PosUpdate_02.participant] | [PosUpdate_02.symbol] | 120.0         | 3000.0     | -120.0      | -3000.0  | 25.0     | [PosUpdate_02.account] | -6000.0  | 0.0      | 0.0              | 3000.0             | 100.0                   | 0.0           | 0.0 | NOT_EMPTY  |
+#
+#    And "Position History" messages are filtered by "positionId,notional" should be
+#      | Instance ID   | participant          | account             | positionId                     | shortPosition | shortValue | longPosition | longValue | netPosition | netValue | avgPrice | notional |
+#      | POS_History01 | [Acc_01.Participant] | [Acc_01.Account Id] | [PosUpdate_02_Res1.positionId] | 60.0          | 1500.0     | 60.0         | 1500.0    | 0.0         | 0.0      | 25.0     | -3000.0  |
+#
+#  @Upload
+#  Scenario: AI update
+#
+#    When "Position Update" messages are submitted with following values
