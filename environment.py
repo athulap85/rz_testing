@@ -8,6 +8,7 @@ import logging
 import time
 step_start_time = 0.0
 scenario_start_time = 0.0
+feature_start_time = 0.0
 exec_time_file = open("logs/execution_time.txt", "w")
 
 
@@ -47,7 +48,8 @@ def after_scenario(context, scenario):
         RefDataManager().set_refdata_reversal(True)
 
     RefDataManager().on_scenario_complete()
-    exec_time_file.write(f"Exec Time : [{round(time.time() - scenario_start_time, 2)} s],\t Scenario : {scenario}\n")
+    exec_time_file.write(f"Exec Time : [{round(time.time() - scenario_start_time, 2)} s],\t Scenario : {scenario}\n\n")
+    exec_time_file.flush()
 
 
 def before_step(context, step):
@@ -61,8 +63,13 @@ def after_step(context, step):
 
 
 def before_feature(context, feature):
+    global feature_start_time
+    feature_start_time = time.time()
     RefDataManager().on_feature_start()
 
 
 def after_feature(context, feature):
     RefDataManager().on_feature_complete()
+    exec_time_file.write(f"Exec Time : [{round(time.time() - feature_start_time, 2)} s],\t"
+                         f" feature : {feature}\n=====\n")
+    exec_time_file.flush()

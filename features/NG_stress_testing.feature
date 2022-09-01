@@ -560,14 +560,11 @@ Feature: Stress testing
       | Result1     | [Run1.id] | [Acc01.Account Id] | NG_RZ_ST_Scenario11 | current_value(RZ_ST_01,[Acc01.Account Id]) | stressed_value(RZ_ST_01,[Acc01.Account Id],NG_RZ_ST_Scenario11) |
 
     #Verify the Stress Testing for Position 01
-    And "Stress Test Result" messages are filtered by "runId,accountId,scenarioId," should be
-      | Instance ID | runId     | accountId          | scenarioId          | currentValue                               | stressedValue                                                                         |
-      | Result2     | [Run1.id] | [Acc01.Account Id] | NG_RZ_ST_Scenario11 | current_value(RZ_ST_01,[Acc01.Account Id]) | stressed_value(RZ_ST_01,[Acc01.Account Id],NG_RZ_ST_Scenario11,[POU1_Res1.positionId]) |
+    And "Stress Test Detailed Result" messages are filtered by "runId,accountId,scenarioId" should be
+      | Instance ID | runId     | accountId          | symbol           | scenarioId          | currentValue                                                      | stressValue                                                                            |
+      | Result2     | [Run1.id] | [Acc01.Account Id] | NG_RZ_ST_Bond01  | NG_RZ_ST_Scenario11 | current_value(RZ_ST_01,[Acc01.Account Id],[POU1_Res1.positionId]) | stressed_value(RZ_ST_01,[Acc01.Account Id],NG_RZ_ST_Scenario11,[POU1_Res1.positionId]) |
+      | Result3     | [Run1.id] | [Acc01.Account Id] | NG_RZ_ST_Bond02  | NG_RZ_ST_Scenario11 | current_value(RZ_ST_01,[Acc01.Account Id],[POU2_Res1.positionId]) | stressed_value(RZ_ST_01,[Acc01.Account Id],NG_RZ_ST_Scenario11,[POU2_Res1.positionId]) |
 
-    #Verify the Stress Testing for Position 02
-    And "Stress Test Result" messages are filtered by "runId,accountId,scenarioId" should be
-      | Instance ID | runId     | accountId          | scenarioId          | currentValue                               | stressedValue                                                                          |
-      | Result3     | [Run1.id] | [Acc01.Account Id] | NG_RZ_ST_Scenario11 | current_value(RZ_ST_01,[Acc01.Account Id]) | stressed_value(RZ_ST_01,[Acc01.Account Id],NG_RZ_ST_Scenario11,[POU2_Res1.positionId]) |
 
   @sampleforupdates
   Scenario: Update Stress Scenario intraday
