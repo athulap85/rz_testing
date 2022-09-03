@@ -39,7 +39,7 @@ class InterfaceManager:
             if msg_array is None:
                 logging.info("query_data:Empty results received.")
                 time.sleep(1)
-            elif expected_count != 0 and len(msg_array) != expected_count:
+            elif expected_count != 0 and len(msg_array) < expected_count:
                 logging.info(f"query_data:Expected message count mismatch. Received:[{len(msg_array)}] "
                              f"Expected:[{query.get_expected_msg_count()}]")
                 time.sleep(1)

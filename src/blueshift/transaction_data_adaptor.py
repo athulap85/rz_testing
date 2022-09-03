@@ -55,6 +55,8 @@ class TransactionDataAdaptor(ITransactionDataInterface):
             return self.process_interest_curve(endpoint, query)
         elif entity == "Stress Test Result":
             return self.process_stress_test_results(endpoint, query)
+        elif entity == "Stress Test Detailed Result":
+            return self.process_stress_test_detailed_results(endpoint, query)
         elif entity == "Position Update Error":
             return self.process_position_update_errors(endpoint, query)
         elif entity == "Realtime Risk Factor Update Error":
@@ -251,6 +253,30 @@ class TransactionDataAdaptor(ITransactionDataInterface):
                 results["runId"] = run_id
 
             msg_array = self.create_response_array(query, response_json)
+            return msg_array, None
+        else:
+            return None, response
+
+    def process_stress_test_detailed_results(self, endpoint, query):
+        logging.debug(f"process_stress_test_detailed_results")
+        run_id = acc_id = scenario_id = None
+        filters = query.get_filters()
+        for filter_item in filters:
+            if filter_item.field == "runId":
+                run_id = filter_item.value
+            elif filter_item.field == "accountId":
+                acc_id = filter_item.value
+            elif filter_item.field == "scenarioId":
+                scenario_id = filter_item.value
+
+        assert None not in (run_id, acc_id, scenario_id), "Field [runId,accountId,scenarioId] must to be present" \
+                                                          " as a filter criteria for stress test results query"
+
+        url = f"{endpoint}?runId={run_id}&accountId={acc_id}&scenarioId={scenario_id}&page=0&userName=ranush"
+        status_code, response = self.http_client.post_request(url, None)
+        if status_code == 200:
+            response_json = json.loads(response)
+            msg_array = self.create_response_array(query, response_json["content"])
             return msg_array, None
         else:
             return None, response
