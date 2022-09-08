@@ -30,8 +30,8 @@ def get_clean_price(todays_date: str, bond: Instrument, spot_rates: dict):
 
     dayCount = ql.ActualActual(ql.ActualActual.ISDA)
     interpolation = ql.Linear()
-    compounding = ql.Compounded
-    compoundingFrequency = bond.coupon_frequency
+    compounding = ql.Compounded 
+    compoundingFrequency = ql.Semiannual
 
     #creating spot curve
     spotCurve = ql.ZeroCurve(spotDates, spotRates, dayCount, calendar, interpolation, compounding, compoundingFrequency)

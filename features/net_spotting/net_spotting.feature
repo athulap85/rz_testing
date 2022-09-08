@@ -3,8 +3,8 @@ Feature: Net Spotting Functional testing
   @wip1
   Scenario: TC_001 Only Position get update for Corporate Ins & no update in Ideal Hedge & DV01 values & par value update
     Given instance "Home" of entity "Accounts" is copied with following values
-      | Instance ID | Account Id           | Name                 | Participant | Position Key Ids | Type   | Account Currency | Category |
-      | TC_001_NP   | random(RZ_NP_ACC_,5) | random(RZ_NP_ACN,6 ) | RZ_NP_MEM_1 | RZ_NP_IT_1       | MARGIN | USD              | CLIENT   |
+      | Instance ID | Account Id           | Name                | Participant | Position Key Ids | Type   | Account Currency | Category |
+      | TC_001_NP   | random(RZ_NP_ACC_,5) | random(RZ_NP_ACN,6) | RZ_NP_MEM_1 | RZ_NP_IT_1       | MARGIN | USD              | CLIENT   |
     And instance "US91282CCW91" of entity "Instruments" is copied with following values
       | Instance ID   | Instrument ID | Symbol                   | Expiry Date | Issue Date | First Coupon Date | Next To Last Date | Par Value |
       | TC_GB_INS_001 | INS_003       | random(RZ_NP1_SYM_GB_,3) | 2027-12-31  | 2022-03-31 | 2022-12-10        | 2023-12-10        | 100       |

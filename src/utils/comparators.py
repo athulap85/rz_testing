@@ -16,9 +16,9 @@ def compare(expected_msg, received_msg, should_assert, callback):
 
 
 def compare_message_arrays(expected_array, response_array, callback):
-    assert len(expected_array) == len(response_array), f"Expected and received messages count mismatch." \
-        f" expected count[{len(expected_array)}] received count[{len(response_array)}]" \
-        f" \nExpected : {print_msg_array(expected_array)} \nReceived : {print_msg_array(response_array)}\n"
+    # assert len(expected_array) == len(response_array), f"Expected and received messages count mismatch." \
+    #    f" expected count[{len(expected_array)}] received count[{len(response_array)}]" \
+    #    f" \nExpected : {print_msg_array(expected_array)} \nReceived : {print_msg_array(response_array)}\n"
 
     for expecting_msg in expected_array:
         found = False
