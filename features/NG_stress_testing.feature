@@ -624,8 +624,8 @@ Feature: Stress testing
       | Result2     | [Run1.id] | [Acc01.Account Id] | NG_RZ_ST_Bond01 | NG_RZ_ST_Scenario11 | current_value(RZ_ST_01,[Acc01.Account Id],[POU1_Res1.positionId]) | stressed_value(RZ_ST_01,[Acc01.Account Id],NG_RZ_ST_Scenario11,[POU1_Res1.positionId]) |
       | Result3     | [Run1.id] | [Acc01.Account Id] | NG_RZ_ST_Bond03 | NG_RZ_ST_Scenario11 | current_value(RZ_ST_01,[Acc01.Account Id],[POU2_Res1.positionId]) | stressed_value(RZ_ST_01,[Acc01.Account Id],NG_RZ_ST_Scenario11,[POU2_Res1.positionId]) |
 
-  @wip1
-  Scenario: TC_010 - Stress Test for a Symbols with different Coupon Frequencies
+  @done
+  Scenario: TC_010 - Stress Test for Symbols with different Coupon Frequencies and Day count Conversions
 
     Given instance "HomeX" of entity "Accounts" is copied with following values
       | Instance ID | Participant | Account Id             | Name               | Risk Model       |
@@ -634,25 +634,13 @@ Feature: Stress testing
     When "Position Update" messages are submitted with following values
       | Instance ID | account            | symbol          | price | quantity | participant         | notional | side  |
       | POU1        | [Acc01.Account Id] | NG_RZ_ST_Bond04 | 99.0  | 10       | [Acc01.Participant] | 1000     | SHORT |
-
-    Then "Position" messages are filtered by "level,participant,account,symbol" should be
-      | Instance ID | participant         | account            | level   | symbol          | notional |
-      | POU1_Res1   | [Acc01.Participant] | [Acc01.Account Id] | ACCOUNT | NG_RZ_ST_Bond04 | -1000.0  |
-
-    When "Position Update" messages are submitted with following values
-      | Instance ID | account            | symbol          | price | quantity | participant         | notional | side |
-      | POU2        | [Acc01.Account Id] | NG_RZ_ST_Bond05 | 200.0 | 2        | [Acc01.Participant] | 400      | LONG |
-
-    Then "Position" messages are filtered by "level,participant,account,symbol,notional" should be
-      | Instance ID | participant         | account            | level   | symbol          | notional |
-      | POU2_Res1   | [Acc01.Participant] | [Acc01.Account Id] | ACCOUNT | NG_RZ_ST_Bond05 | 400.0    |
-
-    When "Position Update" messages are submitted with following values
-      | Instance ID | account            | symbol          | price | quantity | participant         | notional | side  |
+      | POU2        | [Acc01.Account Id] | NG_RZ_ST_Bond05 | 200.0 | 2        | [Acc01.Participant] | 400      | SHORT |
       | POU3        | [Acc01.Account Id] | NG_RZ_ST_Bond06 | 100.0 | 10       | [Acc01.Participant] | 1000     | SHORT |
 
     Then "Position" messages are filtered by "level,participant,account,symbol" should be
       | Instance ID | participant         | account            | level   | symbol          | notional |
+      | POU1_Res1   | [Acc01.Participant] | [Acc01.Account Id] | ACCOUNT | NG_RZ_ST_Bond04 | -1000.0  |
+      | POU2_Res1   | [Acc01.Participant] | [Acc01.Account Id] | ACCOUNT | NG_RZ_ST_Bond05 | -400.0   |
       | POU3_Res1   | [Acc01.Participant] | [Acc01.Account Id] | ACCOUNT | NG_RZ_ST_Bond06 | -1000.0  |
 
     When "Stress Test" messages are submitted with following values
@@ -672,13 +660,129 @@ Feature: Stress testing
       | Instance ID | runId     | accountId          | symbol          | scenarioId          | currentValue                                                      | stressValue                                                                            |
       | Result2     | [Run1.id] | [Acc01.Account Id] | NG_RZ_ST_Bond04 | NG_RZ_ST_Scenario11 | current_value(RZ_ST_01,[Acc01.Account Id],[POU1_Res1.positionId]) | stressed_value(RZ_ST_01,[Acc01.Account Id],NG_RZ_ST_Scenario11,[POU1_Res1.positionId]) |
       | Result3     | [Run1.id] | [Acc01.Account Id] | NG_RZ_ST_Bond05 | NG_RZ_ST_Scenario11 | current_value(RZ_ST_01,[Acc01.Account Id],[POU2_Res1.positionId]) | stressed_value(RZ_ST_01,[Acc01.Account Id],NG_RZ_ST_Scenario11,[POU2_Res1.positionId]) |
-      | Result4     | [Run1.id] | [Acc01.Account Id] | NG_RZ_ST_Bond06 | NG_RZ_ST_Scenario11 | current_value(RZ_ST_01,[Acc01.Account Id],[POU2_Res1.positionId]) | stressed_value(RZ_ST_01,[Acc01.Account Id],NG_RZ_ST_Scenario11,[POU2_Res1.positionId]) |
+      | Result4     | [Run1.id] | [Acc01.Account Id] | NG_RZ_ST_Bond06 | NG_RZ_ST_Scenario11 | current_value(RZ_ST_01,[Acc01.Account Id],[POU3_Res1.positionId]) | stressed_value(RZ_ST_01,[Acc01.Account Id],NG_RZ_ST_Scenario11,[POU3_Res1.positionId]) |
+
+    # Change the Business Day Convention in each Symbol ( To have all the Business day Convention Values)
+    When instance "NG_RZ_ST_Bond02" of entity "Instruments" is updated with following values
+      | Instance ID | Business Day Convention |
+      | Updt_01     | MODIFIED_PRECEDING      |
+
+    When instance "NG_RZ_ST_Bond03" of entity "Instruments" is updated with following values
+      | Instance ID | Business Day Convention |
+      | Updt_02     | DAY_FOLLOWING           |
+
+    When instance "NG_RZ_ST_Bond04" of entity "Instruments" is updated with following values
+      | Instance ID | Business Day Convention |
+      | Updt_03     | DAY_PRECEDING           |
+
+    When instance "NG_RZ_ST_Bond05" of entity "Instruments" is updated with following values
+      | Instance ID | Business Day Convention |
+      | Updt_04     | UNADJUSTED              |
+
+    When instance "NG_RZ_ST_Bond06" of entity "Instruments" is updated with following values
+      | Instance ID | Business Day Convention |
+      | Updt_05     | MODIFIED_FOLLOWING      |
+
+    #Add New Positions
+    When "Position Update" messages are submitted with following values
+      | Instance ID | account            | symbol          | price | quantity | participant         | notional | side  |
+      | POU4        | [Acc01.Account Id] | NG_RZ_ST_Bond02 | 99.0  | 10       | [Acc01.Participant] | 1000     | SHORT |
+      | POU5        | [Acc01.Account Id] | NG_RZ_ST_Bond03 | 99.0  | 10       | [Acc01.Participant] | 1000     | SHORT |
+      | POU6        | [Acc01.Account Id] | NG_RZ_ST_Bond04 | 99.0  | 10       | [Acc01.Participant] | 1000     | LONG  |
+      | POU7        | [Acc01.Account Id] | NG_RZ_ST_Bond05 | 200.0 | 2        | [Acc01.Participant] | 400      | LONG  |
+      | POU8        | [Acc01.Account Id] | NG_RZ_ST_Bond06 | 100.0 | 10       | [Acc01.Participant] | 1000     | LONG  |
+
+    Then "Position" messages are filtered by "level,participant,account,symbol,notional" should be
+      | Instance ID | participant         | account            | level   | symbol          | notional |
+      | POU4_Res1   | [Acc01.Participant] | [Acc01.Account Id] | ACCOUNT | NG_RZ_ST_Bond02 | -1000.0  |
+      | POU5_Res1   | [Acc01.Participant] | [Acc01.Account Id] | ACCOUNT | NG_RZ_ST_Bond03 | -1000.0  |
+      | POU6_Res1   | [Acc01.Participant] | [Acc01.Account Id] | ACCOUNT | NG_RZ_ST_Bond04 | 0.0      |
+      | POU7_Res1   | [Acc01.Participant] | [Acc01.Account Id] | ACCOUNT | NG_RZ_ST_Bond05 | 0.0      |
+      | POU8_Res1   | [Acc01.Participant] | [Acc01.Account Id] | ACCOUNT | NG_RZ_ST_Bond06 | 0.0      |
+
+    # Run another Stress Test after the Instrument modifications
+    When "Stress Test" messages are submitted with following values
+      | Instance ID | account            |
+      | STT02       | [Acc01.Account Id] |
+
+    Then response of the request "STT02" should be
+      | Instance ID |
+      | Run2        |
+
+    And "Stress Test Result" messages are filtered by "runId,accountId,scenarioId" should be
+      | Instance ID | runId     | accountId          | scenarioId          | currentValue                               | stressedValue                                                   |
+      | Result1     | [Run2.id] | [Acc01.Account Id] | NG_RZ_ST_Scenario11 | current_value(RZ_ST_01,[Acc01.Account Id]) | stressed_value(RZ_ST_01,[Acc01.Account Id],NG_RZ_ST_Scenario11) |
+
+    #Verify the Stress Testing for Each Positions
+    And "Stress Test Detailed Result" messages are filtered by "runId,accountId,scenarioId,symbol" should be
+      | Instance ID | runId     | accountId          | symbol          | scenarioId          | currentValue                                                      | stressValue                                                                            |
+      | Result2     | [Run2.id] | [Acc01.Account Id] | NG_RZ_ST_Bond04 | NG_RZ_ST_Scenario11 | current_value(RZ_ST_01,[Acc01.Account Id],[POU1_Res1.positionId]) | stressed_value(RZ_ST_01,[Acc01.Account Id],NG_RZ_ST_Scenario11,[POU1_Res1.positionId]) |
+      | Result3     | [Run2.id] | [Acc01.Account Id] | NG_RZ_ST_Bond05 | NG_RZ_ST_Scenario11 | current_value(RZ_ST_01,[Acc01.Account Id],[POU2_Res1.positionId]) | stressed_value(RZ_ST_01,[Acc01.Account Id],NG_RZ_ST_Scenario11,[POU2_Res1.positionId]) |
+      | Result4     | [Run2.id] | [Acc01.Account Id] | NG_RZ_ST_Bond06 | NG_RZ_ST_Scenario11 | current_value(RZ_ST_01,[Acc01.Account Id],[POU3_Res1.positionId]) | stressed_value(RZ_ST_01,[Acc01.Account Id],NG_RZ_ST_Scenario11,[POU3_Res1.positionId]) |
 
 
-  @ff
+  @done
+  Scenario: TC_011 - Update the attached Discount curve
+
+    Given instance "HomeX" of entity "Accounts" is copied with following values
+      | Instance ID | Participant | Account Id             | Name               | Risk Model       |
+      | Acc01       | RZ_ST_01    | random(NG_RZ_ST_ACC,5) | random(NG_RZ_ST,5) | NG_RZ_ST_Model01 |
+
+    When "Position Update" messages are submitted with following values
+      | Instance ID | account            | symbol          | price | quantity | participant         | notional |
+      | POU1        | [Acc01.Account Id] | NG_RZ_ST_Bond06 | 99.0  | 100       | [Acc01.Participant] | 10000     |
+
+    Then "Position" messages are filtered by "level,participant,account,symbol" should be
+      | Instance ID | participant         | account            | level   | symbol          | notional |
+      | POS_Res1    | [Acc01.Participant] | [Acc01.Account Id] | ACCOUNT | NG_RZ_ST_Bond06 | 10000.0   |
+
+    When "Stress Test" messages are submitted with following values
+      | Instance ID | account            |
+      | STT01       | [Acc01.Account Id] |
+
+    Then response of the request "STT01" should be
+      | Instance ID |
+      | Run1        |
+
+    And "Stress Test Result" messages are filtered by "runId,accountId,scenarioId" should be
+      | Instance ID | runId     | accountId          | scenarioId          | currentValue                               | stressedValue                                                   |
+      | Result1     | [Run1.id] | [Acc01.Account Id] | NG_RZ_ST_Scenario01 | current_value(RZ_ST_01,[Acc01.Account Id]) | stressed_value(RZ_ST_01,[Acc01.Account Id],NG_RZ_ST_Scenario01) |
+
+    #Update the Discount Curve of the Instrument
+    When instance "NG_RZ_ST_Bond06" of entity "Instruments" is updated with following values
+      | Instance ID | Discount Curve |
+      | Updt_01     | NG_RZ_ST_Cur01      |
+
+    #Run another Stress Test
+    When "Stress Test" messages are submitted with following values
+      | Instance ID | account            |
+      | STT02       | [Acc01.Account Id] |
+
+    Then response of the request "STT02" should be
+      | Instance ID |
+      | Run2        |
+
+    And "Stress Test Result" messages are filtered by "runId,accountId,scenarioId" should be
+      | Instance ID | runId     | accountId          | scenarioId          | currentValue                               | stressedValue                                                   |
+      | Result1     | [Run2.id] | [Acc01.Account Id] | NG_RZ_ST_Scenario01 | current_value(RZ_ST_01,[Acc01.Account Id]) | stressed_value(RZ_ST_01,[Acc01.Account Id],NG_RZ_ST_Scenario01) |
+
+
+  @fff
   Scenario: ref data f
 
+    Given instance "HomeX" of entity "Accounts" is copied with following values
+      | Instance ID | Participant | Account Id             | Name               | Risk Model       |
+      | Acc01       | RZ_ST_01    | random(NG_RZ_ST_ACC,5) | random(NG_RZ_ST,5) | NG_RZ_ST_Model11 |
 
+    When "Position Update" messages are submitted with following values
+      | Instance ID | account            | symbol          | price | quantity | participant         | notional | side  |
+      | POU1        | [Acc01.Account Id] | NG_RZ_ST_Bond01 | 99.0  | 10       | [Acc01.Participant] | 1000     | SHORT |
+      | POU2        | [Acc01.Account Id] | NG_RZ_ST_Bond03 | 499.0 | 2        | [Acc01.Participant] | 1000     | LONG  |
+
+    Then "Position" messages are filtered by "level,participant,account,symbol" should be
+      | Instance ID | participant         | account            | level   | symbol          | notional |
+      | POU1_Res1   | [Acc01.Participant] | [Acc01.Account Id] | ACCOUNT | NG_RZ_ST_Bond01 | -1000.0  |
+      | POU2_Res1   | [Acc01.Participant] | [Acc01.Account Id] | ACCOUNT | NG_RZ_ST_Bond03 | 1000.0   |
   @sampleforupdates
   Scenario: Update Stress Scenario intraday
 
@@ -712,58 +816,3 @@ Feature: Stress testing
 #      | POS_Res4    | RZ_ST_01    | ACCOUNT | stressed_value(RZ_ST_01,RZ_ST_ACC71934,RZ_ST_Scenario02,[POS1.positionId]) |
 #    # participant | account > Current value of the Account
 #
-  @1D
-  Scenario: 1D updat
-
-#    Given instance "USTreasury10Y-Act/Act" of entity "Instruments" is copied with following values
-#      | Instance ID | Symbol          | ISIN            | Instrument Type | Tenor | Curve Identifier |
-#      | Rate1D      | NG_RZ_ST_Rate1D | NG_RZ_ST_Rate1D | SPOT_RATE       | 1D    | NG_RZ_ST_Cur01   |
-#
-#    Given "Realtime Risk Factor Update" messages are submitted with following values
-#      | Instance ID | symbol          | dataClass | type | value |
-#      | MRate1D     | NG_RZ_ST_Rate1D | RATE      | LTP  | 0.83  |
-
-#   Given table "tab3" is created with following values
-#      | Instance ID | Risk Factor Type | Symbol          | Shift Type | Shift Percentage |
-#      | te5         | INTEREST_RATE    | NG_RZ_ST_Rate2Y | RELATIVE   | 0.5              |
-#      | te6         | INTEREST_RATE    | NG_RZ_ST_Rate5Y | ABSOLUTE   | 1.1              |
-#      | te7         | INTEREST_RATE    | NG_RZ_ST_Rate7Y | ABSOLUTE   | 0.5              |
-#      | te8         | INTEREST_RATE    | NG_RZ_ST_Rate10Y | RELATIVE   | 1.1              |
-#
-#    Given instance of entity "Stress Scenarios" is created with following values
-#      | Instance ID | Stress Scenario Id  | Stress Scenario Name | Shift      |
-#      | SS3         | NG_RZ_ST_Scenario03 | NG_RZ_ST_Scenario03  | [TAB:tab3] |
-
-#    Given instance "RiskModel1" of entity "Risk Models" is copied with following values
-#      | Instance ID | Risk Model Id    | Stress Testing  Methodology |
-#      | RM04        | NG_RZ_ST_Model04 | NG_RZ_ST_Scenario03         |
-#    Given instance "Bond_Test_1" of entity "Instruments" is copied with following values
-#      | Instance ID | Symbol                   | Size Multiplier | Par Value |
-#      | Inst_01     | random(NG_RZ_ST_Bond_,4) | 2               | 200       |
-#
-#    Given table "tab5" is created with following values
-#      | Instance ID | Risk Factor Type | Symbol           | Shift Type | Shift Percentage |
-#      | te13        | INTEREST_RATE    | [Inst_01.Symbol] | RELATIVE   | 0.5              |
-#
-#    Given instance of entity "Stress Scenarios" is created with following values++
-#      | Instance ID | Stress Scenario Id  | Stress Scenario Name | Shift      |
-#      | SS5         | NG_RZ_ST_Scenario05 | NG_RZ_ST_Scenario05  | [TAB:tab5] |
-#
-#    Given instance "RiskModel1" of entity "Risk Models" is copied with following values
-#      | Instance ID | Risk Model Id    | Stress Testing  Methodology |
-#      | RM06        | NG_RZ_ST_Model06 | NG_RZ_ST_Scenario05         |
-#
-    Given table "tab2" is created with following values
-      | Instance ID | Risk Factor Type | Symbol              | Shift Type | Shift Percentage |
-      | te1         | INTEREST_RATE    | NG_RZ_ST_02_Rate30Y | ABSOLUTE   | 1                |
-      | te2         | INTEREST_RATE    | NG_RZ_ST_Rate10Y    | ABSOLUTE   | 1.5              |
-      | te3         | INTEREST_RATE    | NG_RZ_ST_02_Rate2Y  | ABSOLUTE   | 0.5              |
-      | te4         | INTEREST_RATE    | NG_RZ_ST_Rate5Y     | ABSOLUTE   | 1.1              |
-
-    Given instance of entity "Stress Scenarios" is created with following values
-      | Instance ID | Stress Scenario Id  | Stress Scenario Name | Shift      |
-      | SS2         | NG_RZ_ST_Scenario11 | NG_RZ_ST_Scenario11  | [TAB:tab2] |
-
-    Given instance "RiskModel1" of entity "Risk Models" is copied with following values
-      | Instance ID | Risk Model Id    | Stress Testing  Methodology |
-      | RM02        | NG_RZ_ST_Model11 | NG_RZ_ST_Scenario11         |
