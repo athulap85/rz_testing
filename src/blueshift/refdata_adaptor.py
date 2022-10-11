@@ -78,7 +78,7 @@ class RefDataAdaptor(IRefDataInterface):
             f.close()
         else:
             self.loader_logger.info('RefDataAdaptor::init - Cache file not found')
-            status_code, response_text = self.http_client.get_request("/entities")
+            status_code, response_text = self.http_client.get_request("/entities?userName=zb-admin")
             if status_code == 200:
                 response = json.loads(response_text)
             else:
@@ -120,8 +120,8 @@ class RefDataAdaptor(IRefDataInterface):
         if key_field == "Id":
             data_type = "String"
 
-        filter_values = {"data": [instance_key], "type": data_type}
-        query_obj = {field_def.name: filter_values}
+        filter_values = {"columnName": field_def.name, "filterType": data_type, "stringValues": [instance_key]}
+        query_obj = {"searchCriteria": [filter_values]}
 
         status_code, response = self.http_client.post_request("/" + sub_endpoint + "-search?userName=zb-admin", query_obj)
         if status_code == 200:
@@ -191,8 +191,11 @@ class RefDataAdaptor(IRefDataInterface):
     def create_response_msg(self, entity_definition, response):
         logging.debug(f"create_response_msg: entity[{entity_definition.name}]")
         msg = Message(entity_definition.name)
+
         for key, value in response.items():
             field_def = entity_definition.find_field_def_by_name(key)
+
+            logging.debug(f"aaaa: entity[{key}]")
 
             data_type = field_def.get_property("type")
             if value is not None:
@@ -202,7 +205,8 @@ class RefDataAdaptor(IRefDataInterface):
                     else:
                         value = value["name"]
                 elif data_type == "Enum":
-                    value = value.replace("_", " ").title()
+                    if key != 'theoreticalCalcSubscription':
+                        value = value.replace("_", " ").title()
                 elif data_type == "Date" and value is not None:
                     value = value[0:10]
 
@@ -280,7 +284,9 @@ class RefDataAdaptor(IRefDataInterface):
                     value = self.enrich_linked_instance_details(self.entity_name_to_display_name_map[data_type], value,
                                                                 multiple)
                 elif data_type == "Enum":
-                    value = value.replace(" ", "_").upper()
+                    logging.info(f"bbb : {str(key)}")
+                    if key != 'Theoretical Calc Subscription':
+                        value = value.replace(" ", "_").upper()
 
             name = field_def.get_property("name")
 

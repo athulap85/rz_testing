@@ -227,12 +227,12 @@ Feature: Stress testing
       | Bond6       | RZ_ST_Bond06 | RZ_ST_Bond06 | Fixed Rate Bond | RZ_ST_Cur04    | 100       | 2      | QUARTERLY        |
 
 
-  @account @done
+  @account @done11
   Scenario: TC_001 - Account - Change the existing Risk Model
 
     Given instance "RZ-Base-Acc-02" of entity "Accounts" is copied with following values
       | Instance ID | Participant | Account Id          | Name            | Risk Model    |
-      | Acc01       | RZ_ST_01    | random(RZ_ST_ACC,5) | random(RZ_ST,5) | RZ_ST_Model01 |
+      | Acc01       | RZ_ST_Firm01    | random(RZ_ST_ACC,5) | random(RZ_ST,5) | RZ_ST_Model01 |
 
     When "Position Update" messages are submitted with following values
       | Instance ID | account            | symbol       | price | quantity | participant         | notional |
@@ -252,7 +252,7 @@ Feature: Stress testing
 
     And "Stress Test Result" messages are filtered by "runId,accountId,scenarioId" should be
       | Instance ID | runId     | accountId          | scenarioId       | currentValue                               | stressedValue                                                |
-      | Result1     | [Run1.id] | [Acc01.Account Id] | RZ_ST_Scenario01 | current_value(RZ_ST_01,[Acc01.Account Id]) | stressed_value(RZ_ST_01,[Acc01.Account Id],RZ_ST_Scenario01) |
+      | Result1     | [Run1.id] | [Acc01.Account Id] | RZ_ST_Scenario01 | current_value(RZ_ST_Firm01,[Acc01.Account Id]) | stressed_value(RZ_ST_Firm01,[Acc01.Account Id],RZ_ST_Scenario01) |
 
     # stress result impact upon a account's risk model change
     Given instance "[Acc01.Account Id]" of entity "Accounts" is updated with following values
@@ -269,14 +269,14 @@ Feature: Stress testing
 
     And "Stress Test Result" messages are filtered by "runId,accountId,scenarioId" should be
       | Instance ID | runId     | accountId          | scenarioId       | currentValue                               | stressedValue                                                |
-      | Result2     | [Run2.id] | [Acc01.Account Id] | RZ_ST_Scenario02 | current_value(RZ_ST_01,[Acc01.Account Id]) | stressed_value(RZ_ST_01,[Acc01.Account Id],RZ_ST_Scenario02) |
+      | Result2     | [Run2.id] | [Acc01.Account Id] | RZ_ST_Scenario02 | current_value(RZ_ST_Firm01,[Acc01.Account Id]) | stressed_value(RZ_ST_Firm01,[Acc01.Account Id],RZ_ST_Scenario02) |
 
   @stressScenario @done
   Scenario: TC_002 - Stress Scenario with relative Shift Type
 
     Given instance "RZ-Base-Acc-02" of entity "Accounts" is copied with following values
       | Instance ID | Participant | Account Id          | Name            | Risk Model    |
-      | Acc01       | RZ_ST_01    | random(RZ_ST_ACC,5) | random(RZ_ST,5) | RZ_ST_Model04 |
+      | Acc01       | RZ_ST_Firm01    | random(RZ_ST_ACC,5) | random(RZ_ST,5) | RZ_ST_Model04 |
 
     When "Position Update" messages are submitted with following values
       | Instance ID | account            | symbol       | price | quantity | participant         | notional |
@@ -296,14 +296,14 @@ Feature: Stress testing
 
     And "Stress Test Result" messages are filtered by "runId,accountId,scenarioId" should be
       | Instance ID | runId     | accountId          | scenarioId       | currentValue                               | stressedValue                                                |
-      | Result1     | [Run1.id] | [Acc01.Account Id] | RZ_ST_Scenario03 | current_value(RZ_ST_01,[Acc01.Account Id]) | stressed_value(RZ_ST_01,[Acc01.Account Id],RZ_ST_Scenario03) |
+      | Result1     | [Run1.id] | [Acc01.Account Id] | RZ_ST_Scenario03 | current_value(RZ_ST_Firm01,[Acc01.Account Id]) | stressed_value(RZ_ST_Firm01,[Acc01.Account Id],RZ_ST_Scenario03) |
 
   @stressScenario @BRP-791 @fail
   Scenario: TC_003 - Add Multiple shifts with duplicate symbol for a Stress Scenario
 
     Given instance "RZ-Base-Acc-02" of entity "Accounts" is copied with following values
       | Instance ID | Participant | Account Id          | Name            | Risk Model    |
-      | Acc01       | RZ_ST_01    | random(RZ_ST_ACC,5) | random(RZ_ST,5) | RZ_ST_Model05 |
+      | Acc01       | RZ_ST_Firm01    | random(RZ_ST_ACC,5) | random(RZ_ST,5) | RZ_ST_Model05 |
 
     When "Position Update" messages are submitted with following values
       | Instance ID | account            | symbol       | price | quantity | participant         | notional |
@@ -323,14 +323,14 @@ Feature: Stress testing
 
     And "Stress Test Result" messages are filtered by "runId,accountId,scenarioId" should be
       | Instance ID | runId     | accountId          | scenarioId       | currentValue                               | stressedValue                                                |
-      | Result1     | [Run1.id] | [Acc01.Account Id] | RZ_ST_Scenario04 | current_value(RZ_ST_01,[Acc01.Account Id]) | stressed_value(RZ_ST_01,[Acc01.Account Id],RZ_ST_Scenario04) |
+      | Result1     | [Run1.id] | [Acc01.Account Id] | RZ_ST_Scenario04 | current_value(RZ_ST_Firm01,[Acc01.Account Id]) | stressed_value(RZ_ST_Firm01,[Acc01.Account Id],RZ_ST_Scenario04) |
 
   @stressScenario @done
   Scenario: TC_004 - With a symbol which is not a tenor of IR curve for a Stress Scenario
 
     Given instance "RZ-Base-Acc-02" of entity "Accounts" is copied with following values
       | Instance ID | Participant | Account Id          | Name            | Risk Model    |
-      | Acc01       | RZ_ST_01    | random(RZ_ST_ACC,5) | random(RZ_ST,5) | RZ_ST_Model06 |
+      | Acc01       | RZ_ST_Firm01    | random(RZ_ST_ACC,5) | random(RZ_ST,5) | RZ_ST_Model06 |
 
     When "Position Update" messages are submitted with following values
       | Instance ID | account            | symbol       | price | quantity | participant         | notional |
@@ -350,7 +350,7 @@ Feature: Stress testing
 
     And "Stress Test Result" messages are filtered by "runId,accountId,scenarioId" should be
       | Instance ID | runId     | accountId          | scenarioId       | currentValue                               | stressedValue                                                |
-      | Result1     | [Run1.id] | [Acc01.Account Id] | RZ_ST_Scenario05 | current_value(RZ_ST_01,[Acc01.Account Id]) | stressed_value(RZ_ST_01,[Acc01.Account Id],RZ_ST_Scenario05) |
+      | Result1     | [Run1.id] | [Acc01.Account Id] | RZ_ST_Scenario05 | current_value(RZ_ST_Firm01,[Acc01.Account Id]) | stressed_value(RZ_ST_Firm01,[Acc01.Account Id],RZ_ST_Scenario05) |
 
   @stressScenario @failduetoeditStep-frameworkissue
   Scenario: TC_005 - Change shifts of a Stress Scenario intraday
@@ -371,7 +371,7 @@ Feature: Stress testing
     # Run first Stress Test
     Given instance "RZ-Base-Acc-02" of entity "Accounts" is copied with following values
       | Instance ID | Participant | Account Id          | Name            | Risk Model           |
-      | Acc01       | RZ_ST_01    | random(RZ_ST_ACC,5) | random(RZ_ST,5) | [RM01.Risk Model Id] |
+      | Acc01       | RZ_ST_Firm01    | random(RZ_ST_ACC,5) | random(RZ_ST,5) | [RM01.Risk Model Id] |
 
     When "Position Update" messages are submitted with following values
       | Instance ID | account            | symbol       | price | quantity | participant         | notional |
@@ -391,7 +391,7 @@ Feature: Stress testing
 
     And "Stress Test Result" messages are filtered by "runId,accountId,scenarioId" should be
       | Instance ID | runId     | accountId          | scenarioId               | currentValue                               | stressedValue                                                        |
-      | Result1     | [Run1.id] | [Acc01.Account Id] | [SS1.Stress Scenario Id] | current_value(RZ_ST_01,[Acc01.Account Id]) | stressed_value(RZ_ST_01,[Acc01.Account Id],[SS1.Stress Scenario Id]) |
+      | Result1     | [Run1.id] | [Acc01.Account Id] | [SS1.Stress Scenario Id] | current_value(RZ_ST_Firm01,[Acc01.Account Id]) | stressed_value(RZ_ST_Firm01,[Acc01.Account Id],[SS1.Stress Scenario Id]) |
 
       # Update the Stress Scenario by adding another Shift
     Given table "tab2" is created with following values
@@ -414,7 +414,7 @@ Feature: Stress testing
 
     And "Stress Test Result" messages are filtered by "runId,accountId,scenarioId" should be
       | Instance ID | runId     | accountId          | scenarioId               | currentValue                               | stressedValue                                                        |
-      | Result2     | [Run2.id] | [Acc01.Account Id] | [SS1.Stress Scenario Id] | current_value(RZ_ST_01,[Acc01.Account Id]) | stressed_value(RZ_ST_01,[Acc01.Account Id],[SS1.Stress Scenario Id]) |
+      | Result2     | [Run2.id] | [Acc01.Account Id] | [SS1.Stress Scenario Id] | current_value(RZ_ST_Firm01,[Acc01.Account Id]) | stressed_value(RZ_ST_Firm01,[Acc01.Account Id],[SS1.Stress Scenario Id]) |
 
      # Update the Stress Scenario by removing a Shift
     Given table "tab3" is created with following values
@@ -436,14 +436,14 @@ Feature: Stress testing
 
     And "Stress Test Result" messages are filtered by "runId,accountId,scenarioId" should be
       | Instance ID | runId     | accountId          | scenarioId               | currentValue                               | stressedValue                                                        |
-      | Result3     | [Run3.id] | [Acc01.Account Id] | [SS1.Stress Scenario Id] | current_value(RZ_ST_01,[Acc01.Account Id]) | stressed_value(RZ_ST_01,[Acc01.Account Id],[SS1.Stress Scenario Id]) |
+      | Result3     | [Run3.id] | [Acc01.Account Id] | [SS1.Stress Scenario Id] | current_value(RZ_ST_Firm01,[Acc01.Account Id]) | stressed_value(RZ_ST_Firm01,[Acc01.Account Id],[SS1.Stress Scenario Id]) |
 
   @stressScenario @done
   Scenario: TC_006 - Risk Model with Multiple Stress Test Scenarios
 
     Given instance "RZ-Base-Acc-02" of entity "Accounts" is copied with following values
       | Instance ID | Participant | Account Id          | Name            | Risk Model    |
-      | Acc01       | RZ_ST_01    | random(RZ_ST_ACC,5) | random(RZ_ST,5) | RZ_ST_Model07 |
+      | Acc01       | RZ_ST_Firm01    | random(RZ_ST_ACC,5) | random(RZ_ST,5) | RZ_ST_Model07 |
 
     When "Position Update" messages are submitted with following values
       | Instance ID | account            | symbol       | price | quantity | participant         | notional | side  |
@@ -463,15 +463,15 @@ Feature: Stress testing
 
     And "Stress Test Result" messages are filtered by "runId,accountId,scenarioId" should be
       | Instance ID | runId     | accountId          | scenarioId       | currentValue                               | stressedValue                                                |
-      | Result1     | [Run1.id] | [Acc01.Account Id] | RZ_ST_Scenario01 | current_value(RZ_ST_01,[Acc01.Account Id]) | stressed_value(RZ_ST_01,[Acc01.Account Id],RZ_ST_Scenario01) |
+      | Result1     | [Run1.id] | [Acc01.Account Id] | RZ_ST_Scenario01 | current_value(RZ_ST_Firm01,[Acc01.Account Id]) | stressed_value(RZ_ST_Firm01,[Acc01.Account Id],RZ_ST_Scenario01) |
 
     And "Stress Test Result" messages are filtered by "runId,accountId,scenarioId" should be
       | Instance ID | runId     | accountId          | scenarioId       | currentValue                               | stressedValue                                                |
-      | Result2     | [Run1.id] | [Acc01.Account Id] | RZ_ST_Scenario02 | current_value(RZ_ST_01,[Acc01.Account Id]) | stressed_value(RZ_ST_01,[Acc01.Account Id],RZ_ST_Scenario02) |
+      | Result2     | [Run1.id] | [Acc01.Account Id] | RZ_ST_Scenario02 | current_value(RZ_ST_Firm01,[Acc01.Account Id]) | stressed_value(RZ_ST_Firm01,[Acc01.Account Id],RZ_ST_Scenario02) |
 
     And "Stress Test Result" messages are filtered by "runId,accountId,scenarioId" should be
       | Instance ID | runId     | accountId          | scenarioId       | currentValue                               | stressedValue                                                |
-      | Result3     | [Run1.id] | [Acc01.Account Id] | RZ_ST_Scenario03 | current_value(RZ_ST_01,[Acc01.Account Id]) | stressed_value(RZ_ST_01,[Acc01.Account Id],RZ_ST_Scenario03) |
+      | Result3     | [Run1.id] | [Acc01.Account Id] | RZ_ST_Scenario03 | current_value(RZ_ST_Firm01,[Acc01.Account Id]) | stressed_value(RZ_ST_Firm01,[Acc01.Account Id],RZ_ST_Scenario03) |
 
     # Do another Position update and run the second stress Test
     When "Position Update" messages are submitted with following values
@@ -492,22 +492,22 @@ Feature: Stress testing
 
     And "Stress Test Result" messages are filtered by "runId,accountId,scenarioId" should be
       | Instance ID | runId     | accountId          | scenarioId       | currentValue                               | stressedValue                                                |
-      | Result4     | [Run2.id] | [Acc01.Account Id] | RZ_ST_Scenario01 | current_value(RZ_ST_01,[Acc01.Account Id]) | stressed_value(RZ_ST_01,[Acc01.Account Id],RZ_ST_Scenario01) |
+      | Result4     | [Run2.id] | [Acc01.Account Id] | RZ_ST_Scenario01 | current_value(RZ_ST_Firm01,[Acc01.Account Id]) | stressed_value(RZ_ST_Firm01,[Acc01.Account Id],RZ_ST_Scenario01) |
 
     And "Stress Test Result" messages are filtered by "runId,accountId,scenarioId" should be
       | Instance ID | runId     | accountId          | scenarioId       | currentValue                               | stressedValue                                                |
-      | Result5     | [Run2.id] | [Acc01.Account Id] | RZ_ST_Scenario02 | current_value(RZ_ST_01,[Acc01.Account Id]) | stressed_value(RZ_ST_01,[Acc01.Account Id],RZ_ST_Scenario02) |
+      | Result5     | [Run2.id] | [Acc01.Account Id] | RZ_ST_Scenario02 | current_value(RZ_ST_Firm01,[Acc01.Account Id]) | stressed_value(RZ_ST_Firm01,[Acc01.Account Id],RZ_ST_Scenario02) |
 
     And "Stress Test Result" messages are filtered by "runId,accountId,scenarioId" should be
       | Instance ID | runId     | accountId          | scenarioId       | currentValue                               | stressedValue                                                |
-      | Result6     | [Run2.id] | [Acc01.Account Id] | RZ_ST_Scenario03 | current_value(RZ_ST_01,[Acc01.Account Id]) | stressed_value(RZ_ST_01,[Acc01.Account Id],RZ_ST_Scenario03) |
+      | Result6     | [Run2.id] | [Acc01.Account Id] | RZ_ST_Scenario03 | current_value(RZ_ST_Firm01,[Acc01.Account Id]) | stressed_value(RZ_ST_Firm01,[Acc01.Account Id],RZ_ST_Scenario03) |
 
   @stressScenario @done
   Scenario: TC_007 - Stress Tests for Multiple Accounts
 
     Given instance "RZ-Base-Acc-02" of entity "Accounts" is copied with following values
       | Instance ID | Participant | Account Id          | Name            | Risk Model    |
-      | Acc01       | RZ_ST_01    | random(RZ_ST_ACC,5) | random(RZ_ST,5) | RZ_ST_Model07 |
+      | Acc01       | RZ_ST_Firm01    | random(RZ_ST_ACC,5) | random(RZ_ST,5) | RZ_ST_Model07 |
 
     When "Position Update" messages are submitted with following values
       | Instance ID | account            | symbol       | price | quantity | participant         | notional | side  |
@@ -519,7 +519,7 @@ Feature: Stress testing
 
     Given instance "RZ-Base-Acc-02" of entity "Accounts" is copied with following values
       | Instance ID | Participant | Account Id          | Name            | Risk Model    |
-      | Acc02       | RZ_ST_01    | random(RZ_ST_ACC,5) | random(RZ_ST,5) | RZ_ST_Model07 |
+      | Acc02       | RZ_ST_Firm01    | random(RZ_ST_ACC,5) | random(RZ_ST,5) | RZ_ST_Model07 |
 
     When "Position Update" messages are submitted with following values
       | Instance ID | account            | symbol       | price | quantity | participant         | notional | side |
@@ -539,15 +539,15 @@ Feature: Stress testing
 
     And "Stress Test Result" messages are filtered by "runId,accountId,scenarioId" should be
       | Instance ID | runId     | accountId          | scenarioId       | currentValue                               | stressedValue                                                |
-      | Result1     | [Run1.id] | [Acc01.Account Id] | RZ_ST_Scenario01 | current_value(RZ_ST_01,[Acc01.Account Id]) | stressed_value(RZ_ST_01,[Acc01.Account Id],RZ_ST_Scenario01) |
-      | Result2     | [Run1.id] | [Acc02.Account Id] | RZ_ST_Scenario01 | current_value(RZ_ST_01,[Acc02.Account Id]) | stressed_value(RZ_ST_01,[Acc02.Account Id],RZ_ST_Scenario01) |
+      | Result1     | [Run1.id] | [Acc01.Account Id] | RZ_ST_Scenario01 | current_value(RZ_ST_Firm01,[Acc01.Account Id]) | stressed_value(RZ_ST_Firm01,[Acc01.Account Id],RZ_ST_Scenario01) |
+      | Result2     | [Run1.id] | [Acc02.Account Id] | RZ_ST_Scenario01 | current_value(RZ_ST_Firm01,[Acc02.Account Id]) | stressed_value(RZ_ST_Firm01,[Acc02.Account Id],RZ_ST_Scenario01) |
 
   @done
   Scenario: TC_008 - Stress Test for an account which has Positions for Multiple Bonds + Validate Individual Positions
 
     Given instance "RZ-Base-Acc-02" of entity "Accounts" is copied with following values
       | Instance ID | Participant | Account Id          | Name            | Risk Model    |
-      | Acc01       | RZ_ST_01    | random(RZ_ST_ACC,5) | random(RZ_ST,5) | RZ_ST_Model11 |
+      | Acc01       | RZ_ST_Firm01    | random(RZ_ST_ACC,5) | random(RZ_ST,5) | RZ_ST_Model11 |
 
     When "Position Update" messages are submitted with following values
       | Instance ID | account            | symbol       | price | quantity | participant         | notional | side  |
@@ -575,20 +575,20 @@ Feature: Stress testing
 
     And "Stress Test Result" messages are filtered by "runId,accountId,scenarioId" should be
       | Instance ID | runId     | accountId          | scenarioId       | currentValue                               | stressedValue                                                |
-      | Result1     | [Run1.id] | [Acc01.Account Id] | RZ_ST_Scenario11 | current_value(RZ_ST_01,[Acc01.Account Id]) | stressed_value(RZ_ST_01,[Acc01.Account Id],RZ_ST_Scenario11) |
+      | Result1     | [Run1.id] | [Acc01.Account Id] | RZ_ST_Scenario11 | current_value(RZ_ST_Firm01,[Acc01.Account Id]) | stressed_value(RZ_ST_Firm01,[Acc01.Account Id],RZ_ST_Scenario11) |
 
     #Verify the Stress Testing for Each Positions
     And "Stress Test Detailed Result" messages are filtered by "runId,accountId,scenarioId,symbol" should be
       | Instance ID | runId     | accountId          | symbol       | scenarioId       | currentValue                                                      | stressValue                                                                         |
-      | Result2     | [Run1.id] | [Acc01.Account Id] | RZ_ST_Bond01 | RZ_ST_Scenario11 | current_value(RZ_ST_01,[Acc01.Account Id],[POU1_Res1.positionId]) | stressed_value(RZ_ST_01,[Acc01.Account Id],RZ_ST_Scenario11,[POU1_Res1.positionId]) |
-      | Result3     | [Run1.id] | [Acc01.Account Id] | RZ_ST_Bond02 | RZ_ST_Scenario11 | current_value(RZ_ST_01,[Acc01.Account Id],[POU2_Res1.positionId]) | stressed_value(RZ_ST_01,[Acc01.Account Id],RZ_ST_Scenario11,[POU2_Res1.positionId]) |
+      | Result2     | [Run1.id] | [Acc01.Account Id] | RZ_ST_Bond01 | RZ_ST_Scenario11 | current_value(RZ_ST_Firm01,[Acc01.Account Id],[POU1_Res1.positionId]) | stressed_value(RZ_ST_Firm01,[Acc01.Account Id],RZ_ST_Scenario11,[POU1_Res1.positionId]) |
+      | Result3     | [Run1.id] | [Acc01.Account Id] | RZ_ST_Bond02 | RZ_ST_Scenario11 | current_value(RZ_ST_Firm01,[Acc01.Account Id],[POU2_Res1.positionId]) | stressed_value(RZ_ST_Firm01,[Acc01.Account Id],RZ_ST_Scenario11,[POU2_Res1.positionId]) |
 
   @wip
   Scenario: TC_009 - Stress Test for a Symbols with different Expiry Date Par Value and Coupon
 
     Given instance "RZ-Base-Acc-02" of entity "Accounts" is copied with following values
       | Instance ID | Participant | Account Id          | Name            | Risk Model    |
-      | Acc01       | RZ_ST_01    | random(RZ_ST_ACC,5) | random(RZ_ST,5) | RZ_ST_Model11 |
+      | Acc01       | RZ_ST_Firm01    | random(RZ_ST_ACC,5) | random(RZ_ST,5) | RZ_ST_Model11 |
 
     When "Position Update" messages are submitted with following values
       | Instance ID | account            | symbol       | price | quantity | participant         | notional | side  |
@@ -616,20 +616,20 @@ Feature: Stress testing
 
     And "Stress Test Result" messages are filtered by "runId,accountId,scenarioId" should be
       | Instance ID | runId     | accountId          | scenarioId       | currentValue                               | stressedValue                                                |
-      | Result1     | [Run1.id] | [Acc01.Account Id] | RZ_ST_Scenario11 | current_value(RZ_ST_01,[Acc01.Account Id]) | stressed_value(RZ_ST_01,[Acc01.Account Id],RZ_ST_Scenario11) |
+      | Result1     | [Run1.id] | [Acc01.Account Id] | RZ_ST_Scenario11 | current_value(RZ_ST_Firm01,[Acc01.Account Id]) | stressed_value(RZ_ST_Firm01,[Acc01.Account Id],RZ_ST_Scenario11) |
 
     #Verify the Stress Testing for Each Positions
     And "Stress Test Detailed Result" messages are filtered by "runId,accountId,scenarioId,symbol" should be
       | Instance ID | runId     | accountId          | symbol       | scenarioId       | currentValue                                                      | stressValue                                                                         |
-      | Result2     | [Run1.id] | [Acc01.Account Id] | RZ_ST_Bond01 | RZ_ST_Scenario11 | current_value(RZ_ST_01,[Acc01.Account Id],[POU1_Res1.positionId]) | stressed_value(RZ_ST_01,[Acc01.Account Id],RZ_ST_Scenario11,[POU1_Res1.positionId]) |
-      | Result3     | [Run1.id] | [Acc01.Account Id] | RZ_ST_Bond03 | RZ_ST_Scenario11 | current_value(RZ_ST_01,[Acc01.Account Id],[POU2_Res1.positionId]) | stressed_value(RZ_ST_01,[Acc01.Account Id],RZ_ST_Scenario11,[POU2_Res1.positionId]) |
+      | Result2     | [Run1.id] | [Acc01.Account Id] | RZ_ST_Bond01 | RZ_ST_Scenario11 | current_value(RZ_ST_Firm01,[Acc01.Account Id],[POU1_Res1.positionId]) | stressed_value(RZ_ST_Firm01,[Acc01.Account Id],RZ_ST_Scenario11,[POU1_Res1.positionId]) |
+      | Result3     | [Run1.id] | [Acc01.Account Id] | RZ_ST_Bond03 | RZ_ST_Scenario11 | current_value(RZ_ST_Firm01,[Acc01.Account Id],[POU2_Res1.positionId]) | stressed_value(RZ_ST_Firm01,[Acc01.Account Id],RZ_ST_Scenario11,[POU2_Res1.positionId]) |
 
   @done
   Scenario: TC_010 - Stress Test for Symbols with different Coupon Frequencies and Day count Conversions
 
     Given instance "RZ-Base-Acc-02" of entity "Accounts" is copied with following values
       | Instance ID | Participant | Account Id          | Name            | Risk Model    |
-      | Acc01       | RZ_ST_01    | random(RZ_ST_ACC,5) | random(RZ_ST,5) | RZ_ST_Model11 |
+      | Acc01       | RZ_ST_Firm01    | random(RZ_ST_ACC,5) | random(RZ_ST,5) | RZ_ST_Model11 |
 
     When "Position Update" messages are submitted with following values
       | Instance ID | account            | symbol       | price | quantity | participant         | notional | side  |
@@ -653,14 +653,14 @@ Feature: Stress testing
 
     And "Stress Test Result" messages are filtered by "runId,accountId,scenarioId" should be
       | Instance ID | runId     | accountId          | scenarioId       | currentValue                               | stressedValue                                                |
-      | Result1     | [Run1.id] | [Acc01.Account Id] | RZ_ST_Scenario11 | current_value(RZ_ST_01,[Acc01.Account Id]) | stressed_value(RZ_ST_01,[Acc01.Account Id],RZ_ST_Scenario11) |
+      | Result1     | [Run1.id] | [Acc01.Account Id] | RZ_ST_Scenario11 | current_value(RZ_ST_Firm01,[Acc01.Account Id]) | stressed_value(RZ_ST_Firm01,[Acc01.Account Id],RZ_ST_Scenario11) |
 
     #Verify the Stress Testing for Each Positions
     And "Stress Test Detailed Result" messages are filtered by "runId,accountId,scenarioId,symbol" should be
       | Instance ID | runId     | accountId          | symbol       | scenarioId       | currentValue                                                      | stressValue                                                                         |
-      | Result2     | [Run1.id] | [Acc01.Account Id] | RZ_ST_Bond04 | RZ_ST_Scenario11 | current_value(RZ_ST_01,[Acc01.Account Id],[POU1_Res1.positionId]) | stressed_value(RZ_ST_01,[Acc01.Account Id],RZ_ST_Scenario11,[POU1_Res1.positionId]) |
-      | Result3     | [Run1.id] | [Acc01.Account Id] | RZ_ST_Bond05 | RZ_ST_Scenario11 | current_value(RZ_ST_01,[Acc01.Account Id],[POU2_Res1.positionId]) | stressed_value(RZ_ST_01,[Acc01.Account Id],RZ_ST_Scenario11,[POU2_Res1.positionId]) |
-      | Result4     | [Run1.id] | [Acc01.Account Id] | RZ_ST_Bond06 | RZ_ST_Scenario11 | current_value(RZ_ST_01,[Acc01.Account Id],[POU3_Res1.positionId]) | stressed_value(RZ_ST_01,[Acc01.Account Id],RZ_ST_Scenario11,[POU3_Res1.positionId]) |
+      | Result2     | [Run1.id] | [Acc01.Account Id] | RZ_ST_Bond04 | RZ_ST_Scenario11 | current_value(RZ_ST_Firm01,[Acc01.Account Id],[POU1_Res1.positionId]) | stressed_value(RZ_ST_Firm01,[Acc01.Account Id],RZ_ST_Scenario11,[POU1_Res1.positionId]) |
+      | Result3     | [Run1.id] | [Acc01.Account Id] | RZ_ST_Bond05 | RZ_ST_Scenario11 | current_value(RZ_ST_Firm01,[Acc01.Account Id],[POU2_Res1.positionId]) | stressed_value(RZ_ST_Firm01,[Acc01.Account Id],RZ_ST_Scenario11,[POU2_Res1.positionId]) |
+      | Result4     | [Run1.id] | [Acc01.Account Id] | RZ_ST_Bond06 | RZ_ST_Scenario11 | current_value(RZ_ST_Firm01,[Acc01.Account Id],[POU3_Res1.positionId]) | stressed_value(RZ_ST_Firm01,[Acc01.Account Id],RZ_ST_Scenario11,[POU3_Res1.positionId]) |
 
     # Change the Business Day Convention in each Symbol ( To have all the Business day Convention Values)
     When instance "RZ_ST_Bond02" of entity "Instruments" is updated with following values
@@ -711,14 +711,14 @@ Feature: Stress testing
 
     And "Stress Test Result" messages are filtered by "runId,accountId,scenarioId" should be
       | Instance ID | runId     | accountId          | scenarioId       | currentValue                               | stressedValue                                                |
-      | Result1     | [Run2.id] | [Acc01.Account Id] | RZ_ST_Scenario11 | current_value(RZ_ST_01,[Acc01.Account Id]) | stressed_value(RZ_ST_01,[Acc01.Account Id],RZ_ST_Scenario11) |
+      | Result1     | [Run2.id] | [Acc01.Account Id] | RZ_ST_Scenario11 | current_value(RZ_ST_Firm01,[Acc01.Account Id]) | stressed_value(RZ_ST_Firm01,[Acc01.Account Id],RZ_ST_Scenario11) |
 
     #Verify the Stress Testing for Each Positions
     And "Stress Test Detailed Result" messages are filtered by "runId,accountId,scenarioId,symbol" should be
       | Instance ID | runId     | accountId          | symbol       | scenarioId       | currentValue                                                      | stressValue                                                                         |
-      | Result2     | [Run2.id] | [Acc01.Account Id] | RZ_ST_Bond04 | RZ_ST_Scenario11 | current_value(RZ_ST_01,[Acc01.Account Id],[POU1_Res1.positionId]) | stressed_value(RZ_ST_01,[Acc01.Account Id],RZ_ST_Scenario11,[POU1_Res1.positionId]) |
-      | Result3     | [Run2.id] | [Acc01.Account Id] | RZ_ST_Bond05 | RZ_ST_Scenario11 | current_value(RZ_ST_01,[Acc01.Account Id],[POU2_Res1.positionId]) | stressed_value(RZ_ST_01,[Acc01.Account Id],RZ_ST_Scenario11,[POU2_Res1.positionId]) |
-      | Result4     | [Run2.id] | [Acc01.Account Id] | RZ_ST_Bond06 | RZ_ST_Scenario11 | current_value(RZ_ST_01,[Acc01.Account Id],[POU3_Res1.positionId]) | stressed_value(RZ_ST_01,[Acc01.Account Id],RZ_ST_Scenario11,[POU3_Res1.positionId]) |
+      | Result2     | [Run2.id] | [Acc01.Account Id] | RZ_ST_Bond04 | RZ_ST_Scenario11 | current_value(RZ_ST_Firm01,[Acc01.Account Id],[POU1_Res1.positionId]) | stressed_value(RZ_ST_Firm01,[Acc01.Account Id],RZ_ST_Scenario11,[POU1_Res1.positionId]) |
+      | Result3     | [Run2.id] | [Acc01.Account Id] | RZ_ST_Bond05 | RZ_ST_Scenario11 | current_value(RZ_ST_Firm01,[Acc01.Account Id],[POU2_Res1.positionId]) | stressed_value(RZ_ST_Firm01,[Acc01.Account Id],RZ_ST_Scenario11,[POU2_Res1.positionId]) |
+      | Result4     | [Run2.id] | [Acc01.Account Id] | RZ_ST_Bond06 | RZ_ST_Scenario11 | current_value(RZ_ST_Firm01,[Acc01.Account Id],[POU3_Res1.positionId]) | stressed_value(RZ_ST_Firm01,[Acc01.Account Id],RZ_ST_Scenario11,[POU3_Res1.positionId]) |
 
 
   @done
@@ -726,7 +726,7 @@ Feature: Stress testing
 
     Given instance "RZ-Base-Acc-02" of entity "Accounts" is copied with following values
       | Instance ID | Participant | Account Id          | Name            | Risk Model    |
-      | Acc01       | RZ_ST_01    | random(RZ_ST_ACC,5) | random(RZ_ST,5) | RZ_ST_Model01 |
+      | Acc01       | RZ_ST_Firm01    | random(RZ_ST_ACC,5) | random(RZ_ST,5) | RZ_ST_Model01 |
 
     When "Position Update" messages are submitted with following values
       | Instance ID | account            | symbol       | price | quantity | participant         | notional |
@@ -746,7 +746,7 @@ Feature: Stress testing
 
     And "Stress Test Result" messages are filtered by "runId,accountId,scenarioId" should be
       | Instance ID | runId     | accountId          | scenarioId       | currentValue                               | stressedValue                                                |
-      | Result1     | [Run1.id] | [Acc01.Account Id] | RZ_ST_Scenario01 | current_value(RZ_ST_01,[Acc01.Account Id]) | stressed_value(RZ_ST_01,[Acc01.Account Id],RZ_ST_Scenario01) |
+      | Result1     | [Run1.id] | [Acc01.Account Id] | RZ_ST_Scenario01 | current_value(RZ_ST_Firm01,[Acc01.Account Id]) | stressed_value(RZ_ST_Firm01,[Acc01.Account Id],RZ_ST_Scenario01) |
 
     #Update the Discount Curve of the Instrument
     When instance "RZ_ST_Bond06" of entity "Instruments" is updated with following values
@@ -764,7 +764,7 @@ Feature: Stress testing
 
     And "Stress Test Result" messages are filtered by "runId,accountId,scenarioId" should be
       | Instance ID | runId     | accountId          | scenarioId       | currentValue                               | stressedValue                                                |
-      | Result1     | [Run2.id] | [Acc01.Account Id] | RZ_ST_Scenario01 | current_value(RZ_ST_01,[Acc01.Account Id]) | stressed_value(RZ_ST_01,[Acc01.Account Id],RZ_ST_Scenario01) |
+      | Result1     | [Run2.id] | [Acc01.Account Id] | RZ_ST_Scenario01 | current_value(RZ_ST_Firm01,[Acc01.Account Id]) | stressed_value(RZ_ST_Firm01,[Acc01.Account Id],RZ_ST_Scenario01) |
 
 
   @fff
@@ -772,7 +772,7 @@ Feature: Stress testing
 
     Given instance "RZ-Base-Acc-02" of entity "Accounts" is copied with following values
       | Instance ID | Participant | Account Id          | Name            | Risk Model    |
-      | Acc01       | RZ_ST_01    | random(RZ_ST_ACC,5) | random(RZ_ST,5) | RZ_ST_Model11 |
+      | Acc01       | RZ_ST_Firm01    | random(RZ_ST_ACC,5) | random(RZ_ST,5) | RZ_ST_Model11 |
 
     When "Position Update" messages are submitted with following values
       | Instance ID | account            | symbol       | price | quantity | participant         | notional | side  |
@@ -811,9 +811,9 @@ Feature: Stress testing
 
 #    Then "Position" messages are filtered by "level,participant,account" should be
 #      | Instance ID | participant | level   | account                                                                    |
-#      | POS_Res1    | RZ_ST_01    | ACCOUNT | current_value(RZ_ST_01,RZ_ST_ACC71934)                                     |
-#      | POS_Res2    | RZ_ST_01    | ACCOUNT | stressed_value(RZ_ST_01,RZ_ST_ACC71934,RZ_ST_Scenario02)                   |
-#      | POS_Res3    | RZ_ST_01    | ACCOUNT | current_value(RZ_ST_01,RZ_ST_ACC71934,[POS1.positionId])                   |
-#      | POS_Res4    | RZ_ST_01    | ACCOUNT | stressed_value(RZ_ST_01,RZ_ST_ACC71934,RZ_ST_Scenario02,[POS1.positionId]) |
+#      | POS_Res1    | RZ_ST_Firm01    | ACCOUNT | current_value(RZ_ST_Firm01,RZ_ST_ACC71934)                                     |
+#      | POS_Res2    | RZ_ST_Firm01    | ACCOUNT | stressed_value(RZ_ST_Firm01,RZ_ST_ACC71934,RZ_ST_Scenario02)                   |
+#      | POS_Res3    | RZ_ST_Firm01    | ACCOUNT | current_value(RZ_ST_Firm01,RZ_ST_ACC71934,[POS1.positionId])                   |
+#      | POS_Res4    | RZ_ST_Firm01    | ACCOUNT | stressed_value(RZ_ST_Firm01,RZ_ST_ACC71934,RZ_ST_Scenario02,[POS1.positionId]) |
 #    # participant | account > Current value of the Account
 #
