@@ -3,11 +3,11 @@ Feature: Stress testing
 
   Scenario: Stress testing data setup
 
-    Given instance "USTreasury-Act/Act" of entity "Instruments" is copied with following values
+    Given instance "RZ-Base-Ins-Curv-01" of entity "Instruments" is copied with following values
     | Instance ID | Symbol      | ISIN        | Instrument Type |
     | Curve1      | RZ_ST_Cur01 | RZ_ST_Cur01 | CURVES          |
 
-    And instance "USTreasury10Y-Act/Act" of entity "Instruments" is copied with following values
+    And instance "RZ-Base-Ins-Spot-01" of entity "Instruments" is copied with following values
     | Instance ID | Symbol        | ISIN          | Instrument Type | Tenor    | Curve Identifier |
     | Rate1M      | RZ_ST_Rate1M  | RZ_ST_Rate1M  | SPOT_RATE       | 1M       | [Curve1.Symbol]  |
     | Rate3M      | RZ_ST_Rate3M  | RZ_ST_Rate3M  | SPOT_RATE       | 3M       | [Curve1.Symbol]  |
@@ -35,11 +35,11 @@ Feature: Stress testing
     | MRate20Y     | RZ_ST_Rate20Y | RATE      |  LTP    | 3.25    |
     | MRate30Y     | RZ_ST_Rate30Y | RATE      |  LTP    | 3.35    |
 
-    Given instance "US91282CCW91" of entity "Instruments" is copied with following values
+    Given instance "RZ-Base-Ins-Fixed-01" of entity "Instruments" is copied with following values
     | Instance ID | Symbol       | ISIN         | Instrument Type | Discount Curve   |
     | Bond1       | RZ_ST_Bond01 | RZ_ST_Bond01 | Fixed Rate Bond | [Curve1.Symbol]  |
 
-    Given instance "HSBC" of entity "Participants" is copied with following values
+    Given instance "RZ-Base-Firm-1" of entity "Participants" is copied with following values
     | Instance ID| Participant Id   |
     | Part01     | RZ_ST_Firm01     |
 
@@ -61,22 +61,22 @@ Feature: Stress testing
     | Instance ID | Stress Scenario Id | Stress Scenario Name | Shift      |
     | SS2         | RZ_ST_Scenario02   | RZ_ST_Scenario02     | [TAB:tab2] |
 
-    Given instance "RiskModel1" of entity "Risk Models" is copied with following values
+    Given instance "RZ-Base-RModel-01" of entity "Risk Models" is copied with following values
     | Instance ID | Risk Model Id  | Stress Testing  Methodology |
     | RM01        | RZ_ST_Model01  | RZ_ST_Scenario01            |
 
-    Given instance "RiskModel1" of entity "Risk Models" is copied with following values
+    Given instance "RZ-Base-RModel-01" of entity "Risk Models" is copied with following values
     | Instance ID | Risk Model Id  | Stress Testing  Methodology       |
     | RM02        | RZ_ST_Model02  | RZ_ST_Scenario01,RZ_ST_Scenario02 |
 
-    Given instance "RiskModel1" of entity "Risk Models" is copied with following values
+    Given instance "RZ-Base-RModel-01" of entity "Risk Models" is copied with following values
     | Instance ID | Risk Model Id  | Stress Testing  Methodology    |
     | RM03        | RZ_ST_Model03  | RZ_ST_Scenario02               |
 
 
   Scenario: Stress testing - account related
 
-    Given instance "HomeX" of entity "Accounts" is copied with following values
+    Given instance "RZ-Base-Acc-02" of entity "Accounts" is copied with following values
     | Instance ID | Participant   | Account Id          | Name            | Risk Model      |
     | Acc01       | RZ_ST_01      | random(RZ_ST_ACC,5) | random(RZ_ST,5) | RZ_ST_Model01   |
 
@@ -147,7 +147,7 @@ Feature: Stress testing
     @wip
   Scenario: Interest curve testing temp
 
-    Given instance "USTreasury10Y-Act/Act" of entity "Instruments" is copied with following values
+    Given instance "RZ-Base-Ins-Spot-01" of entity "Instruments" is copied with following values
     | Instance ID | Symbol        | ISIN          | Instrument Type | Tenor    | Curve Identifier |
     | Rate2M      | RZ_ST_Rate2M  | RZ_ST_Rate2M  | SPOT_RATE       | 2M       | RZ_ST_Cur01      |
     | Rate100Y    | RZ_ST_Rate100Y| RZ_ST_Rate100Y| SPOT_RATE       | 100Y     | RZ_ST_Cur01      |

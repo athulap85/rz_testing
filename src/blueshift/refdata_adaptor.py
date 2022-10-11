@@ -123,7 +123,7 @@ class RefDataAdaptor(IRefDataInterface):
         filter_values = {"data": [instance_key], "type": data_type}
         query_obj = {field_def.name: filter_values}
 
-        status_code, response = self.http_client.post_request("/" + sub_endpoint + "-search?userName=ranush", query_obj)
+        status_code, response = self.http_client.post_request("/" + sub_endpoint + "-search?userName=zb-admin", query_obj)
         if status_code == 200:
             response_json = json.loads(response)
             assert len(response_json["content"]) > 0, f"Unable to find the instance [{instance_key}] of entity [{entity_name}]"

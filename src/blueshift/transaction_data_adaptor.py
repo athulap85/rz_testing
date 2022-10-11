@@ -118,7 +118,7 @@ class TransactionDataAdaptor(ITransactionDataInterface):
         else:
             assert False, "Value of the 'level' field should be one of the following. [SYSTEM | PARTICIPANT | ACCOUNT]"
 
-        url = url + "&userName=ranush"
+        url = url + "&userName=zb-admin"
         status_code, response = self.http_client.post_request(url, None)
         if status_code == 200:
             response_json = json.loads(response)
@@ -272,7 +272,7 @@ class TransactionDataAdaptor(ITransactionDataInterface):
         assert None not in (run_id, acc_id, scenario_id), "Field [runId,accountId,scenarioId] must to be present" \
                                                           " as a filter criteria for stress test results query"
 
-        url = f"{endpoint}?runId={run_id}&accountId={acc_id}&scenarioId={scenario_id}&page=0&userName=ranush"
+        url = f"{endpoint}?runId={run_id}&accountId={acc_id}&scenarioId={scenario_id}&page=0&userName=zb-admin"
         status_code, response = self.http_client.post_request(url, None)
         if status_code == 200:
             response_json = json.loads(response)
@@ -304,7 +304,7 @@ class TransactionDataAdaptor(ITransactionDataInterface):
         assert pos_id is not None, "Field [positionId] must to be present as a filter criteria for position " \
                                    "history query"
 
-        url = f"{endpoint}?id={pos_id}&userName=ranush"
+        url = f"{endpoint}?id={pos_id}&userName=zb-admin"
         status_code, response = self.http_client.post_request(url, None)
         if status_code == 200:
             response_json = json.loads(response)
