@@ -2,14 +2,14 @@
     "messageName": "Position Update",
     "fields" :
     {
-      "symbol": "BTCUSD_FUT9",
-      "participant": "HSBC",
+      "symbol": "RZ-Base-Ins-Fixed-01",
+      "participant": "RZ-Base-Firm-1",
       "account": "Home",
       "currency": "USD",
       "type": "MARGIN",
       "simulate": false,
       "settlementDate": "2020-04-23T00:00:00.000+0000",
-      "market": "BitStamp",
+      "market": "CME",
       "side": "LONG",
       "quantity": 1,
       "value": 100,
@@ -18,6 +18,7 @@
       "subStatus": "ACCEPTED",
       "hasErrors": false,
       "transactionId": "",
-      "sourceSystem": "CCP"
+      "sourceSystem": "CCP",
+      "notional": 101
     }
 }

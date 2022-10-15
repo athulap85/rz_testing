@@ -1,5 +1,6 @@
 from src.transaction_data.ITransactionDataInterface import ITransactionDataInterface
 from src.interfaces.webservices import HTTPClient
+from src.interfaces.websockets import WebSocketClient
 import logging
 import json
 import re
@@ -14,6 +15,9 @@ class TransactionDataAdaptor(ITransactionDataInterface):
     def __init__(self):
         logging.info("inti")
         self.http_client = HTTPClient(system_config.get("base_url"))
+        self.ws_client = WebSocketClient(system_config.get("wss_url"))
+        self.ws_client.init(system_config.get("user_name"), system_config.get("password"),
+                            system_config.get("client_id"))
         self.float_pattern = re.compile(r"^([+-]?[0-9]+\.[0-9]+)$")
 
     def submit_request(self, request_message):
@@ -42,7 +46,7 @@ class TransactionDataAdaptor(ITransactionDataInterface):
         assert endpoint is not None, f"Unable to find endpoint mapping for [{entity}] " \
                                      f"in the src/blueshift/transaction_data_config.py"
         if entity == "Position":
-            return self.process_position_query(endpoint, query)
+            return self.process_ws_position_query(endpoint, query)
         elif entity == "Position History":
             return self.process_position_history_query(endpoint, query)
         elif entity == "Realtime Risk Factor Value":
@@ -63,6 +67,41 @@ class TransactionDataAdaptor(ITransactionDataInterface):
             return self.process_realtime_risk_factor_update_errors(endpoint, query)
         else:
             assert False, f"Unhandled query type: {query.entity} in src/transaction_data/transaction_data_adaptor.py"
+
+    def process_ws_position_query(self, endpoint, query):
+        logging.debug(f"process_position_query")
+
+        filters = query.get_filters()
+        level = None
+        for filterItem in filters:
+            if filterItem.field == "level":
+                level = filterItem.value
+
+        assert level is not None, "Field [level] must to be present as a filter criteria for Position query"
+
+        subscription = {"userId": "zb-admin",
+                        "correlationId": "57d53f80-2511-4327-8ace-8ff25b4d65e0",
+                        "wsAction": "SUBSCRIPTION",
+                        "service": "positionapi",
+                        "componentSubscription": {
+                            "componentId": 8,
+                            "filterData":
+                                {"searchCriteria": []},
+                            "beFilterParamsMap": {
+                                "SYSTEM": []
+                            }
+                        },
+                        "page": 0,
+                        "elementsInPage": 100}
+
+        response = self.ws_client.query_data(subscription)
+        response_json = json.loads(response)
+        content = response_json["data"]["content"]
+        for msg in content:
+            msg["level"] = level
+
+        msg_array = self.create_response_array(query, content)
+        return msg_array, None
 
     def process_risk_factor_values_query(self, endpoint, query):
         logging.debug(f"process_risk_factor_values_query")
@@ -273,7 +312,8 @@ class TransactionDataAdaptor(ITransactionDataInterface):
                                                           " as a filter criteria for stress test results query"
 
         url = f"{endpoint}?runId={run_id}&accountId={acc_id}&scenarioId={scenario_id}&page=0&userName=zb-admin"
-        status_code, response = self.http_client.post_request(url, None)
+        body = {"searchCriteria": []}
+        status_code, response = self.http_client.post_request(url, body)
         if status_code == 200:
             response_json = json.loads(response)
             msg_array = self.create_response_array(query, response_json["content"])
