@@ -46,7 +46,7 @@ class DataLoader:
             page = 0
             instance_list = []
             while True:
-                url = f"/{entity_endpoint}-search?page={page}&userName=ranush"
+                url = f"/{entity_endpoint}-search?page={page}&userName=zb-admin"
                 status_code, response = self.http_client.post_request(url, {})
                 if status_code != 200:
                     print("Data loading failed for entity : " + entity_definition.name)
