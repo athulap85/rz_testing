@@ -13,7 +13,16 @@ exec_time_file = open("logs/execution_time.txt", "w")
 
 
 def before_all(context):
-    # create logger
+    # create loggers
+
+    logger = logging.getLogger('main')
+    logger.setLevel(logging.DEBUG)
+    ch = logging.FileHandler(filename='logs/behave.log', mode='w')
+    ch.setLevel(logging.DEBUG)
+    formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+    ch.setFormatter(formatter)
+    logger.addHandler(ch)
+
     logger = logging.getLogger('loader')
     logger.setLevel(logging.DEBUG)
     ch = logging.FileHandler(filename='logs/loader.log', mode='w')

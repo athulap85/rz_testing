@@ -1,6 +1,6 @@
 import logging
 
-from interfaces.webservices import HTTPClient
+from src.interfaces.webservices import HTTPClient
 import json
 from os.path import exists
 from configs.global_config import system_config

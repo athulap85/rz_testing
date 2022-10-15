@@ -1,7 +1,5 @@
-from dataclasses import field
-
 from src.refdata.refdata_insterface import IRefDataInterface
-from interfaces.webservices import HTTPClient
+from src.interfaces.webservices import HTTPClient
 from src.utils.messaging import Message
 from src.blueshift.reference_data_loader import DataLoader
 import logging

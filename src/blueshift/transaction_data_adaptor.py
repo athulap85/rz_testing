@@ -1,5 +1,5 @@
 from src.transaction_data.ITransactionDataInterface import ITransactionDataInterface
-from interfaces.webservices import HTTPClient
+from src.interfaces.webservices import HTTPClient
 import logging
 import json
 import re
