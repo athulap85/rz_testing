@@ -24,13 +24,13 @@ Feature: testing
   @wip
   Scenario: Position smoke
 
-    Given instance "Home" of entity "Accounts" is copied with following values
+    Given instance "RZ-Base-Acc-01" of entity "Accounts" is copied with following values
     | Instance ID | Participant  | Account Id           | Name                  |
-    | Acc01       | HSBC         | random(RZ_SMK_ACC,5) | random(RZ_SMK_ACC,5)  |
+    | Acc01       | RZ-Base-Firm-1         | random(RZ_SMK_ACC,5) | random(RZ_SMK_ACC,5)  |
 
     When "Position Update" messages are submitted with following values
     | Instance ID | account             | quantity | value  | participant   |
-    | POU1        | [Acc01.Account Id]  | 1000     | 50.2345  | HSBC          |
+    | POU1        | [Acc01.Account Id]  | 1000     | 50.2345  | RZ-Base-Firm-1          |
 
     Then response of the request "POU1" should be
     | Instance ID | status      |
@@ -38,7 +38,7 @@ Feature: testing
 
     Then "Position" messages are filtered by "level,participant,account" should be
     | Instance ID | participant | account            | level     | symbol       | netValue |
-    | POS_Res1    | HSBC        | [Acc01.Account Id] | ACCOUNT   | BTCUSD_FUT9  | 50.23    |
+    | POS_Res1    | RZ-Base-Firm-1        | [Acc01.Account Id] | ACCOUNT   | BTCUSD_FUT9  | 50.23    |
 
 
     Given instance "[Acc01.Account Id]" of entity "Accounts" is deleted

@@ -3,7 +3,7 @@ Feature: Position Attributes
   @done
   Scenario: TC_001 Validating Position Key  and position id exists
 
-    Given instance "Home" of entity "Accounts" is copied with following values
+    Given instance "RZ-Base-Acc-01" of entity "Accounts" is copied with following values
       | Instance ID | Account Id           | Name                 | Participant | Position Key Ids |
       | Acc_01      | random(RZ-PT-Acc-,4) | random(RZ-PT-Acn-,4) | RZ-PT-01    | RZ_PT_PK_01      |
 
@@ -20,7 +20,7 @@ Feature: Position Attributes
   @done
   Scenario: TC_002 Validating Symbol for Floating Rate Bond with Minimum fields ( Matching with File Upload)
 
-    Given instance "Home" of entity "Accounts" is copied with following values
+    Given instance "RZ-Base-Acc-01" of entity "Accounts" is copied with following values
       | Instance ID | Account Id           | Name                 | Participant | Position Key Ids |
       | Acc_01      | random(RZ-PT-Acc-,4) | random(RZ-PT-Acn-,4) | RZ-PT-01    | RZ_PT_PK_01      |
 
@@ -42,11 +42,11 @@ Feature: Position Attributes
   @done
   Scenario: TC_003 Validating Currency ( Bonds with different currencies)
 
-    Given instance "Home" of entity "Accounts" is copied with following values
+    Given instance "RZ-Base-Acc-01" of entity "Accounts" is copied with following values
       | Instance ID | Account Id           | Name                 | Participant | Position Key Ids |
       | Acc_01      | random(RZ-PT-Acc-,4) | random(RZ-PT-Acn-,4) | RZ-PT-01    | RZ_PT_PK_01      |
 
-    And  instance "Bond_Test_1" of entity "Instruments" is copied with following values
+    And  instance "RZ-Base-Ins-Fixed-02" of entity "Instruments" is copied with following values
       | Instance ID | Symbol                           | Currency |
       | Inst_01     | random(RZ_PT_Inst_Bond_TC_003,3) | GBP      |
 
@@ -72,7 +72,7 @@ Feature: Position Attributes
   @done
   Scenario: TC_004 Validating Settlement Date
 
-    Given instance "Home" of entity "Accounts" is copied with following values
+    Given instance "RZ-Base-Acc-01" of entity "Accounts" is copied with following values
       | Instance ID | Account Id           | Name                 | Participant | Position Key Ids |
       | Acc_01      | random(RZ-PT-Acc-,4) | random(RZ-PT-Acn-,4) | RZ-PT-01    | RZ_PT_PK_01      |
 
@@ -89,7 +89,7 @@ Feature: Position Attributes
   @done @removable
   Scenario: TC_005 Validating Markets ( Position Updates added with different Markets)
 
-    Given instance "Home" of entity "Accounts" is copied with following values
+    Given instance "RZ-Base-Acc-01" of entity "Accounts" is copied with following values
       | Instance ID | Account Id           | Name                 | Participant | Position Key Ids |
       | Acc_01      | random(RZ-PT-Acc-,4) | random(RZ-PT-Acn-,4) | RZ-PT-01    | RZ_PT_PK_01      |
 
@@ -114,7 +114,7 @@ Feature: Position Attributes
   @done @removable
   Scenario: TC_006 Validate Values in Long position ( longPosition,longValue, notional, average Price )
 
-    Given instance "Home" of entity "Accounts" is copied with following values
+    Given instance "RZ-Base-Acc-01" of entity "Accounts" is copied with following values
       | Instance ID | Account Id           | Name                 | Participant | Position Key Ids |
       | Acc_01      | random(RZ-PT-Acc-,4) | random(RZ-PT-Acn-,4) | RZ-PT-01    | RZ_PT_PK_01      |
 
@@ -147,11 +147,11 @@ Feature: Position Attributes
   @done @removable
   Scenario: TC_007 Validate values in Short Position (shortPosition, shortValue, Average price, notional )
 
-    Given  instance "Bond_Test_1" of entity "Instruments" is copied with following values
+    Given  instance "RZ-Base-Ins-Fixed-02" of entity "Instruments" is copied with following values
       | Instance ID | Symbol                     |
       | Inst_01     | random(RZ_PT_Inst_Bond_,4) |
 
-    And instance "Home" of entity "Accounts" is copied with following values
+    And instance "RZ-Base-Acc-01" of entity "Accounts" is copied with following values
       | Instance ID | Account Id           | Name                 | Participant | Position Key Ids |
       | Acc_01      | random(RZ-PT-Acc-,4) | random(RZ-PT-Acn-,4) | RZ-PT-01    | RZ_PT_PK_01      |
 
@@ -193,7 +193,7 @@ Feature: Position Attributes
   @BRP-749
   Scenario: TC_008 Validate MTM Value when LTP is empty and updated before the next position update
 
-    Given  instance "Bond_Test_1" of entity "Instruments" is copied with following values
+    Given  instance "RZ-Base-Ins-Fixed-02" of entity "Instruments" is copied with following values
       | Instance ID | Symbol                     |
       | Inst_01     | random(RZ_PT_Inst_Bond_,4) |
 
@@ -202,7 +202,7 @@ Feature: Position Attributes
       | Instance ID  | Symbol           |
       | Inst_01_Res1 | [Inst_01.Symbol] |
 
-    When instance "Home" of entity "Accounts" is copied with following values
+    When instance "RZ-Base-Acc-01" of entity "Accounts" is copied with following values
       | Instance ID | Account Id           | Name                 | Participant | Position Key Ids |
       | Acc_01      | random(RZ-PT-Acc-,4) | random(RZ-PT-Acn-,4) | RZ-PT-01    | RZ_PT_PK_01      |
 
@@ -248,11 +248,11 @@ Feature: Position Attributes
   @BRP-749
   Scenario: TC_009 Validate MTM Value when AI is empty and updated
 
-    Given  instance "Bond_Test_1" of entity "Instruments" is copied with following values
+    Given  instance "RZ-Base-Ins-Fixed-02" of entity "Instruments" is copied with following values
       | Instance ID | Symbol                     |
       | Inst_01     | random(RZ_PT_Inst_Bond_,4) |
 
-    And instance "Home" of entity "Accounts" is copied with following values
+    And instance "RZ-Base-Acc-01" of entity "Accounts" is copied with following values
       | Instance ID | Account Id           | Name                 | Participant | Position Key Ids |
       | Acc_01      | random(RZ-PT-Acc-,4) | random(RZ-PT-Acn-,4) | RZ-PT-01    | RZ_PT_PK_01      |
 
@@ -306,11 +306,11 @@ Feature: Position Attributes
   @BRP-749
   Scenario: TC_010 Validate MTM Value when LTP is empty and updated
 
-    Given  instance "Bond_Test_1" of entity "Instruments" is copied with following values
+    Given  instance "RZ-Base-Ins-Fixed-02" of entity "Instruments" is copied with following values
       | Instance ID | Symbol                     |
       | Inst_01     | random(RZ_PT_Inst_Bond_,4) |
 
-    And instance "Home" of entity "Accounts" is copied with following values
+    And instance "RZ-Base-Acc-01" of entity "Accounts" is copied with following values
       | Instance ID | Account Id           | Name                 | Participant | Position Key Ids |
       | Acc_01      | random(RZ-PT-Acc-,4) | random(RZ-PT-Acn-,4) | RZ-PT-01    | RZ_PT_PK_01      |
 
@@ -348,11 +348,11 @@ Feature: Position Attributes
   @done
   Scenario: TC_011 Validate Realized MTM Value, Unrealized MTM Value, Unrealized MTM % when Long Position < Short Position , Long Position = Short Position  and Long Position > Short Position
 
-    Given instance "Bond_Test_1" of entity "Instruments" is copied with following values
+    Given instance "RZ-Base-Ins-Fixed-02" of entity "Instruments" is copied with following values
       | Instance ID | Symbol                     | Size Multiplier | Par Value | Instrument Type |
       | Inst_01     | random(RZ_PT_Inst_Bond_,4) | 2               | 100       | FIXED_RATE_BOND |
 
-    And instance "Home" of entity "Accounts" is copied with following values
+    And instance "RZ-Base-Acc-01" of entity "Accounts" is copied with following values
       | Instance ID | Account Id           | Name                 | Participant | Position Key Ids |
       | Acc_01      | random(RZ-PT-Acc-,4) | random(RZ-PT-Acn-,4) | RZ-PT-01    | RZ_PT_PK_01      |
 
@@ -397,10 +397,10 @@ Feature: Position Attributes
       | Instance ID       | level   | participant                | symbol                | shortPosition | shortValue | longPosition | longValue | netPosition | netValue | avgPrice | account                | mtmValue | realizedMtmValue | unrealizedMtmValue | notional | unrealizedMtmPercentage |
       | PosUpdate_04_Res1 | ACCOUNT | [PosUpdate_04.participant] | [PosUpdate_04.symbol] | 15.0          | 972.0      | 10.0         | 819.0     | -5.0        | -153.0   | 30.6     | [PosUpdate_04.account] | -1010.0  | 171.0            | -857.0             | -300.0   | -560.13                 |
 
-  @done12
+  @done1
   Scenario: TC_012 Validate Priority of the Position Key applies ( For the accounts with multiple Keys -If specific key is available, then it applies. If not default Key applies)
 
-    Given instance "Bond_Test_1" of entity "Instruments" is copied with following values
+    Given instance "RZ-Base-Ins-Fixed-02" of entity "Instruments" is copied with following values
       | Instance ID | Symbol                     | Size Multiplier | Par Value | Instrument Type |
       | Inst_01     | random(RZ_PT_Inst_Bond_,4) | 2               | 100       | FIXED_RATE_BOND |
 
@@ -408,7 +408,7 @@ Feature: Position Attributes
       | Instance ID | Symbol                     | Size Multiplier | Par Value | Instrument Type    | Coupon Benchmark |
       | Inst_02     | random(RZ_PT_Inst_Bond_,4) | 2               | 100       | FLOATING_RATE_BOND | AJ-USD           |
 
-    And instance "Home" of entity "Accounts" is copied with following values
+    And instance "RZ-Base-Acc-01" of entity "Accounts" is copied with following values
       | Instance ID | Account Id           | Name                 | Participant | Type   | Account Currency | Category | Position Key Ids        |
       | Acc_01      | random(RZ-PT-Acc-,4) | random(RZ-PT-Acc-,4) | RZ-PT-01    | MARGIN | USD              | CLIENT   | RZ_PT_PK_01,RZ_PT_PK_02 |
 
@@ -495,11 +495,11 @@ Feature: Position Attributes
   @done @key
   Scenario: TC_013 Validate Priority of the Position Key applies ( For the accounts with multiple Keys -If multiples keys eligible,priority will consider.)
 
-    Given instance "Bond_Test_1" of entity "Instruments" is copied with following values
+    Given instance "RZ-Base-Ins-Fixed-02" of entity "Instruments" is copied with following values
       | Instance ID | Symbol                     | Size Multiplier | Par Value | Instrument Type |
       | Inst_01     | random(RZ_PT_Inst_Bond_,4) | 2               | 100       | FIXED_RATE_BOND |
 
-    And instance "Home" of entity "Accounts" is copied with following values
+    And instance "RZ-Base-Acc-01" of entity "Accounts" is copied with following values
       | Instance ID | Account Id           | Name                 | Participant | Type   | Account Currency | Category | Position Key Ids        |
       | Acc_01      | random(RZ-PT-Acc-,4) | random(RZ-PT-Acc-,4) | RZ-PT-01    | MARGIN | USD              | CLIENT   | RZ_PT_PK_03,RZ_PT_PK_02 |
 
@@ -537,7 +537,7 @@ Feature: Position Attributes
   @done @key
   Scenario: TC_014 Validate default Key applies if there is no eligible keys attached to the Account
 
-    Given instance "Bond_Test_1" of entity "Instruments" is copied with following values
+    Given instance "RZ-Base-Ins-Fixed-02" of entity "Instruments" is copied with following values
       | Instance ID | Symbol                     | Size Multiplier | Par Value | Instrument Type |
       | Inst_01     | random(RZ_PT_Inst_Bond_,4) | 2               | 100       | FIXED_RATE_BOND |
 
@@ -545,7 +545,7 @@ Feature: Position Attributes
       | Instance ID | Symbol                     | Size Multiplier | Par Value | Instrument Type    | Coupon Benchmark |
       | Inst_02     | random(RZ_PT_Inst_Bond_,4) | 2               | 100       | FLOATING_RATE_BOND | AJ-USD           |
 
-    And instance "Home" of entity "Accounts" is copied with following values
+    And instance "RZ-Base-Acc-01" of entity "Accounts" is copied with following values
       | Instance ID | Account Id           | Name                 | Participant | Type   | Account Currency | Category | Position Key Ids |
       | Acc_01      | random(RZ-PT-Acc-,4) | random(RZ-PT-Acc-,4) | RZ-PT-01    | MARGIN | USD              | CLIENT   | RZ_PT_PK_04      |
 
@@ -623,11 +623,11 @@ Feature: Position Attributes
   @done @key
   Scenario: TC_015 Validate Position Key of asset class is applied(FI and Equity)
 
-    Given instance "Bond_Test_1" of entity "Instruments" is copied with following values
+    Given instance "RZ-Base-Ins-Fixed-02" of entity "Instruments" is copied with following values
       | Instance ID | Symbol                     | Size Multiplier | Par Value |
       | Inst_01     | random(RZ_PT_Inst_Bond_,4) | 2               | 100       |
 
-    And instance "Home" of entity "Accounts" is copied with following values
+    And instance "RZ-Base-Acc-01" of entity "Accounts" is copied with following values
       | Instance ID | Account Id           | Name                 | Participant | Type   | Account Currency | Category | Position Key Ids        |
       | Acc_01      | random(RZ-PT-Acc-,4) | random(RZ-PT-Acc-,4) | RZ-PT-01    | MARGIN | USD              | CLIENT   | RZ_PT_PK_01,RZ_PT_PK_06 |
 
@@ -715,11 +715,11 @@ Feature: Position Attributes
   @BRP-674 @key
   Scenario: TC_016 Validate correct key applies when prioritized key is Inactive
 
-    Given instance "Bond_Test_1" of entity "Instruments" is copied with following values
+    Given instance "RZ-Base-Ins-Fixed-02" of entity "Instruments" is copied with following values
       | Instance ID | Symbol                     | Size Multiplier | Par Value |
       | Inst_01     | random(RZ_PT_Inst_Bond_,4) | 2               | 100       |
 
-    And instance "Home" of entity "Accounts" is copied with following values
+    And instance "RZ-Base-Acc-01" of entity "Accounts" is copied with following values
       | Instance ID | Account Id           | Name                 | Participant | Type   | Account Currency | Category | Position Key Ids        |
       | Acc_01      | random(RZ-PT-Acc-,4) | random(RZ-PT-Acc-,4) | RZ-PT-01    | MARGIN | USD              | CLIENT   | RZ_PT_PK_08,RZ_PT_PK_02 |
 
@@ -762,7 +762,7 @@ Feature: Position Attributes
   @BRP-674 @key
   Scenario: TC_017 Validate Position Key Status Changes from INACTIVE to ACTIVE
 
-    Given instance "Bond_Test_1" of entity "Instruments" is copied with following values
+    Given instance "RZ-Base-Ins-Fixed-02" of entity "Instruments" is copied with following values
       | Instance ID | Symbol                     | Size Multiplier | Par Value |
       | Inst_01     | random(RZ_PT_Inst_Bond_,4) | 2               | 100       |
 
@@ -771,7 +771,7 @@ Feature: Position Attributes
       | Instance ID | Status   |
       | Update01    | INACTIVE |
 
-    And instance "Home" of entity "Accounts" is copied with following values
+    And instance "RZ-Base-Acc-01" of entity "Accounts" is copied with following values
       | Instance ID | Account Id           | Name                 | Participant | Type   | Account Currency | Category | Position Key Ids        |
       | Acc_01      | random(RZ-PT-Acc-,4) | random(RZ-PT-Acc-,4) | RZ-PT-01    | MARGIN | USD              | CLIENT   | RZ_PT_PK_07,RZ_PT_PK_02 |
 
@@ -849,15 +849,15 @@ Feature: Position Attributes
   @done
   Scenario: TC_018 Validate Position Key with all applicable fields
 
-    Given instance "Bond_Test_1" of entity "Instruments" is copied with following values
+    Given instance "RZ-Base-Ins-Fixed-02" of entity "Instruments" is copied with following values
       | Instance ID | Symbol                     | Size Multiplier | Par Value |
       | Inst_01     | random(RZ_PT_Inst_Bond_,4) | 2               | 100       |
 
-    And instance "Bond_Test_1" of entity "Instruments" is copied with following values
+    And instance "RZ-Base-Ins-Fixed-02" of entity "Instruments" is copied with following values
       | Instance ID | Symbol                     | Size Multiplier | Par Value | Expiry Date |
       | Inst_02     | random(RZ_PT_Inst_Bond_,4) | 1               | 100       | 2023-06-07  |
 
-    And instance "Home" of entity "Accounts" is copied with following values
+    And instance "RZ-Base-Acc-01" of entity "Accounts" is copied with following values
       | Instance ID | Account Id           | Name                 | Participant | Type   | Account Currency | Category | Position Key Ids |
       | Acc_01      | random(RZ-PT-Acc-,4) | random(RZ-PT-Acc-,4) | RZ-PT-01    | MARGIN | USD              | CLIENT   | RZ_PT_PK_09      |
 
@@ -949,11 +949,11 @@ Feature: Position Attributes
   @done
   Scenario: TC_019 Validate Last MD Update affected to Position Recalculation
 
-    Given instance "Bond_Test_1" of entity "Instruments" is copied with following values
+    Given instance "RZ-Base-Ins-Fixed-02" of entity "Instruments" is copied with following values
       | Instance ID | Symbol                     | Size Multiplier | Par Value |
       | Inst_01     | random(RZ_PT_Inst_Bond_,4) | 2               | 100       |
 
-    And instance "Home" of entity "Accounts" is copied with following values
+    And instance "RZ-Base-Acc-01" of entity "Accounts" is copied with following values
       | Instance ID | Account Id           | Name                 | Participant | Position Key Ids |
       | Acc_01      | random(RZ-PT-Acc-,4) | random(RZ-PT-Acn-,4) | RZ-PT-01    | RZ_PT_PK_01      |
 
@@ -1011,11 +1011,11 @@ Feature: Position Attributes
   @done
   Scenario: TC_020 Validate position will be calculated by market data from all venues regardless of the position venue
 
-    Given instance "Bond_Test_1" of entity "Instruments" is copied with following values
+    Given instance "RZ-Base-Ins-Fixed-02" of entity "Instruments" is copied with following values
       | Instance ID | Symbol                     | Size Multiplier | Par Value |
       | Inst_01     | random(RZ_PT_Inst_Bond_,4) | 2               | 100       |
 
-    And instance "Home" of entity "Accounts" is copied with following values
+    And instance "RZ-Base-Acc-01" of entity "Accounts" is copied with following values
       | Instance ID | Account Id           | Name                 | Participant | Position Key Ids |
       | Acc_01      | random(RZ-PT-Acc-,4) | random(RZ-PT-Acn-,4) | RZ-PT-01    | RZ_PT_PK_01      |
 
@@ -1057,11 +1057,11 @@ Feature: Position Attributes
   @done
   Scenario: TC_021 Validate position calculation when instrument par value updated
 
-    Given instance "Bond_Test_1" of entity "Instruments" is copied with following values
+    Given instance "RZ-Base-Ins-Fixed-02" of entity "Instruments" is copied with following values
       | Instance ID | Symbol                     | Size Multiplier | Par Value |
       | Inst_01     | random(RZ_PT_Inst_Bond_,4) | 2               | 100       |
 
-    And instance "Home" of entity "Accounts" is copied with following values
+    And instance "RZ-Base-Acc-01" of entity "Accounts" is copied with following values
       | Instance ID | Account Id           | Name                 | Participant | Position Key Ids |
       | Acc_01      | random(RZ-PT-Acc-,4) | random(RZ-PT-Acn-,4) | RZ-PT-01    | RZ_PT_PK_01      |
 
@@ -1131,11 +1131,11 @@ Feature: Position Attributes
   @done @BRP-412
   Scenario: TC_022 -BRP-412 Submit Position updates to make settled position for Short and Long positions of the Same Account
 
-    Given instance "Bond_Test_1" of entity "Instruments" is copied with following values
+    Given instance "RZ-Base-Ins-Fixed-02" of entity "Instruments" is copied with following values
       | Instance ID | Symbol                     | Size Multiplier | Par Value |
       | Inst_01     | random(RZ_PT_Inst_Bond_,4) | 2               | 100       |
 
-    And instance "Home" of entity "Accounts" is copied with following values
+    And instance "RZ-Base-Acc-01" of entity "Accounts" is copied with following values
       | Instance ID | Account Id           | Name                 | Participant | Position Key Ids |
       | Acc_01      | random(RZ-PT-Acc-,4) | random(RZ-PT-Acn-,4) | RZ-PT-01    | RZ_PT_PK_01      |
 
@@ -1185,7 +1185,7 @@ Feature: Position Attributes
       | Instance ID | Symbol                     | Size Multiplier | Par Value | ISIN          |
       | Inst_01     | random(RZ_PT_Inst_Bond_,4) | 2               | 100       | random(001,4) |
 
-    And instance "Home" of entity "Accounts" is copied with following values
+    And instance "RZ-Base-Acc-01" of entity "Accounts" is copied with following values
       | Instance ID | Account Id           | Name                 | Participant | Position Key Ids |
       | Acc_01      | random(RZ-PT-Acc-,4) | random(RZ-PT-Acn-,4) | RZ-PT-01    | RZ_PT_PK_03      |
 
@@ -1232,11 +1232,11 @@ Feature: Position Attributes
   @done @BRP-412
   Scenario: TC_024 -BRP-412 Submit Position updates to make settled position for Short and Long positions for an account which has not included the Settlement Date in Position Key
 
-    Given instance "Bond_Test_1" of entity "Instruments" is copied with following values
+    Given instance "RZ-Base-Ins-Fixed-02" of entity "Instruments" is copied with following values
       | Instance ID | Symbol                     | Size Multiplier | Par Value |
       | Inst_01     | random(RZ_PT_Inst_Bond_,4) | 2               | 100       |
 
-    And instance "Home" of entity "Accounts" is copied with following values
+    And instance "RZ-Base-Acc-01" of entity "Accounts" is copied with following values
       | Instance ID | Account Id           | Name                 | Participant | Position Key Ids |
       | Acc_01      | random(RZ-PT-Acc-,4) | random(RZ-PT-Acn-,4) | RZ-PT-01    | RZ_PT_PK_01      |
 
@@ -1279,7 +1279,7 @@ Feature: Position Attributes
   Scenario: TC_025 - BRP-636 Submit Position updates for different types of bond instruments where account has position keys for the specific bond types
 
      # Create Fixed Rate Bond
-    Given instance "Bond_Test_1" of entity "Instruments" is copied with following values
+    Given instance "RZ-Base-Ins-Fixed-02" of entity "Instruments" is copied with following values
       | Instance ID | Symbol                     | Size Multiplier | Par Value |
       | Inst_01     | random(RZ_PT_Inst_Bond_,4) | 2               | 200       |
 
@@ -1310,7 +1310,7 @@ Feature: Position Attributes
 #      | Instance ID | Symbol                     | Size Multiplier | Par Value |
 #      | Inst_04     | random(RZ_PT_Inst_Bond_,4) | 2               | 200       |
 
-    When instance "Home" of entity "Accounts" is copied with following values
+    When instance "RZ-Base-Acc-01" of entity "Accounts" is copied with following values
       | Instance ID | Account Id           | Name                 | Participant | Position Key Ids                                |
       | Acc_01      | random(RZ-PT-Acc-,4) | random(RZ-PT-Acn-,4) | RZ-PT-01    | RZ_PT_PK_01,RZ_PT_PK_04,RZ_PT_PK_10,RZ_PT_PK_11 |
 
@@ -1421,7 +1421,7 @@ Feature: Position Attributes
 #  @InstrumentEdit
 #  Scenario: TC_022 Instrument Edit
 #
-#    Given instance "Bond_Test_1" of entity "Instruments" is copied with following values
+#    Given instance "RZ-Base-Ins-Fixed-02" of entity "Instruments" is copied with following values
 #      | Instance ID | Symbol                     | Size Multiplier |
 #      | Inst_01     | random(RZ_PT_Inst_Bond_,4) | 2               |
 #
@@ -1437,7 +1437,7 @@ Feature: Position Attributes
 #  @MD
 #  Scenario: AI update
 #
-##    Given  instance "Bond_Test_1" of entity "Instruments" is copied with following values
+##    Given  instance "RZ-Base-Ins-Fixed-02" of entity "Instruments" is copied with following values
 ##      | Instance ID | Symbol                     |
 ##      | Inst_01     | random(RZ_PT_Inst_Bond_,4) |
 ##
@@ -1458,11 +1458,11 @@ Feature: Position Attributes
 #  @history
 #  Scenario:  History
 #
-#    Given instance "Home" of entity "Accounts" is copied with following values
+#    Given instance "RZ-Base-Acc-01" of entity "Accounts" is copied with following values
 #      | Instance ID | Account Id           | Name                 | Participant | Position Key Ids |
 #      | Acc_01      | random(RZ-PT-Acc-,4) | random(RZ-PT-Acn-,4) | RZ-PT-01    | RZ_PT_PK_05      |
 #
-#    And  instance "Bond_Test_1" of entity "Instruments" is copied with following values
+#    And  instance "RZ-Base-Ins-Fixed-02" of entity "Instruments" is copied with following values
 #      | Instance ID | Symbol                     |
 #      | Inst_01     | random(RZ_PT_Inst_Bond_,4) |
 #

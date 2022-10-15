@@ -2,13 +2,13 @@ Feature: Net Spotting Functional testing
 
   @wip1
   Scenario: TC_001 Only Position get update for Corporate Ins & no update in Ideal Hedge & DV01 values & par value update
-    Given instance "Home" of entity "Accounts" is copied with following values
+    Given instance "RZ-Base-Acc-01" of entity "Accounts" is copied with following values
       | Instance ID | Account Id           | Name                | Participant | Position Key Ids | Type   | Account Currency | Category |
       | TC_001_NP   | random(RZ_NP_ACC_,5) | random(RZ_NP_ACN,6) | RZ_NP_MEM_1 | RZ_NP_IT_1       | MARGIN | USD              | CLIENT   |
-    And instance "US91282CCW91" of entity "Instruments" is copied with following values
+    And instance "RZ-Base-Ins-Fixed-01" of entity "Instruments" is copied with following values
       | Instance ID   | Instrument ID | Symbol                   | Expiry Date | Issue Date | First Coupon Date | Next To Last Date | Par Value |
       | TC_GB_INS_001 | INS_003       | random(RZ_NP1_SYM_GB_,3) | 2027-12-31  | 2022-03-31 | 2022-12-10        | 2023-12-10        | 100       |
-    And instance "5-Years-T" of entity "Risk Portfolios" is copied with following values
+    And instance "RZ-Base-R-Port-01" of entity "Risk Portfolios" is copied with following values
       | Instance ID | Risk Portfolio Id       | Holding Period | Hedge Instrument       |
       | TC_RISK_001 | random(RZ_NP1_RP_5Y_,3) | 5              | [TC_GB_INS_001.Symbol] |
     And instance "TSLA_0.75_07-06-26" of entity "Instruments" is copied with following values
@@ -49,13 +49,13 @@ Feature: Net Spotting Functional testing
 
   @wip2
   Scenario: TC_002 MD Update for Hedge & Corporate Ins & DV01/Ideal Hedge Calculated
-    Given instance "Home" of entity "Accounts" is copied with following values
+    Given instance "RZ-Base-Acc-01" of entity "Accounts" is copied with following values
       | Instance ID | Account Id            | Name                  | Participant | Position Key Ids | Type   | Account Currency | Category |
       | TC_002_NP   | random(RZ_NP2_ACC_,3) | random(RZ_NP2_ACN,6 ) | RZ_NP_MEM_1 | RZ_NP_IT_1       | MARGIN | USD              | CLIENT   |
-    And instance "US91282CCW91" of entity "Instruments" is copied with following values
+    And instance "RZ-Base-Ins-Fixed-01" of entity "Instruments" is copied with following values
       | Instance ID   | Instrument ID | Symbol                   | Expiry Date | Issue Date | First Coupon Date | Next To Last Date | Par Value |
       | TC_GB_INS_001 | INS_002       | random(RZ_NP2_SYM_GB_,3) | 2027-12-31  | 2022-03-31 | 2022-12-10        | 2023-12-10        | 100       |
-    And instance "5-Years-T" of entity "Risk Portfolios" is copied with following values
+    And instance "RZ-Base-R-Port-01" of entity "Risk Portfolios" is copied with following values
       | Instance ID | Risk Portfolio Id       | Holding Period | Hedge Instrument       |
       | TC_RISK_001 | random(RZ_NP2_RP_5Y_,3) | 5              | [TC_GB_INS_001.Symbol] |
     And instance "TSLA_0.75_07-06-26" of entity "Instruments" is copied with following values
@@ -131,13 +131,13 @@ Feature: Net Spotting Functional testing
 
   @wip3
   Scenario: TC_003 MD Update for Hedge & Corporate Ins & DV01/Ideal Hedge Calculated multiple times
-    Given instance "Home" of entity "Accounts" is copied with following values
+    Given instance "RZ-Base-Acc-01" of entity "Accounts" is copied with following values
       | Instance ID | Account Id            | Name                  | Participant | Position Key Ids | Type   | Account Currency | Category |
       | TC_003_NP   | random(RZ_NP3_ACC_,3) | random(RZ_NP3_ACN,6 ) | RZ_NP_MEM_1 | RZ_NP_IT_1       | MARGIN | USD              | CLIENT   |
-    And instance "US91282CCW91" of entity "Instruments" is copied with following values
+    And instance "RZ-Base-Ins-Fixed-01" of entity "Instruments" is copied with following values
       | Instance ID   | Instrument ID | Symbol                   | Expiry Date | Issue Date | First Coupon Date | Next To Last Date | Par Value |
       | TC_GB_INS_001 | INS_001       | random(RZ_NP3_SYM_GB_,3) | 2027-12-31  | 2022-03-31 | 2022-12-10        | 2023-12-10        | 100       |
-    And instance "5-Years-T" of entity "Risk Portfolios" is copied with following values
+    And instance "RZ-Base-R-Port-01" of entity "Risk Portfolios" is copied with following values
       | Instance ID | Risk Portfolio Id       | Holding Period | Hedge Instrument       |
       | TC_RISK_001 | random(RZ_NP3_RP_5Y_,3) | 5              | [TC_GB_INS_001.Symbol] |
     And instance "TSLA_0.75_07-06-26" of entity "Instruments" is copied with following values
@@ -186,19 +186,19 @@ Feature: Net Spotting Functional testing
 
   @wip4
   Scenario: TC_004 DV01/Ideal Hedge Calculation with single account attached with multiple hedge instruments
-    Given instance "Home" of entity "Accounts" is copied with following values
+    Given instance "RZ-Base-Acc-01" of entity "Accounts" is copied with following values
       | Instance ID | Account Id            | Name                  | Participant | Position Key Ids | Type   | Account Currency | Category |
       | TC_004_NP   | random(RZ_NP4_ACC_,4) | random(RZ_NP4_ACN,6 ) | RZ_NP_MEM_1 | RZ_NP_IT_1       | MARGIN | USD              | CLIENT   |
-    And instance "US91282CCW91" of entity "Instruments" is copied with following values
+    And instance "RZ-Base-Ins-Fixed-01" of entity "Instruments" is copied with following values
       | Instance ID   | Instrument ID | Symbol                   | Expiry Date | Issue Date | First Coupon Date | Next To Last Date | Par Value |
       | TC_GB_INS_004 | INS_003       | random(RZ_NP4_SYM_GB_,3) | 2027-12-31  | 2022-03-31 | 2022-12-10        | 2023-12-10        | 100       |
-    And instance "US91282CCW91" of entity "Instruments" is copied with following values
+    And instance "RZ-Base-Ins-Fixed-01" of entity "Instruments" is copied with following values
       | Instance ID   | Instrument ID | Symbol                   | Expiry Date | Issue Date | First Coupon Date | Next To Last Date | Par Value |
       | TC_GB_INS_005 | INS_004       | random(RZ_NP4_SYM_GB_,4) | 2027-12-31  | 2022-03-31 | 2022-12-10        | 2023-12-10        | 100       |
-    And instance "5-Years-T" of entity "Risk Portfolios" is copied with following values
+    And instance "RZ-Base-R-Port-01" of entity "Risk Portfolios" is copied with following values
       | Instance ID | Risk Portfolio Id       | Holding Period | Hedge Instrument       |
       | TC_RISK_004 | random(RZ_NP4_RP_5Y_,3) | 5              | [TC_GB_INS_004.Symbol] |
-    And instance "5-Years-T" of entity "Risk Portfolios" is copied with following values
+    And instance "RZ-Base-R-Port-01" of entity "Risk Portfolios" is copied with following values
       | Instance ID | Risk Portfolio Id       | Holding Period | Hedge Instrument       |
       | TC_RISK_005 | random(RZ_NP4_RP_5Y_,4) | 5              | [TC_GB_INS_005.Symbol] |
     And instance "TSLA_0.75_07-06-26" of entity "Instruments" is copied with following values
@@ -261,13 +261,13 @@ Feature: Net Spotting Functional testing
 
   @wip5
   Scenario: TC_005 Multiple Corporate Ins attached to Hedge Ins & DV01/Ideal Hedge Calculated
-    Given instance "Home" of entity "Accounts" is copied with following values
+    Given instance "RZ-Base-Acc-01" of entity "Accounts" is copied with following values
       | Instance ID | Account Id            | Name                  | Participant | Position Key Ids | Type   | Account Currency | Category |
       | TC_005_NP   | random(RZ_NP5_ACC_,4) | random(RZ_NP5_ACN,6 ) | RZ_NP_MEM_1 | RZ_NP_IT_1       | MARGIN | USD              | CLIENT   |
-    And instance "US91282CCW91" of entity "Instruments" is copied with following values
+    And instance "RZ-Base-Ins-Fixed-01" of entity "Instruments" is copied with following values
       | Instance ID   | Instrument ID | Symbol                   | Expiry Date | Issue Date | First Coupon Date | Next To Last Date | Par Value |
       | TC_GB_INS_001 | INS_001       | random(RZ_NP5_SYM_GB_,3) | 2027-12-31  | 2022-03-31 | 2022-12-10        | 2023-12-10        | 100       |
-    And instance "5-Years-T" of entity "Risk Portfolios" is copied with following values
+    And instance "RZ-Base-R-Port-01" of entity "Risk Portfolios" is copied with following values
       | Instance ID | Risk Portfolio Id       | Holding Period | Hedge Instrument       |
       | TC_RISK_001 | random(RZ_NP5_RP_5Y_,3) | 5              | [TC_GB_INS_001.Symbol] |
     And instance "TSLA_0.75_07-06-26" of entity "Instruments" is copied with following values
@@ -326,13 +326,13 @@ Feature: Net Spotting Functional testing
 
   @wip6
   Scenario: TC_006 get multiple MD Update for Hedge & Corporate Ins & DV01/Ideal Hedge Calculated
-    Given instance "Home" of entity "Accounts" is copied with following values
+    Given instance "RZ-Base-Acc-01" of entity "Accounts" is copied with following values
       | Instance ID | Account Id            | Name                  | Participant | Position Key Ids | Type   | Account Currency | Category |
       | TC_006_NP   | random(RZ_NP6_ACC_,6) | random(RZ_NP6_ACN,6 ) | RZ_NP_MEM_1 | RZ_NP_IT_1       | MARGIN | USD              | CLIENT   |
-    And instance "US91282CCW91" of entity "Instruments" is copied with following values
+    And instance "RZ-Base-Ins-Fixed-01" of entity "Instruments" is copied with following values
       | Instance ID   | Instrument ID | Symbol                   | Expiry Date | Issue Date | First Coupon Date | Next To Last Date | Par Value |
       | TC_GB_INS_001 | INS_001       | random(RZ_NP6_SYM_GB_,3) | 2027-12-31  | 2022-03-31 | 2022-12-10        | 2023-12-10        | 100       |
-    And instance "5-Years-T" of entity "Risk Portfolios" is copied with following values
+    And instance "RZ-Base-R-Port-01" of entity "Risk Portfolios" is copied with following values
       | Instance ID | Risk Portfolio Id       | Holding Period | Hedge Instrument       |
       | TC_RISK_001 | random(RZ_NP6_RP_5Y_,3) | 5              | [TC_GB_INS_001.Symbol] |
     And instance "TSLA_0.75_07-06-26" of entity "Instruments" is copied with following values

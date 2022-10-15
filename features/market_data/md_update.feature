@@ -2,10 +2,10 @@ Feature: Market Data Management Scenarios
 
   @wip
   Scenario: Reference Data Setup
-#    Given instance "US91282CCW91" of entity "Instruments" is copied with following values
+#    Given instance "RZ-Base-Ins-Fixed-01" of entity "Instruments" is copied with following values
 #      | Instance ID | Instrument ID | Symbol       | Expiry Date | Issue Date | First Coupon Date | Next To Last Date | Par Value |
 #      | Ins001      | INS_001       | RZ_MD_INS_01 | 2027-12-31  | 2022-03-31 | 2022-12-10        | 2023-12-10        | 100       |
-#    Given instance "US91282CCW91" of entity "Instruments" is copied with following values
+#    Given instance "RZ-Base-Ins-Fixed-01" of entity "Instruments" is copied with following values
 #      | Instance ID | Instrument ID | Symbol       | Expiry Date | Issue Date | First Coupon Date | Next To Last Date | Par Value | Calculation Price Type |
 #      | Ins002      | INS_002       | RZ_MD_INS_02 | 2027-12-31  | 2022-03-31 | 2022-12-10        | 2023-12-10        | 100       | THEORETICAL_PRICE      |
 #    Given instance "RZ_ST_Rate1M" of entity "Instruments" is copied with following values
