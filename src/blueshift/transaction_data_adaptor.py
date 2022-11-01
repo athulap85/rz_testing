@@ -54,7 +54,7 @@ class TransactionDataAdaptor(ITransactionDataInterface):
         elif entity == "Realtime Risk Factor Value":
             return self.process_ws_risk_factor_values_query(endpoint, query)
         elif entity == "Realtime Risk Factor Update":
-            return self.process_risk_factor_update_query(endpoint, query)
+            return self.process_ws_risk_factor_update_query(endpoint, query)
         elif entity == "Hedge Efficiency":
             return self.process_hedge_efficiency(endpoint, query)
         elif entity == "Realtime Interest Curve Value":
@@ -115,6 +115,31 @@ class TransactionDataAdaptor(ITransactionDataInterface):
                 "service": "marketdataapi",
                 "componentSubscription": {
                     "componentId": 4,
+                    "filterData": {
+                        "searchCriteria": []
+                    }
+                },
+                "page": 0,
+                "elementsInPage": 100
+            }
+
+        response = self.ws_client.query_data(subscription)
+        response_json = json.loads(response)
+        content = response_json["data"]["content"]
+
+        msg_array = self.create_response_array(query, content)
+        return msg_array, None
+
+    def process_ws_risk_factor_update_query(self, endpoint, query):
+        logging.debug(f"process_ws_risk_factor_update_query")
+
+        subscription = {
+                "userId": "zb-admin",
+                "correlationId": "f5b487b7-02c6-497d-838b-f88b3d42eaf7",
+                "wsAction": "SUBSCRIPTION",
+                "service": "marketdataapi",
+                "componentSubscription": {
+                    "componentId": 1,
                     "filterData": {
                         "searchCriteria": []
                     }
