@@ -18,6 +18,8 @@ class TransactionDataAdaptor(ITransactionDataInterface):
         self.ws_client = WebSocketClient(system_config.get("wss_url"))
         self.ws_client.init(system_config.get("user_name"), system_config.get("password"),
                             system_config.get("client_id"))
+
+
         self.float_pattern = re.compile(r"^([+-]?[0-9]+\.[0-9]+)$")
 
     def submit_request(self, request_message):
@@ -50,7 +52,7 @@ class TransactionDataAdaptor(ITransactionDataInterface):
         elif entity == "Position History":
             return self.process_position_history_query(endpoint, query)
         elif entity == "Realtime Risk Factor Value":
-            return self.process_risk_factor_values_query(endpoint, query)
+            return self.process_ws_risk_factor_values_query(endpoint, query)
         elif entity == "Realtime Risk Factor Update":
             return self.process_risk_factor_update_query(endpoint, query)
         elif entity == "Hedge Efficiency":
@@ -69,7 +71,7 @@ class TransactionDataAdaptor(ITransactionDataInterface):
             assert False, f"Unhandled query type: {query.entity} in src/transaction_data/transaction_data_adaptor.py"
 
     def process_ws_position_query(self, endpoint, query):
-        logging.debug(f"process_position_query")
+        logging.debug(f"process_ws_position_query")
 
         filters = query.get_filters()
         level = None
@@ -99,6 +101,31 @@ class TransactionDataAdaptor(ITransactionDataInterface):
         content = response_json["data"]["content"]
         for msg in content:
             msg["level"] = level
+
+        msg_array = self.create_response_array(query, content)
+        return msg_array, None
+
+    def process_ws_risk_factor_values_query(self, endpoint, query):
+        logging.debug(f"process_ws_risk_factor_values_query")
+
+        subscription = {
+                "userId": "zb-admin",
+                "correlationId": "da0ef77c-2ab1-44ff-958e-41386ad146e4",
+                "wsAction": "SUBSCRIPTION",
+                "service": "marketdataapi",
+                "componentSubscription": {
+                    "componentId": 4,
+                    "filterData": {
+                        "searchCriteria": []
+                    }
+                },
+                "page": 0,
+                "elementsInPage": 100
+            }
+
+        response = self.ws_client.query_data(subscription)
+        response_json = json.loads(response)
+        content = response_json["data"]["content"]
 
         msg_array = self.create_response_array(query, content)
         return msg_array, None
