@@ -191,10 +191,11 @@ class RefDataAdaptor(IRefDataInterface):
         msg = Message(entity_definition.name)
 
         for key, value in response.items():
+
+            if key == "reserved":
+                continue
+
             field_def = entity_definition.find_field_def_by_name(key)
-
-            logging.debug(f"aaaa: entity[{key}]")
-
             data_type = field_def.get_property("type")
             if value is not None:
                 if data_type in self.entity_name_to_display_name_map:

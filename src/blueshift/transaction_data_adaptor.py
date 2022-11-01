@@ -74,12 +74,15 @@ class TransactionDataAdaptor(ITransactionDataInterface):
         logging.debug(f"process_ws_position_query")
 
         filters = query.get_filters()
-        level = None
+        level = account = None
         for filterItem in filters:
             if filterItem.field == "level":
                 level = filterItem.value
+            elif filterItem.field == "account":
+                account = filterItem.value
 
         assert level is not None, "Field [level] must to be present as a filter criteria for Position query"
+        assert account is not None, "Field [account] must to be present as a filter criteria for Position query"
 
         subscription = {"userId": "zb-admin",
                         "correlationId": "57d53f80-2511-4327-8ace-8ff25b4d65e0",
@@ -90,7 +93,9 @@ class TransactionDataAdaptor(ITransactionDataInterface):
                             "filterData":
                                 {"searchCriteria": []},
                             "beFilterParamsMap": {
-                                "SYSTEM": []
+                                "ACCOUNT": [
+                                    account
+                                ]
                             }
                         },
                         "page": 0,

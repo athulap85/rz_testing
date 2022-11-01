@@ -11,7 +11,7 @@ Feature: Net Spotting Functional testing
     And instance "RZ-Base-R-Port-01" of entity "Risk Portfolios" is copied with following values
       | Instance ID | Risk Portfolio Id       | Holding Period | Hedge Instrument       |
       | TC_RISK_001 | random(RZ_NP1_RP_5Y_,3) | 5              | [TC_GB_INS_001.Symbol] |
-    And instance "TSLA_0.75_07-06-26" of entity "Instruments" is copied with following values
+    And instance "RZ-Base-Ins-Fixed-03" of entity "Instruments" is copied with following values
       | Instance ID   | Instrument ID | Symbol                   | Expiry Date | Risk Portfolio                  | Issue Date | First Coupon Date | Next To Last Date | Par Value |
       | TC_CB_INS_001 | INS_012       | random(RZ_NP1_SYM_CB_,3) | 2027-12-31  | [TC_RISK_001.Risk Portfolio Id] | 2022-03-31 | 2022-04-01        | 2025-12-15        | 100       |
     When "Realtime Risk Factor Update" messages are submitted with following values
@@ -58,7 +58,7 @@ Feature: Net Spotting Functional testing
     And instance "RZ-Base-R-Port-01" of entity "Risk Portfolios" is copied with following values
       | Instance ID | Risk Portfolio Id       | Holding Period | Hedge Instrument       |
       | TC_RISK_001 | random(RZ_NP2_RP_5Y_,3) | 5              | [TC_GB_INS_001.Symbol] |
-    And instance "TSLA_0.75_07-06-26" of entity "Instruments" is copied with following values
+    And instance "RZ-Base-Ins-Fixed-03" of entity "Instruments" is copied with following values
       | Instance ID   | Instrument ID | Symbol                   | Expiry Date | Risk Portfolio                  | Issue Date | First Coupon Date | Next To Last Date | Par Value |
       | TC_CB_INS_001 | INS_003       | random(RZ_NP2_SYM_CB_,3) | 2027-12-31  | [TC_RISK_001.Risk Portfolio Id] | 2022-03-31 | 2022-04-01        | 2025-12-15        | 100       |
     When "Position Update" messages are submitted with following values
@@ -140,7 +140,7 @@ Feature: Net Spotting Functional testing
     And instance "RZ-Base-R-Port-01" of entity "Risk Portfolios" is copied with following values
       | Instance ID | Risk Portfolio Id       | Holding Period | Hedge Instrument       |
       | TC_RISK_001 | random(RZ_NP3_RP_5Y_,3) | 5              | [TC_GB_INS_001.Symbol] |
-    And instance "TSLA_0.75_07-06-26" of entity "Instruments" is copied with following values
+    And instance "RZ-Base-Ins-Fixed-03" of entity "Instruments" is copied with following values
       | Instance ID   | Instrument ID | Symbol                   | Expiry Date | Risk Portfolio                  | Issue Date | First Coupon Date | Next To Last Date | Par Value |
       | TC_CB_INS_001 | INS_002       | random(RZ_NP3_SYM_CB_,3) | 2027-12-31  | [TC_RISK_001.Risk Portfolio Id] | 2022-03-31 | 2022-04-01        | 2025-12-15        | 100       |
     When "Realtime Risk Factor Update" messages are submitted with following values
@@ -201,10 +201,10 @@ Feature: Net Spotting Functional testing
     And instance "RZ-Base-R-Port-01" of entity "Risk Portfolios" is copied with following values
       | Instance ID | Risk Portfolio Id       | Holding Period | Hedge Instrument       |
       | TC_RISK_005 | random(RZ_NP4_RP_5Y_,4) | 5              | [TC_GB_INS_005.Symbol] |
-    And instance "TSLA_0.75_07-06-26" of entity "Instruments" is copied with following values
+    And instance "RZ-Base-Ins-Fixed-03" of entity "Instruments" is copied with following values
       | Instance ID   | Instrument ID | Symbol                   | Expiry Date | Risk Portfolio                  | Issue Date | First Coupon Date | Next To Last Date | Par Value |
       | TC_CB_INS_004 | INS_012       | random(RZ_NP4_SYM_CB_,3) | 2027-12-31  | [TC_RISK_004.Risk Portfolio Id] | 2022-03-31 | 2022-04-01        | 2025-12-15        | 100       |
-    And instance "TSLA_0.75_07-06-26" of entity "Instruments" is copied with following values
+    And instance "RZ-Base-Ins-Fixed-03" of entity "Instruments" is copied with following values
       | Instance ID   | Instrument ID | Symbol                   | Expiry Date | Risk Portfolio                  | Issue Date | First Coupon Date | Next To Last Date | Par Value |
       | TC_CB_INS_005 | INS_013       | random(RZ_NP4_SYM_CB_,4) | 2027-12-31  | [TC_RISK_005.Risk Portfolio Id] | 2022-03-31 | 2022-04-01        | 2025-12-15        | 100       |
     When "Realtime Risk Factor Update" messages are submitted with following values
@@ -232,13 +232,10 @@ Feature: Net Spotting Functional testing
       | TC_004_NP_PU_RES1 | [TC_004_NP_PU2.symbol] | ACCOUNT | [TC_004_NP.Account Id] | [TC_004_NP.Participant] | -3000.0 | 5000.0     |
     Then "Hedge Efficiency" messages are filtered by "account,symbol,hedgeEfficiency" should be
       | Instance ID     | account                | symbol                 | hedgeEfficiency |
-      | TC_004_HE_Res3  | [TC_004_NP.Account Id] | [TC_GB_INS_004.Symbol] | 0.0             |
       | TC_004_HE_Res4  | [TC_004_NP.Account Id] | [TC_GB_INS_004.Symbol] | -300000.0       |
       | TC_004_HE_Res5  | [TC_004_NP.Account Id] | [TC_GB_INS_004.Symbol] | -300000.0       |
       | TC_004_HE_Res6  | [TC_004_NP.Account Id] | [TC_GB_INS_004.Symbol] | -300000.0       |
       | TC_004_HE_Res7  | [TC_004_NP.Account Id] | [TC_GB_INS_004.Symbol] | -300000.0       |
-      | TC_004_HE_Res8  | [TC_004_NP.Account Id] | [TC_GB_INS_005.Symbol] | 0.0             |
-      | TC_004_HE_Res9  | [TC_004_NP.Account Id] | [TC_GB_INS_005.Symbol] | 0.0             |
       | TC_004_HE_Res10 | [TC_004_NP.Account Id] | [TC_GB_INS_005.Symbol] | 5000.0          |
     When "Position Update" messages are submitted with following values
       | Instance ID   | account                | symbol                 | quantity | price | value   | side | participant             | notional |
@@ -248,14 +245,11 @@ Feature: Net Spotting Functional testing
       | TC_004_NP_PU_RES2 | [TC_004_NP_PU.symbol] | ACCOUNT | [TC_004_NP.Account Id] | [TC_004_NP.Participant] | 17500.0 | -700000.0  |
     Then "Hedge Efficiency" messages are filtered by "account,symbol,hedgeEfficiency" should be
       | Instance ID     | account                | symbol                 | hedgeEfficiency |
-      | TC_004_HE_Res9  | [TC_004_NP.Account Id] | [TC_GB_INS_004.Symbol] | 0.0             |
       | TC_004_HE_Res10 | [TC_004_NP.Account Id] | [TC_GB_INS_004.Symbol] | -300000.0       |
       | TC_004_HE_Res11 | [TC_004_NP.Account Id] | [TC_GB_INS_004.Symbol] | -300000.0       |
       | TC_004_HE_Res12 | [TC_004_NP.Account Id] | [TC_GB_INS_004.Symbol] | -300000.0       |
       | TC_004_HE_Res13 | [TC_004_NP.Account Id] | [TC_GB_INS_004.Symbol] | -300000.0       |
       | TC_004_HE_Res14 | [TC_004_NP.Account Id] | [TC_GB_INS_004.Symbol] | -700000.0       |
-      | TC_004_HE_Res15 | [TC_004_NP.Account Id] | [TC_GB_INS_005.Symbol] | 0.0             |
-      | TC_004_HE_Res16 | [TC_004_NP.Account Id] | [TC_GB_INS_005.Symbol] | 0.0             |
       | TC_004_HE_Res17 | [TC_004_NP.Account Id] | [TC_GB_INS_005.Symbol] | 5000.0          |
       | TC_004_HE_Res18 | [TC_004_NP.Account Id] | [TC_GB_INS_005.Symbol] | 5000.0          |
 
@@ -270,10 +264,10 @@ Feature: Net Spotting Functional testing
     And instance "RZ-Base-R-Port-01" of entity "Risk Portfolios" is copied with following values
       | Instance ID | Risk Portfolio Id       | Holding Period | Hedge Instrument       |
       | TC_RISK_001 | random(RZ_NP5_RP_5Y_,3) | 5              | [TC_GB_INS_001.Symbol] |
-    And instance "TSLA_0.75_07-06-26" of entity "Instruments" is copied with following values
+    And instance "RZ-Base-Ins-Fixed-03" of entity "Instruments" is copied with following values
       | Instance ID   | Instrument ID | Symbol                    | Expiry Date | Risk Portfolio                  | Issue Date | First Coupon Date | Next To Last Date | Par Value |
       | TC_CB_INS_001 | INS_002       | random(RZ_NP5_SYM_CB1_,3) | 2027-12-31  | [TC_RISK_001.Risk Portfolio Id] | 2022-03-31 | 2022-04-01        | 2025-12-15        | 100       |
-    And instance "TSLA_0.75_07-06-26" of entity "Instruments" is copied with following values
+    And instance "RZ-Base-Ins-Fixed-03" of entity "Instruments" is copied with following values
       | Instance ID   | Instrument ID | Symbol                    | Expiry Date | Risk Portfolio                  | Issue Date | First Coupon Date | Next To Last Date | Par Value |
       | TC_CB_INS_002 | INS_003       | random(RZ_NP5_SYM_CB2_,3) | 2027-12-31  | [TC_RISK_001.Risk Portfolio Id] | 2022-03-31 | 2022-04-01        | 2025-12-15        | 100       |
     When "Realtime Risk Factor Update" messages are submitted with following values
@@ -335,7 +329,7 @@ Feature: Net Spotting Functional testing
     And instance "RZ-Base-R-Port-01" of entity "Risk Portfolios" is copied with following values
       | Instance ID | Risk Portfolio Id       | Holding Period | Hedge Instrument       |
       | TC_RISK_001 | random(RZ_NP6_RP_5Y_,3) | 5              | [TC_GB_INS_001.Symbol] |
-    And instance "TSLA_0.75_07-06-26" of entity "Instruments" is copied with following values
+    And instance "RZ-Base-Ins-Fixed-03" of entity "Instruments" is copied with following values
       | Instance ID   | Instrument ID | Symbol                   | Expiry Date | Risk Portfolio                  | Issue Date | First Coupon Date | Next To Last Date | Par Value |
       | TC_CB_INS_001 | INS_002       | random(RZ_NP6_SYM_CB_,3) | 2027-12-31  | [TC_RISK_001.Risk Portfolio Id] | 2022-03-31 | 2022-04-01        | 2025-12-15        | 100       |
     When "Realtime Risk Factor Update" messages are submitted with following values
