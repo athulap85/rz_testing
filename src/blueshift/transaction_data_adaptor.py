@@ -50,7 +50,7 @@ class TransactionDataAdaptor(ITransactionDataInterface):
         if entity == "Position":
             return self.process_ws_position_query(endpoint, query)
         elif entity == "Position History":
-            return self.process_position_history_query(endpoint, query)
+            return self.process_ws_position_history_query(endpoint, query)
         elif entity == "Realtime Risk Factor Value":
             return self.process_ws_risk_factor_values_query(endpoint, query)
         elif entity == "Realtime Risk Factor Update":
@@ -110,8 +110,61 @@ class TransactionDataAdaptor(ITransactionDataInterface):
         msg_array = self.create_response_array(query, content)
         return msg_array, None
 
+    def process_ws_position_history_query(self, endpoint, query):
+        logging.debug(f"process_ws_position_history_query")
+
+        pos_id = None
+        filters = query.get_filters()
+        for filter_item in filters:
+            if filter_item.field == "positionId":
+                pos_id = filter_item.value
+
+        assert pos_id is not None, "Field [positionId] must to be present as a filter criteria for position " \
+                                   "history query"
+
+        subscription = {
+           "userId": "zb-admin",
+           "correlationId": "00365d0f-ef55-4450-999f-375c0e81b1fc",
+           "wsAction": "UN_SUBSCRIPTION_THEN_SUBSCRIPTION",
+           "service": "positionapi",
+           "page": 0,
+           "elementsInPage": 100,
+           "componentSubscription": {
+              "componentId": 9,
+              "filterData": {
+                 "searchCriteria": [
+                    {
+                       "columnName": "positionId",
+                       "filterType": "String",
+                       "stringValues": [
+                          pos_id
+                       ]
+                    }
+                 ]
+              }
+           },
+           "componentUnSubscription": {
+              "componentId": 9
+           }
+        }
+
+        response = self.ws_client.query_data(subscription)
+        response_json = json.loads(response)
+        content = response_json["data"]["content"]
+
+        msg_array = self.create_response_array(query, content)
+        return msg_array, None
+
     def process_ws_risk_factor_values_query(self, endpoint, query):
         logging.debug(f"process_ws_risk_factor_values_query")
+
+        symbol = None
+        filters = query.get_filters()
+        for filter_item in filters:
+            if filter_item.field == "symbol":
+                symbol = filter_item.value
+
+        assert symbol is not None, "Field [symbol] must to be present as a filter criteria for Risk Factor Values query"
 
         subscription = {
                 "userId": "zb-admin",
@@ -121,7 +174,15 @@ class TransactionDataAdaptor(ITransactionDataInterface):
                 "componentSubscription": {
                     "componentId": 4,
                     "filterData": {
-                        "searchCriteria": []
+                        "searchCriteria": [
+                            {
+                                "columnName": "symbol",
+                                "filterType": "String",
+                                "stringValues": [
+                                    symbol
+                                ]
+                            }
+                        ]
                     }
                 },
                 "page": 0,
