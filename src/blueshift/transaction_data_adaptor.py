@@ -18,6 +18,8 @@ class TransactionDataAdaptor(ITransactionDataInterface):
         self.ws_client = WebSocketClient(system_config.get("wss_url"))
         self.ws_client.init(system_config.get("user_name"), system_config.get("password"),
                             system_config.get("client_id"))
+
+
         self.float_pattern = re.compile(r"^([+-]?[0-9]+\.[0-9]+)$")
 
     def submit_request(self, request_message):
@@ -48,11 +50,11 @@ class TransactionDataAdaptor(ITransactionDataInterface):
         if entity == "Position":
             return self.process_ws_position_query(endpoint, query)
         elif entity == "Position History":
-            return self.process_position_history_query(endpoint, query)
+            return self.process_ws_position_history_query(endpoint, query)
         elif entity == "Realtime Risk Factor Value":
-            return self.process_risk_factor_values_query(endpoint, query)
+            return self.process_ws_risk_factor_values_query(endpoint, query)
         elif entity == "Realtime Risk Factor Update":
-            return self.process_risk_factor_update_query(endpoint, query)
+            return self.process_ws_risk_factor_update_query(endpoint, query)
         elif entity == "Hedge Efficiency":
             return self.process_hedge_efficiency(endpoint, query)
         elif entity == "Realtime Interest Curve Value":
@@ -69,15 +71,18 @@ class TransactionDataAdaptor(ITransactionDataInterface):
             assert False, f"Unhandled query type: {query.entity} in src/transaction_data/transaction_data_adaptor.py"
 
     def process_ws_position_query(self, endpoint, query):
-        logging.debug(f"process_position_query")
+        logging.debug(f"process_ws_position_query")
 
         filters = query.get_filters()
-        level = None
+        level = account = None
         for filterItem in filters:
             if filterItem.field == "level":
                 level = filterItem.value
+            elif filterItem.field == "account":
+                account = filterItem.value
 
         assert level is not None, "Field [level] must to be present as a filter criteria for Position query"
+        assert account is not None, "Field [account] must to be present as a filter criteria for Position query"
 
         subscription = {"userId": "zb-admin",
                         "correlationId": "57d53f80-2511-4327-8ace-8ff25b4d65e0",
@@ -88,7 +93,9 @@ class TransactionDataAdaptor(ITransactionDataInterface):
                             "filterData":
                                 {"searchCriteria": []},
                             "beFilterParamsMap": {
-                                "SYSTEM": []
+                                "ACCOUNT": [
+                                    account
+                                ]
                             }
                         },
                         "page": 0,
@@ -99,6 +106,117 @@ class TransactionDataAdaptor(ITransactionDataInterface):
         content = response_json["data"]["content"]
         for msg in content:
             msg["level"] = level
+
+        msg_array = self.create_response_array(query, content)
+        return msg_array, None
+
+    def process_ws_position_history_query(self, endpoint, query):
+        logging.debug(f"process_ws_position_history_query")
+
+        pos_id = None
+        filters = query.get_filters()
+        for filter_item in filters:
+            if filter_item.field == "positionId":
+                pos_id = filter_item.value
+
+        assert pos_id is not None, "Field [positionId] must to be present as a filter criteria for position " \
+                                   "history query"
+
+        subscription = {
+           "userId": "zb-admin",
+           "correlationId": "00365d0f-ef55-4450-999f-375c0e81b1fc",
+           "wsAction": "UN_SUBSCRIPTION_THEN_SUBSCRIPTION",
+           "service": "positionapi",
+           "page": 0,
+           "elementsInPage": 100,
+           "componentSubscription": {
+              "componentId": 9,
+              "filterData": {
+                 "searchCriteria": [
+                    {
+                       "columnName": "positionId",
+                       "filterType": "String",
+                       "stringValues": [
+                          pos_id
+                       ]
+                    }
+                 ]
+              }
+           },
+           "componentUnSubscription": {
+              "componentId": 9
+           }
+        }
+
+        response = self.ws_client.query_data(subscription)
+        response_json = json.loads(response)
+        content = response_json["data"]["content"]
+
+        msg_array = self.create_response_array(query, content)
+        return msg_array, None
+
+    def process_ws_risk_factor_values_query(self, endpoint, query):
+        logging.debug(f"process_ws_risk_factor_values_query")
+
+        symbol = None
+        filters = query.get_filters()
+        for filter_item in filters:
+            if filter_item.field == "symbol":
+                symbol = filter_item.value
+
+        assert symbol is not None, "Field [symbol] must to be present as a filter criteria for Risk Factor Values query"
+
+        subscription = {
+                "userId": "zb-admin",
+                "correlationId": "da0ef77c-2ab1-44ff-958e-41386ad146e4",
+                "wsAction": "SUBSCRIPTION",
+                "service": "marketdataapi",
+                "componentSubscription": {
+                    "componentId": 4,
+                    "filterData": {
+                        "searchCriteria": [
+                            {
+                                "columnName": "symbol",
+                                "filterType": "String",
+                                "stringValues": [
+                                    symbol
+                                ]
+                            }
+                        ]
+                    }
+                },
+                "page": 0,
+                "elementsInPage": 100
+            }
+
+        response = self.ws_client.query_data(subscription)
+        response_json = json.loads(response)
+        content = response_json["data"]["content"]
+
+        msg_array = self.create_response_array(query, content)
+        return msg_array, None
+
+    def process_ws_risk_factor_update_query(self, endpoint, query):
+        logging.debug(f"process_ws_risk_factor_update_query")
+
+        subscription = {
+                "userId": "zb-admin",
+                "correlationId": "f5b487b7-02c6-497d-838b-f88b3d42eaf7",
+                "wsAction": "SUBSCRIPTION",
+                "service": "marketdataapi",
+                "componentSubscription": {
+                    "componentId": 1,
+                    "filterData": {
+                        "searchCriteria": []
+                    }
+                },
+                "page": 0,
+                "elementsInPage": 100
+            }
+
+        response = self.ws_client.query_data(subscription)
+        response_json = json.loads(response)
+        content = response_json["data"]["content"]
 
         msg_array = self.create_response_array(query, content)
         return msg_array, None

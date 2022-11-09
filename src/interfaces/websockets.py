@@ -34,7 +34,6 @@ class WebSocketClient:
         url = f"{self.base_url}?authorization={self.token}"
         logging.info(f"URL : {url}")
         async with websockets.connect(url) as websocket:
-            logging.info("testing....")
             await websocket.send(json.dumps(subscription))
             response = await websocket.recv()
             logging.info(response)

@@ -11,9 +11,9 @@ Feature: Market Data Management Scenarios
 #    Given instance "RZ_ST_Rate1M" of entity "Instruments" is copied with following values
 #      | Instance ID | Instrument ID | Symbol       | Expiry Date | Issue Date | First Coupon Date | Next To Last Date | Par Value |
 #      | Ins003      | INS_003       | RZ_MD_INS_03 | 2027-12-31  | 2022-03-31 | 2022-12-10        | 2023-12-10        | 100       |
-    Given instance "FR_BO_472557" of entity "Instruments" is copied with following values
-      | Instance ID | Instrument ID | Symbol       | Expiry Date | Issue Date | First Coupon Date | Next To Last Date | Par Value | Coupon Benchmark |
-      | Ins004      | INS_004       | RZ_MD_INS_04 | 2027-12-31  | 2022-03-31 | 2022-12-10        | 2023-12-10        | 100       | TNX40            |
+#    Given instance "FR_BO_472557" of entity "Instruments" is copied with following values
+#      | Instance ID | Instrument ID | Symbol       | Expiry Date | Issue Date | First Coupon Date | Next To Last Date | Par Value | Coupon Benchmark |
+#      | Ins004      | INS_004       | RZ_MD_INS_04 | 2027-12-31  | 2022-03-31 | 2022-12-10        | 2023-12-10        | 100       | TNX40            |
 
   @wip1
   Scenario: TC_MD_001 MD update for LTP with data class=VALUE & sub class=THEORETICAL/ACTUAL
@@ -146,7 +146,7 @@ Feature: Market Data Management Scenarios
       | RFU08       | RZ_MD_INS_01 | DV01              | 65      |
     Then "Realtime Risk Factor Value" messages are filtered by "symbol,ltp" should be
       | Instance ID | symbol       | bb   | bo   | ltp   | mid    | ai    | convexity | macaulayDuration | dv01 |
-      | RFU_Res1    | RZ_MD_INS_01 | 14.0 | 0.88 | 88.88 | 0.0089 | 800.0 | 1236.99   | 0.99             | 65.0 |
+      | RFU_Res1    | RZ_MD_INS_01 | 14.0 | 0.88 | 88.88 | 0.01   | 800.0 | 1236.99   | 0.99             | 65.0 |
 
   @wip5
   Scenario: TC_MD_005 MD update for the BB/BO/MID/AI/CONVEXITY/MACAYLAY_DURATION/DV01 with negative values
@@ -159,7 +159,7 @@ Feature: Market Data Management Scenarios
       | RFU05       | RZ_MD_INS_01 | CONVEXITY         | -2000.99 |
       | RFU06       | RZ_MD_INS_01 | MACAULAY_DURATION | -99      |
       | RFU07       | RZ_MD_INS_01 | DV01              | -65      |
-    Then "Realtime Risk Factor Value" messages are filtered by "symbol" should be
+    Then "Realtime Risk Factor Value" messages are filtered by "symbol,dv01" should be
       | Instance ID | symbol       | bb    | bo     | mid  | ai     | dv01  | convexity | macaulayDuration |
       | RFU_Res1    | RZ_MD_INS_01 | -24.0 | -10.88 | -1.9 | -800.0 | -65.0 | -2000.99  | -99.0            |
 
@@ -174,7 +174,7 @@ Feature: Market Data Management Scenarios
       | RFU05       | RZ_MD_INS_01 | CONVEXITY         | 700000000000000000000000000 |
       | RFU06       | RZ_MD_INS_01 | MACAULAY_DURATION | 800000000000000000000000000 |
       | RFU07       | RZ_MD_INS_01 | DV01              | 900000000000000009999999999 |
-    Then "Realtime Risk Factor Value" messages are filtered by "symbol" should be
+    Then "Realtime Risk Factor Value" messages are filtered by "symbol,dv01" should be
       | Instance ID | symbol       | bb                          | bo                          | mid                         | ai                          | dv01                        | convexity                   | macaulayDuration            |
       | RFU_Res1    | RZ_MD_INS_01 | 200000000000000000000000000 | 100000000000000000000000099 | 300000000000000000000000999 | 600000000000000000000000000 | 900000000000000009999999999 | 700000000000000000000000000 | 800000000000000000000000000 |
 
@@ -299,8 +299,8 @@ Feature: Market Data Management Scenarios
       | Instance ID | symbol       | type | value |
       | RFU01       | RZ_MD_INS_01 | LTP  | 0     |
     Then "Realtime Risk Factor Value" messages are filtered by "symbol,ltp" should be
-      | Instance ID | symbol       | ltp |
-      | RFU_Res1    | RZ_MD_INS_01 | 0   |
+      | Instance ID | symbol       | ltp  |
+      | RFU_Res1    | RZ_MD_INS_01 | 0.0  |
 
   @wip11
   Scenario: TC_MD_11 MD update without subClass/dataClass

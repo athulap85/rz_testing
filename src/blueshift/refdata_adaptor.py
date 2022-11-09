@@ -191,10 +191,11 @@ class RefDataAdaptor(IRefDataInterface):
         msg = Message(entity_definition.name)
 
         for key, value in response.items():
+
+            if key == "reserved":
+                continue
+
             field_def = entity_definition.find_field_def_by_name(key)
-
-            logging.debug(f"aaaa: entity[{key}]")
-
             data_type = field_def.get_property("type")
             if value is not None:
                 if data_type in self.entity_name_to_display_name_map:
@@ -258,9 +259,10 @@ class RefDataAdaptor(IRefDataInterface):
         return request
 
     def copy_and_create_request_msg(self, entity_definition, original_instance_msg, changes_msg):
-        logging.debug(f"copy_and_create_request_msg entity [{entity_definition.name}]")
+        logging.debug(f"copy_and_create_request_msg : entity [{entity_definition.name}]")
         logging.info(f"change msg : {str(changes_msg)}")
         request = {}
+        dto_collection = {}
         for key, value in original_instance_msg.fieldValues.items():
             if key == "Id":
                 continue
@@ -279,10 +281,20 @@ class RefDataAdaptor(IRefDataInterface):
 
             if value is not None:
                 if data_type in self.entity_name_to_display_name_map:
+                    match = self.table_field_value_pattern.search(value)
+                    if match is not None:
+                        dto_collection[data_type] = []
+                        entity_def = self.entity_definitions.get(self.entity_name_to_display_name_map.get(data_type))
+                        table_name = match.group(1)
+                        tab_entry_list = InstanceRegistry().get_table(table_name)
+                        for entry in tab_entry_list:
+                            request_msg = self.create_request_msg(entity_def, entry)
+                            dto_collection[data_type].append(request_msg)
+                            logging.info(request_msg)
+
                     value = self.enrich_linked_instance_details(self.entity_name_to_display_name_map[data_type], value,
                                                                 multiple)
                 elif data_type == "Enum":
-                    logging.info(f"bbb : {str(key)}")
                     if key != 'Theoretical Calc Subscription':
                         value = value.replace(" ", "_").upper()
 
@@ -292,6 +304,14 @@ class RefDataAdaptor(IRefDataInterface):
                 value = None
 
             request[name] = value
+
+        if entity_definition.name in entities_with_tables:
+            request = {"stressScenarioDTO": request}
+            for entity, dto in dto_collection.items():
+                tab_entries = []
+                for entry in dto:
+                    tab_entries.append(entry)
+                request[camel_case(entity) + "DTOS"] = tab_entries
 
         logging.info(request)
         return request
