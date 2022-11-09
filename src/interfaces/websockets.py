@@ -15,7 +15,7 @@ class WebSocketClient:
         self.authenticate_and_get_token(user_name, password, client_id)
 
     def authenticate_and_get_token(self, username: str, password: str, app_client_id: str) -> str:
-        client = boto3.client('cognito-idp')
+        client = boto3.client('cognito-idp', region_name='ap-southeast-1')
 
         resp = client.initiate_auth(
             ClientId=app_client_id,
