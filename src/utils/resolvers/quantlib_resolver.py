@@ -11,6 +11,7 @@ from src.utils.data_query import DataQuery, Operator
 
 from src.utils.quantlib.data_classes import Instrument
 from src.utils.quantlib.functions.fixed_rate_bond import get_clean_price
+from src.utils.quantlib.functions.zero_coupon_bond import get_zero_coupon_clean_price
 
 BLUESHIFT_API = "BLUESHIFT_API"
 
@@ -127,7 +128,10 @@ class QuantLibFunctionsResolver(Resolver):
         spot_rates = {k[0]: v for k, v in sorted(spot_rates.items(), key=lambda item: self.tenor_comparator(item[0][0]))}
         logging.info(spot_rates)
 
-        clean_price = get_clean_price(datetime.today().strftime('%Y-%m-%d'), bond_obj, spot_rates)
+        if bond_obj.instrument_type == "ZERO_COUPON_BOND":
+            clean_price = get_zero_coupon_clean_price(datetime.today().strftime('%Y-%m-%d'), bond_obj, spot_rates)
+        else:
+            clean_price = get_clean_price(datetime.today().strftime('%Y-%m-%d'), bond_obj, spot_rates)
         print(f"Clean Price : {clean_price}")
         return clean_price * net_position
 
@@ -171,18 +175,22 @@ class QuantLibFunctionsResolver(Resolver):
 
     def create_bond_instrument(self, instrument_msg):
         bond = Instrument()
+        bond.instrument_type = instrument_msg.get_field_value("Instrument Type")
+
         bond.issue_date = instrument_msg.get_field_value("Issue Date")
         bond.maturity_date = instrument_msg.get_field_value("Expiry Date")
-        bond.first_coupon_date = instrument_msg.get_field_value("First Coupon Date")
-        bond.next_to_last_date = instrument_msg.get_field_value("Next To Last Date")
         bond.business_day_convention = Instrument.BusinessDayConvention[
             self.to_upper(instrument_msg.get_field_value("Business Day Convention"))]
         bond.day_count_convention = Instrument.DayCountConvention[
             self.to_upper(instrument_msg.get_field_value("Day Count Convention"))]
-        bond.coupon_frequency = Instrument.CouponFrequency[
-            self.to_upper(instrument_msg.get_field_value("Coupon Frequency"))]
         bond.face_value = instrument_msg.get_field_value("Par Value")
-        bond.coupon_rate = instrument_msg.get_field_value("Coupon")
+
+        if bond.instrument_type != "ZERO_COUPON_BOND":
+            bond.first_coupon_date = instrument_msg.get_field_value("First Coupon Date")
+            bond.next_to_last_date = instrument_msg.get_field_value("Next To Last Date")
+            bond.coupon_frequency = Instrument.CouponFrequency[
+                self.to_upper(instrument_msg.get_field_value("Coupon Frequency"))]
+            bond.coupon_rate = instrument_msg.get_field_value("Coupon")
 
         return bond
 

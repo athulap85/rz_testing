@@ -1,6 +1,6 @@
 from src.utils.quantlib.data_classes import Instrument
 from src.utils.quantlib.functions.fixed_rate_bond import get_clean_price
-
+from src.utils.quantlib.functions.zero_coupon_bond import get_zero_coupon_clean_price
 
 bond = Instrument()
 bond.issue_date = "2021-09-29"
@@ -11,7 +11,7 @@ bond.business_day_convention = Instrument.BusinessDayConvention.UNADJUSTED
 bond.day_count_convention = Instrument.DayCountConvention.ACTUAL_DIVIDED_ACTUAL_ISDA
 bond.coupon_frequency = Instrument.CouponFrequency.SEMI_ANNUAL
 bond.face_value = 100.0
-bond.coupon_rate = 0.75
+bond.coupon_rate = 4.75
 
 
 spot_rates = {
@@ -32,3 +32,6 @@ spot_rates = {
 
 clean_price = get_clean_price("2022-08-07", bond, spot_rates)
 print(f"Clean Price : {clean_price}")
+
+clean_price = get_zero_coupon_clean_price("2022-08-07", bond, spot_rates)
+print(f"Zero Coupon Clean Price : {clean_price}")
