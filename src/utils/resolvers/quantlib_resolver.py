@@ -185,7 +185,7 @@ class QuantLibFunctionsResolver(Resolver):
             self.to_upper(instrument_msg.get_field_value("Day Count Convention"))]
         bond.face_value = instrument_msg.get_field_value("Par Value")
 
-        if bond.instrument_type != "ZERO_COUPON_BOND":
+        if bond.instrument_type != "Stepped Coupon Bond":
             bond.first_coupon_date = instrument_msg.get_field_value("First Coupon Date")
             bond.next_to_last_date = instrument_msg.get_field_value("Next To Last Date")
             bond.coupon_frequency = Instrument.CouponFrequency[
