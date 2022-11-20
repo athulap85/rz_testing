@@ -44,6 +44,7 @@ class Instrument:
         self._coupon_rate = None
         self._face_value = None
         self._day_count_convention = None
+        self._instrument_type = None
 
     def to_string(self):
         msg_str = "{\n"
@@ -98,6 +99,10 @@ class Instrument:
             return ql.ModifiedFollowing
         elif self._business_day_convention == Instrument.BusinessDayConvention.MODIFIED_PRECEDING:
             return ql.ModifiedPreceding
+
+    @property
+    def instrument_type(self):
+        return self._instrument_type
 
     @property
     def coupon_rate(self):
@@ -161,6 +166,10 @@ class Instrument:
     @business_day_convention.setter
     def business_day_convention(self, business_day_convention: BusinessDayConvention):
         self._business_day_convention = business_day_convention
+
+    @instrument_type.setter
+    def instrument_type(self, instrument_type: str):
+        self._instrument_type = instrument_type
 
     @coupon_rate.setter
     def coupon_rate(self, coupon_rate: float):
