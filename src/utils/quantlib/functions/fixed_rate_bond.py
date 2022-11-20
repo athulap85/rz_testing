@@ -49,11 +49,22 @@ def get_clean_price(todays_date: str, bond: Instrument, spot_rates: dict):
     dateGeneration = ql.DateGeneration.Forward
     monthEnd = False
 
-    schedule = ql.Schedule (issueDate, maturityDate, tenor, calendar, bussinessConvention, bussinessConvention,
+    schedule = ql.Schedule(issueDate, maturityDate, tenor, calendar, bussinessConvention, bussinessConvention,
                             dateGeneration, monthEnd, firstCouponDate, nextToLastDate)
 
-    couponRate = bond.coupon_rate/100 
-    coupons = [couponRate]
+    if bond.instrument_type == "Stepped Coupon Bond":
+        coupon = bond.coupon_rate
+        coupons = []
+        dates = list(schedule)
+        for date in dates:
+            coupon_val = bond.coupon_schedule.get(date, -1.0)
+            if coupon_val != -1.0:
+                coupon = coupon_val
+            coupons.append(coupon)
+        print("Coupons : ", coupons)
+        coupons = [val / 100 for val in coupons]
+    else:
+        coupons = [bond.coupon_rate/100]
 
     settlementDays = 0
     faceValue = bond.face_value
@@ -76,20 +87,20 @@ def get_clean_price(todays_date: str, bond: Instrument, spot_rates: dict):
 
 
     # printing cashflows and other intermediate steps
-    for i, c in enumerate(fixedRateBond.cashflows()):
-        if c.date()>=todaysDate:
-            spotRate = spotCurveHandle.zeroRate(c.date(), dayCount, compounding, compoundingFrequency, True)
-            print(c.date(),"\n", spotRate)
-    print("")
-
-    spotDatesISO = [i.ISO() for i in spotDates]
-    cashflow_dates=[]
-
-    print ('%20s %12s %12s' % ("Date", "Amount", "disc Fac"))
-
-    for i, c in enumerate(fixedRateBond.cashflows()):
-        if c.date()>=todaysDate:
-            print ('%20s %12f %12f' % (c.date(), c.amount(),spotCurve.discount(c.date())))
-            cashflow_dates.append(c.date().ISO())
+    # for i, c in enumerate(fixedRateBond.cashflows()):
+    #     if c.date()>=todaysDate:
+    #         spotRate = spotCurveHandle.zeroRate(c.date(), dayCount, compounding, compoundingFrequency, True)
+    #         print(c.date(),"\n", spotRate)
+    # print("")
+    #
+    # spotDatesISO = [i.ISO() for i in spotDates]
+    # cashflow_dates=[]
+    #
+    # print ('%20s %12s %12s' % ("Date", "Amount", "disc Fac"))
+    #
+    # for i, c in enumerate(fixedRateBond.cashflows()):
+    #     if c.date()>=todaysDate:
+    #         print ('%20s %12f %12f' % (c.date(), c.amount(),spotCurve.discount(c.date())))
+    #         cashflow_dates.append(c.date().ISO())
 
     return fixedRateBond.cleanPrice()

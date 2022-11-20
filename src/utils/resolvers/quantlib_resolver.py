@@ -128,7 +128,7 @@ class QuantLibFunctionsResolver(Resolver):
         spot_rates = {k[0]: v for k, v in sorted(spot_rates.items(), key=lambda item: self.tenor_comparator(item[0][0]))}
         logging.info(spot_rates)
 
-        if bond_obj.instrument_type == "ZERO_COUPON_BOND":
+        if bond_obj.instrument_type == "Zero Coupon Bond":
             clean_price = get_zero_coupon_clean_price(datetime.today().strftime('%Y-%m-%d'), bond_obj, spot_rates)
         else:
             clean_price = get_clean_price(datetime.today().strftime('%Y-%m-%d'), bond_obj, spot_rates)
@@ -191,6 +191,14 @@ class QuantLibFunctionsResolver(Resolver):
             bond.coupon_frequency = Instrument.CouponFrequency[
                 self.to_upper(instrument_msg.get_field_value("Coupon Frequency"))]
             bond.coupon_rate = instrument_msg.get_field_value("Coupon")
+
+        if bond.instrument_type == "Stepped Coupon Bond":
+            schedule = instrument_msg.get_field_value("Coupon Schedule")
+            coupon_schedule = {}
+            for item in schedule:
+                coupon_date = item["couponDate"]
+                coupon_schedule[coupon_date[0:10]] = item["couponRate"]
+            bond.coupon_schedule = coupon_schedule
 
         return bond
 

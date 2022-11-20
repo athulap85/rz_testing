@@ -45,16 +45,17 @@ class Instrument:
         self._face_value = None
         self._day_count_convention = None
         self._instrument_type = None
+        self._coupon_schedule = None
 
     def to_string(self):
         msg_str = "{\n"
         msg_str += "\tissue_date : " + self._issue_date + "\n"
         msg_str += "\tmaturity_date : " + self._maturity_date + "\n"
-        msg_str += "\tfirst_coupon_date : " + self._first_coupon_date + "\n"
-        msg_str += "\tnext_to_last_date : " + self._next_to_last_date + "\n"
-        msg_str += "\tcoupon_frequency : " + str(self._coupon_frequency) + "\n"
+        # msg_str += "\tfirst_coupon_date : " + self._first_coupon_date + "\n"
+        # msg_str += "\tnext_to_last_date : " + self._next_to_last_date + "\n"
+        # msg_str += "\tcoupon_frequency : " + str(self._coupon_frequency) + "\n"
         msg_str += "\tbusiness_day_convention : " + str(self._business_day_convention) + "\n"
-        msg_str += "\tcoupon_rate : " + str(self._coupon_rate) + "\n"
+        # msg_str += "\tcoupon_rate : " + str(self._coupon_rate) + "\n"
         msg_str += "\tface_value : " + str(self._face_value) + "\n"
         msg_str += "\tday_count_convention : " + str(self._day_count_convention) + "\n"
         msg_str += "}"
@@ -111,6 +112,10 @@ class Instrument:
     @property
     def face_value(self):
         return self._face_value
+
+    @property
+    def coupon_schedule(self):
+        return self._coupon_schedule
 
     @property
     def day_count_convention(self):
@@ -182,6 +187,11 @@ class Instrument:
     @day_count_convention.setter
     def day_count_convention(self, day_count_convention: DayCountConvention):
         self._day_count_convention = day_count_convention
+
+    @coupon_schedule.setter
+    def coupon_schedule(self, coupon_schedule1):
+        coupon_schedule2 = {ql.Date(key, date_format): value for key, value in coupon_schedule1.items()}
+        self._coupon_schedule = coupon_schedule2
 
     def validate_date(self, date_string):
         try:

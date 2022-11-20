@@ -30,8 +30,13 @@ spot_rates = {
             }
 
 
-clean_price = get_clean_price("2022-08-07", bond, spot_rates)
-print(f"Clean Price : {clean_price}")
+# clean_price = get_clean_price("2022-08-07", bond, spot_rates)
+# print(f"Clean Price : {clean_price}")
+#
+# clean_price = get_zero_coupon_clean_price("2022-08-07", bond, spot_rates)
+# print(f"Zero Coupon Clean Price : {clean_price}")
 
-clean_price = get_zero_coupon_clean_price("2022-08-07", bond, spot_rates)
-print(f"Zero Coupon Clean Price : {clean_price}")
+bond.instrument_type = "STEPPED_COUPON_BOND"
+bond.coupon_schedule = {"2023-03-29": 6.0, "2025-03-29": 7.0}
+clean_price = get_clean_price("2022-08-07", bond, spot_rates)
+print(f"Stepped Coupon Clean Price : {clean_price}")
