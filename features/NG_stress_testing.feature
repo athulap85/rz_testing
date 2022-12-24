@@ -996,6 +996,85 @@ Feature: Stress testing
       | Result2     | [Run2.id] | [Acc01.Account Id] | RZ_ST_Scenario03 | current_value(RZ_ST_Firm01,[Acc01.Account Id]) | stressed_value(RZ_ST_Firm01,[Acc01.Account Id],RZ_ST_Scenario03) |
 
 
+      @d
+  Scenario: TC_016 - Fixed Rate sinking Bond
+
+    Given instance "RZ-Base-Acc-02" of entity "Accounts" is copied with following values
+      | Instance ID | Participant  | Account Id          | Name            | Risk Model    |
+      | Acc01       | RZ_ST_Firm01 | random(RZ_ST_ACC,5) | random(RZ_ST,5) | RZ_ST_Model04 |
+
+    When "Position Update" messages are submitted with following values
+      | Instance ID | account            | symbol            |  quantity | participant         | notional |
+      | POU1        | [Acc01.Account Id] | RZ_ST_Sync_Bond01 |  100      | [Acc01.Participant] | 10000    |
+
+    Then "Position" messages are filtered by "level,participant,account,symbol" should be
+      | Instance ID | participant         | account            | level   | symbol       | notional |
+      | POS_Res1    | [Acc01.Participant] | [Acc01.Account Id] | ACCOUNT | [POU1.symbol] | 10000.0  |
+
+    When "Stress Test" messages are submitted with following values
+      | Instance ID | account            |
+      | STT01       | [Acc01.Account Id] |
+
+    Then response of the request "STT01" should be
+      | Instance ID |
+      | Run1        |
+
+    And "Stress Test Result" messages are filtered by "runId,accountId,scenarioId" should be
+      | Instance ID | runId     | accountId          | scenarioId       | currentValue                                   | stressedValue                                                    |
+      | Result1     | [Run1.id] | [Acc01.Account Id] | RZ_ST_Scenario03 | current_value(RZ_ST_Firm01,[Acc01.Account Id]) | stressed_value(RZ_ST_Firm01,[Acc01.Account Id],RZ_ST_Scenario03) |
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   @fff
   Scenario: ref data f
 
