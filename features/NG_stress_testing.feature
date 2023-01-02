@@ -591,7 +591,7 @@ Feature: Stress testing
 
     When "Position Update" messages are submitted with following values
       | Instance ID | account            | symbol       | price | quantity | participant         | notional | side |
-      | POU1        | [Acc01.Account Id] | RZ_ST_Bond01 | 99.0  | 10       | [Acc01.Participant] | 990      | LONG |
+      | POU1        | [Acc01.Account Id] | RZ_ST_Bond01 | 99.0  | 10       | [Acc01.Participant] | 1000.0   | LONG |
 
     Then "Position" messages are filtered by "level,participant,account,symbol" should be
       | Instance ID | participant         | account            | level   | symbol       | notional |
@@ -623,7 +623,7 @@ Feature: Stress testing
       | Result2     | [Run1.id] | [Acc01.Account Id] | RZ_ST_Bond01 | RZ_ST_Scenario11 | current_value(RZ_ST_Firm01,[Acc01.Account Id],[POU1_Res1.positionId]) | stressed_value(RZ_ST_Firm01,[Acc01.Account Id],RZ_ST_Scenario11,[POU1_Res1.positionId]) |
       | Result3     | [Run1.id] | [Acc01.Account Id] | RZ_ST_Bond03 | RZ_ST_Scenario11 | current_value(RZ_ST_Firm01,[Acc01.Account Id],[POU2_Res1.positionId]) | stressed_value(RZ_ST_Firm01,[Acc01.Account Id],RZ_ST_Scenario11,[POU2_Res1.positionId]) |
 
-  @done15
+  @done
   Scenario: TC_010 - Stress Test for Symbols with different Coupon Frequencies and Day count Conversions
 
     Given instance "RZ-Base-Acc-02" of entity "Accounts" is copied with following values
@@ -643,8 +643,8 @@ Feature: Stress testing
     Then "Position" messages are filtered by "level,participant,account,symbol" should be
       | Instance ID | participant         | account            | level   | symbol       | notional |
       | POU1_Res1   | [Acc01.Participant] | [Acc01.Account Id] | ACCOUNT | RZ_ST_Bond04 | -1000.0  |
-    #  | POU2_Res1   | [Acc01.Participant] | [Acc01.Account Id] | ACCOUNT | RZ_ST_Bond05 | -400.0   |
-   #   | POU3_Res1   | [Acc01.Participant] | [Acc01.Account Id] | ACCOUNT | RZ_ST_Bond06 | -1000.0  |
+      | POU2_Res1   | [Acc01.Participant] | [Acc01.Account Id] | ACCOUNT | RZ_ST_Bond05 | -400.0   |
+      | POU3_Res1   | [Acc01.Participant] | [Acc01.Account Id] | ACCOUNT | RZ_ST_Bond06 | -1000.0  |
 
     When "Stress Test" messages are submitted with following values
       | Instance ID | account            |
@@ -661,7 +661,7 @@ Feature: Stress testing
     #Verify the Stress Testing for Each Positions
     And "Stress Test Detailed Result" messages are filtered by "runId,accountId,scenarioId,symbol" should be
       | Instance ID | runId     | accountId          | symbol       | scenarioId       | currentValue                                                                       | stressValue                                                                                          |
-      | Result2     | [Run1.id] | [Acc01.Account Id] | RZ_ST_Bond04 | RZ_ST_Scenario11 | current_value(RZ_ST_Firm01,[Acc01.Account Id],[POU1_Res1.positionId],RZ_ST_Bond04) | stressed_value(RZ_ST_Firm01,[Acc01.Account Id],RZ_ST_Scenario11,[POU1_Res1.positionId],RZ_ST_Bond04) |
+      | Result2     | [Run1.id] | [Acc01.Account Id] | RZ_ST_Bond04 | RZ_ST_Scenario11 | current_value(RZ_ST_Firm01,[Acc01.Account Id],[POU1_Res1.positionId])              | stressed_value(RZ_ST_Firm01,[Acc01.Account Id],RZ_ST_Scenario11,[POU1_Res1.positionId]) |
       | Result3     | [Run1.id] | [Acc01.Account Id] | RZ_ST_Bond05 | RZ_ST_Scenario11 | current_value(RZ_ST_Firm01,[Acc01.Account Id],[POU2_Res1.positionId])              | stressed_value(RZ_ST_Firm01,[Acc01.Account Id],RZ_ST_Scenario11,[POU2_Res1.positionId])              |
       | Result4     | [Run1.id] | [Acc01.Account Id] | RZ_ST_Bond06 | RZ_ST_Scenario11 | current_value(RZ_ST_Firm01,[Acc01.Account Id],[POU3_Res1.positionId])              | stressed_value(RZ_ST_Firm01,[Acc01.Account Id],RZ_ST_Scenario11,[POU3_Res1.positionId])              |
 
@@ -723,7 +723,7 @@ Feature: Stress testing
       | Result3     | [Run2.id] | [Acc01.Account Id] | RZ_ST_Bond05 | RZ_ST_Scenario11 | current_value(RZ_ST_Firm01,[Acc01.Account Id],[POU2_Res1.positionId]) | stressed_value(RZ_ST_Firm01,[Acc01.Account Id],RZ_ST_Scenario11,[POU2_Res1.positionId]) |
       | Result4     | [Run2.id] | [Acc01.Account Id] | RZ_ST_Bond06 | RZ_ST_Scenario11 | current_value(RZ_ST_Firm01,[Acc01.Account Id],[POU3_Res1.positionId]) | stressed_value(RZ_ST_Firm01,[Acc01.Account Id],RZ_ST_Scenario11,[POU3_Res1.positionId]) |
 
-  @done22
+  @done
   Scenario: TC_011 - Change the attached Discount curve Intraday
 
     Given instance "RZ-Base-Acc-02" of entity "Accounts" is copied with following values
@@ -949,7 +949,7 @@ Feature: Stress testing
       | Instance ID | runId     | accountId          | scenarioId       | currentValue                                   | stressedValue                                                    |
       | Result6     | [Run2.id] | [Acc01.Account Id] | RZ_ST_Scenario03 | current_value(RZ_ST_Firm01,[Acc01.Account Id]) | stressed_value(RZ_ST_Firm01,[Acc01.Account Id],RZ_ST_Scenario03) |
 
-  @done16
+  @done
     # Creating This Sinkable Bond should be added into reference Data. Stress Test step is getting failed.SSinking Bonds- Stress Test Failed sent mail to Ravin "Sinking Bonds- Stress Test Failed"
   Scenario: TC_015 - Change the attached Discount curve Intraday for Fixed Rate Sinking Bond
 

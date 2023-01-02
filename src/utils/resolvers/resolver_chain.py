@@ -2,6 +2,7 @@ from src.utils.resolvers.instance_resolver import InstanceResolver
 from src.utils.resolvers.datetime_resolver import DateTimeResolver
 from src.utils.resolvers.quantlib_resolver import QuantLibFunctionsResolver
 from src.utils.resolvers.string_resolver import StringResolver
+from src.utils.resolvers.table_resolver import TableResolver
 
 
 class ResolverChain:
@@ -15,7 +16,7 @@ class ResolverChain:
         return cls.instance
 
     def build_chain(self):
-        self.resolver = InstanceResolver(DateTimeResolver(StringResolver(QuantLibFunctionsResolver(None))))
+        self.resolver = InstanceResolver(DateTimeResolver(StringResolver(QuantLibFunctionsResolver(TableResolver(None)))))
 
     def resolve(self, value):
         return self.resolver.resolve(value)

@@ -42,13 +42,18 @@ def get_zero_coupon_clean_price(todays_date: str, bond: Instrument, spot_rates: 
 
     maturityDate = bond.maturity_date
 
-    settlementDays = 0
+    settlementDays = 2
     faceValue = bond.face_value
 
     zeroCouponBond = ql.ZeroCouponBond(settlementDays, calendar, faceValue, maturityDate)
 
     bondEngine = ql.DiscountingBondEngine(spotCurveHandle)
     zeroCouponBond.setPricingEngine(bondEngine)
+
+    print("FixedRateBond.NPV() =", zeroCouponBond.NPV())
+    print("DirtyPrice = ", zeroCouponBond.dirtyPrice())
+    print("AccruedAmount = ", zeroCouponBond.accruedAmount())
+    print("SettlementDate =", zeroCouponBond.settlementDate())
 
     print("Zero Coupon CleanPrice = ", zeroCouponBond.cleanPrice()) #this is the stressed price
 

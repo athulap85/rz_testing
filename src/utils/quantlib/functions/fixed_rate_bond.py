@@ -40,7 +40,7 @@ def get_clean_price(todays_date: str, bond: Instrument, spot_rates: dict):
 
     print(spotCurve.nodes())
 
-    issueDate =  bond.issue_date
+    issueDate = bond.issue_date
     maturityDate = bond.maturity_date
     firstCouponDate = bond.first_coupon_date
     nextToLastDate = bond.next_to_last_date
@@ -56,6 +56,9 @@ def get_clean_price(todays_date: str, bond: Instrument, spot_rates: dict):
         coupon = bond.coupon_rate
         coupons = []
         dates = list(schedule)
+        dates.pop(0)  # remove issue date from list
+        print("Coupons Dates: ", dates)
+        print("Coupons Schedule: ", bond.coupon_schedule)
         for date in dates:
             coupon_val = bond.coupon_schedule.get(date, -1.0)
             if coupon_val != -1.0:
@@ -67,10 +70,27 @@ def get_clean_price(todays_date: str, bond: Instrument, spot_rates: dict):
         coupons = [bond.coupon_rate/100]
 
     settlementDays = 0
-    faceValue = bond.face_value
     dayCount_bond = bond.day_count_convention
 
-    fixedRateBond = ql.FixedRateBond(settlementDays, faceValue, schedule, coupons, dayCount_bond, bussinessConvention)
+    if bond.sinkable:
+        settlementDays = 2
+        issued_amount = bond.total_issued_nominal_amount
+        notionals = []
+        dates = list(schedule)
+        print("Coupons Dates: ", dates)
+        print("Sink Schedule: ", bond.coupon_schedule)
+        for date in dates:
+            sink_details = bond.sink_schedule.get(date, -1.0)
+            if sink_details != -1.0:
+                issued_amount = sink_details
+            notionals.append(issued_amount)
+        print("Notionals : ", notionals)
+        fixedRateBond = ql.AmortizingFixedRateBond(settlementDays, notionals,
+                                                   schedule, coupons, dayCount_bond, bussinessConvention)
+    else:
+        faceValue = bond.face_value
+        fixedRateBond = ql.FixedRateBond(settlementDays, faceValue,
+                                         schedule, coupons, dayCount_bond, bussinessConvention)
 
     bondEngine = ql.DiscountingBondEngine(spotCurveHandle)
     fixedRateBond.setPricingEngine(bondEngine)

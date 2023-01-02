@@ -29,6 +29,21 @@ spot_rates = {
             "30Y":  0.0335
             }
 
+spot_rates2 = {
+            "1D":   0.0283,
+            "1M":   0.0283,
+            "3M":   0.0406,
+            "6M":   0.0458,
+            "1Y":   0.0809,
+            "2Y":   0.0855,
+            "3Y":   0.0888,
+            "5Y":   0.0890,
+            "7Y":   0.0895,
+            "10Y":  0.1005,
+            "20Y":  0.1025,
+            "30Y":  0.1035
+            }
+
 
 # clean_price = get_clean_price("2022-08-07", bond, spot_rates)
 # print(f"Clean Price : {clean_price}")
@@ -36,7 +51,22 @@ spot_rates = {
 # clean_price = get_zero_coupon_clean_price("2022-08-07", bond, spot_rates)
 # print(f"Zero Coupon Clean Price : {clean_price}")
 
-bond.instrument_type = "STEPPED_COUPON_BOND"
-bond.coupon_schedule = {"2023-03-29": 6.0, "2025-03-29": 7.0}
-clean_price = get_clean_price("2022-08-07", bond, spot_rates)
-print(f"Stepped Coupon Clean Price : {clean_price}")
+# bond.instrument_type = "Stepped Coupon Bond"
+# bond.coupon_schedule = {"2023-03-29": 6.0, "2025-03-29": 7.0}
+# clean_price = get_clean_price("2022-08-07", bond, spot_rates)
+# print(f"Stepped Coupon Clean Price : {clean_price}")
+
+
+# bond.instrument_type = "Fixed Rate Bond"
+# bond.sinkable = True
+# bond.total_issued_nominal_amount = 1000000
+# bond.sink_schedule = {"2023-03-29": (800000, 0, 0), "2025-03-29": (500000, 0, 0)}
+# clean_price = get_clean_price("2022-08-07", bond, spot_rates)
+# print(f"Sinkable bond clean Price : {clean_price}")
+
+bond.issue_date = "2021-09-28"
+bond.maturity_date = "2033-09-28"
+clean_price = get_zero_coupon_clean_price("2022-12-10", bond, spot_rates2)
+print(f"Zero Coupon Clean Price : {clean_price}")
+
+

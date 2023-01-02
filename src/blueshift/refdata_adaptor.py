@@ -200,7 +200,10 @@ class RefDataAdaptor(IRefDataInterface):
             if value is not None:
                 if data_type in self.entity_name_to_display_name_map:
                     if type(value) == list:
-                        value = ','.join([x["name"] for x in value])
+                        if data_type == "CouponSchedule" or data_type == "SinkSchedule":
+                            value = self.getStrForTable(value)
+                        else:
+                            value = ','.join([x["name"] for x in value])
                     else:
                         value = value["name"]
                 elif data_type == "Enum":
@@ -281,7 +284,7 @@ class RefDataAdaptor(IRefDataInterface):
 
             if value is not None:
                 if data_type in self.entity_name_to_display_name_map:
-                    match = self.table_field_value_pattern.search(value)
+                    match = self.table_field_value_pattern.search(str(value))
                     if match is not None:
                         dto_collection[data_type] = []
                         entity_def = self.entity_definitions.get(self.entity_name_to_display_name_map.get(data_type))
@@ -319,6 +322,9 @@ class RefDataAdaptor(IRefDataInterface):
     def enrich_linked_instance_details(self, related_entity_name, received_value, multi_value):
         logging.debug(f"enrich_linked_instance_details entity [{related_entity_name}] value [{received_value}]"
                       f" multiple [{multi_value}]")
+
+        if related_entity_name == "Coupon Schedules" or related_entity_name == "Sink Schedule":
+            return received_value
 
         if multi_value:
             item_list = []
@@ -364,3 +370,7 @@ class RefDataAdaptor(IRefDataInterface):
             DataLoader().set_acc_instance_id(participant, instance_name, instance_id)
         else:
             DataLoader().set_instance_id(entity, instance_name, instance_id)
+
+    def getStrForTable(self, value):
+        return value
+

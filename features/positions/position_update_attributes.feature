@@ -1,12 +1,12 @@
 Feature: Position Management
 
-  @negative
+  @negative3
   Scenario: TC_PU_001 Validating Symbol - Mandatory Field
 
     ## Validate Position Update submitted with EMPTY Symbol
     When "Position Update" messages are submitted with following values
       | Instance ID  | account    | value | price | side  | participant | symbol | notional |
-      | PosUpdate_01 | RZ-PT-AC-1 | 100   | 50.0  | SHORT | RZ-PT-01    | ""     | 500.0    |
+      | PosUpdate_01 | RZ-PT-AC-1 | 100   | 50.0  | SHORT | RZ-PT-01    |        | 500.0    |
 
     Then response of the request "PosUpdate_01" should be
       | Instance ID       | status   | subStatus           | positionUpdateId |

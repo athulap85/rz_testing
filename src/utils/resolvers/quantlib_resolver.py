@@ -20,10 +20,10 @@ class QuantLibFunctionsResolver(Resolver):
 
     def __init__(self, next_resolver):
         self.next_resolver = next_resolver
-        self.current_value_pattern = re.compile(r"current_value\((.+),(.+)\)")
-        self.current_value_pos_level_pattern = re.compile(r"current_value\((.+),(.+),(.+)\)")
-        self.stressed_value_pattern = re.compile(r"stressed_value\((.+),(.+),(.+)\)")
-        self.stressed_value_pos_level_pattern = re.compile(r"stressed_value\((.+),(.+),(.+),(.+)\)")
+        self.current_value_pattern = re.compile(r"current_value\((.+),(.+)\)") # (participant, account)
+        self.current_value_pos_level_pattern = re.compile(r"current_value\((.+),(.+),(.+)\)") # participant, account, position_id
+        self.stressed_value_pattern = re.compile(r"stressed_value\((.+),(.+),(.+)\)") # participant, account, scenario
+        self.stressed_value_pos_level_pattern = re.compile(r"stressed_value\((.+),(.+),(.+),(.+)\)") # (participant, account, scenario, position_id)
 
     def process(self, value):
 
@@ -112,9 +112,9 @@ class QuantLibFunctionsResolver(Resolver):
         return int(tenor[0:-1]) * multiplier
 
     def calculate_value(self, position, scenario_id=None):
-        logging.info(f"calculate_stressed_value")
+        logging.info(f"calculate_value")
         symbol = position.get_field_value("symbol")
-        net_position = position.get_field_value("netPosition")
+        notional = position.get_field_value("notional")
 
         instrument_msg, error_msg = RefDataManager().get_instance("Instruments", symbol)
         assert error_msg is None, f"Unable to fetch instrument with symbol: [{symbol}]. Error : [{error_msg}]"
@@ -132,8 +132,9 @@ class QuantLibFunctionsResolver(Resolver):
             clean_price = get_zero_coupon_clean_price(datetime.today().strftime('%Y-%m-%d'), bond_obj, spot_rates)
         else:
             clean_price = get_clean_price(datetime.today().strftime('%Y-%m-%d'), bond_obj, spot_rates)
-        print(f"Clean Price : {clean_price}")
-        return clean_price * net_position
+        logging.info(f"Clean Price : {clean_price}")
+        logging.info(f"Quantity : {notional / bond_obj.face_value}")
+        return clean_price * notional / bond_obj.face_value
 
     def adjust_spot_rates(self, spot_rates, scenario_id):
         logging.info(f"adjust_spot_rates:before:{str(spot_rates)}")
@@ -175,6 +176,7 @@ class QuantLibFunctionsResolver(Resolver):
 
     def create_bond_instrument(self, instrument_msg):
         bond = Instrument()
+        bond.symbol = instrument_msg.get_field_value("Symbol")
         bond.instrument_type = instrument_msg.get_field_value("Instrument Type")
 
         bond.issue_date = instrument_msg.get_field_value("Issue Date")
@@ -191,6 +193,16 @@ class QuantLibFunctionsResolver(Resolver):
             bond.coupon_frequency = Instrument.CouponFrequency[
                 self.to_upper(instrument_msg.get_field_value("Coupon Frequency"))]
             bond.coupon_rate = instrument_msg.get_field_value("Coupon")
+            bond.total_issued_nominal_amount = instrument_msg.get_field_value("Total Issued Nominal Amount")
+            if instrument_msg.get_field_value("Sinkable") == "Yes":
+                bond.sinkable = True
+                schedule = instrument_msg.get_field_value("Sink Schedule")
+                sink_schedule = {}
+                for item in schedule:
+                    sink_date = item["sinkDate"]
+                    sink_schedule[sink_date[0:10]] = item["outstandingAmount"]
+                print(f"Sink Schedule : {sink_schedule}")
+                bond.sink_schedule = sink_schedule
 
         if bond.instrument_type == "Stepped Coupon Bond":
             schedule = instrument_msg.get_field_value("Coupon Schedule")

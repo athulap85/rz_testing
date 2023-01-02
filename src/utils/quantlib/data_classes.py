@@ -35,6 +35,7 @@ class Instrument:
         BUS_DIVIDED_TWO_HUNDRED_AND_FIFTY_TWO = 12
 
     def __init__(self):
+        self._symbol = None
         self._issue_date = None
         self._maturity_date = None
         self._first_coupon_date = None
@@ -46,20 +47,37 @@ class Instrument:
         self._day_count_convention = None
         self._instrument_type = None
         self._coupon_schedule = None
+        self._sink_schedule = None
+        self._sinkable = False
+        self._total_issued_nominal_amount = False
 
     def to_string(self):
         msg_str = "{\n"
+        msg_str += "\tsymbol : " + self._symbol + "\n"
+        msg_str += "\tinstrument_type : " + self._instrument_type + "\n"
         msg_str += "\tissue_date : " + self._issue_date + "\n"
         msg_str += "\tmaturity_date : " + self._maturity_date + "\n"
-        # msg_str += "\tfirst_coupon_date : " + self._first_coupon_date + "\n"
-        # msg_str += "\tnext_to_last_date : " + self._next_to_last_date + "\n"
-        # msg_str += "\tcoupon_frequency : " + str(self._coupon_frequency) + "\n"
         msg_str += "\tbusiness_day_convention : " + str(self._business_day_convention) + "\n"
-        # msg_str += "\tcoupon_rate : " + str(self._coupon_rate) + "\n"
         msg_str += "\tface_value : " + str(self._face_value) + "\n"
         msg_str += "\tday_count_convention : " + str(self._day_count_convention) + "\n"
+
+        if self._instrument_type != "Zero Coupon Bond":
+            msg_str += "\tcoupon_rate : " + str(self._coupon_rate) + "\n"
+            msg_str += "\tfirst_coupon_date : " + self._first_coupon_date + "\n"
+            msg_str += "\tnext_to_last_date : " + self._next_to_last_date + "\n"
+            msg_str += "\tcoupon_frequency : " + str(self._coupon_frequency) + "\n"
+            msg_str += "\tsinkable : " + str(self._sinkable) + "\n"
+            msg_str += "\ttotal_issued_nominal_amount : " + str(self._total_issued_nominal_amount) + "\n"
+
+        if self._instrument_type == "Stepped Coupon Bond":
+            msg_str += "\tcoupon_schedule : " + str(self._coupon_schedule) + "\n"
+
         msg_str += "}"
         return msg_str
+
+    @property
+    def symbol(self):
+        return self._symbol
 
     @property
     def issue_date(self):
@@ -114,8 +132,20 @@ class Instrument:
         return self._face_value
 
     @property
+    def total_issued_nominal_amount(self):
+        return self._total_issued_nominal_amount
+
+    @property
+    def sinkable(self):
+        return self._sinkable
+
+    @property
     def coupon_schedule(self):
         return self._coupon_schedule
+
+    @property
+    def sink_schedule(self):
+        return self._sink_schedule
 
     @property
     def day_count_convention(self):
@@ -172,6 +202,10 @@ class Instrument:
     def business_day_convention(self, business_day_convention: BusinessDayConvention):
         self._business_day_convention = business_day_convention
 
+    @symbol.setter
+    def symbol(self, symbol: str):
+        self._symbol = symbol
+
     @instrument_type.setter
     def instrument_type(self, instrument_type: str):
         self._instrument_type = instrument_type
@@ -184,6 +218,10 @@ class Instrument:
     def face_value(self, face_value: float):
         self._face_value = face_value
 
+    @sinkable.setter
+    def sinkable(self, sinkable: bool):
+        self._sinkable = sinkable
+
     @day_count_convention.setter
     def day_count_convention(self, day_count_convention: DayCountConvention):
         self._day_count_convention = day_count_convention
@@ -192,6 +230,15 @@ class Instrument:
     def coupon_schedule(self, coupon_schedule1):
         coupon_schedule2 = {ql.Date(key, date_format): value for key, value in coupon_schedule1.items()}
         self._coupon_schedule = coupon_schedule2
+
+    @sink_schedule.setter
+    def sink_schedule(self, sink_schedule):
+        sink_schedule = {ql.Date(key, date_format): value for key, value in sink_schedule.items()}
+        self._sink_schedule = sink_schedule
+
+    @total_issued_nominal_amount.setter
+    def total_issued_nominal_amount(self, total_issued_nominal_amount: float):
+        self._total_issued_nominal_amount = total_issued_nominal_amount
 
     def validate_date(self, date_string):
         try:

@@ -6,8 +6,7 @@
     "currency": "USD",
     "dataClass": "PRICE",
     "subClass": "ACTUAL",
-    "type": "BB",
-    "venue": "CCCAGG",
+    "venue": "CME",
     "value": 2.0,
     "externalUpdateId": null
   }
