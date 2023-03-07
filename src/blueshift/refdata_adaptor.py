@@ -102,6 +102,7 @@ class RefDataAdaptor(IRefDataInterface):
                 new_entity.add_field_definition(field_def)
         loader = DataLoader()
         loader.load_instances(self.entity_definitions)
+        self.loader_logger.info('RefDataAdaptor - Init - Done')
 
     def fetch_instance(self, entity_name, instance_key):
         logging.debug(f"fetch_instance: entity_name[{entity_name}], instance_key[{instance_key}]")
@@ -158,6 +159,7 @@ class RefDataAdaptor(IRefDataInterface):
     def create_instance(self, message):
         logging.debug(f"create_instance")
         entity_def = self.entity_definitions.get(message.definition)
+        assert entity_def is not None, f"Cannot find the specified entity [{message.definition}] in the Blue Shift"
         request = self.create_request_msg(entity_def, message)
         return self.post_create_instance(entity_def, request)
 
@@ -192,7 +194,7 @@ class RefDataAdaptor(IRefDataInterface):
 
         for key, value in response.items():
 
-            if key == "reserved":
+            if key == "reserved" or key == "referenceId":  # hack
                 continue
 
             field_def = entity_definition.find_field_def_by_name(key)
